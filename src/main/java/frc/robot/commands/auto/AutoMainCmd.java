@@ -40,9 +40,16 @@ public class AutoMainCmd extends SequentialCommandGroup
        
         
         super(
+            //new MoveServo(0,0, 180, 20),
+            //new MoveServo(90,0, 180, 20),
+            new MoveServo(75,0, 0, 100)
+            //new MoveServo(0,75, 0, 100)
+            ///new MoveServo(270, 0, 0, 3)
             //new MoveIRSensor();
+            /* 
             new MoveRobot(1, 0.5, 0, 0.0, 0.5),
             new MoveTest() 
+            */
                        /* 
             new MoveRobot(1, 1, 0, 0,0.4),
             new MoveRobot(2, Math.PI, 0, 0,Math.PI),
