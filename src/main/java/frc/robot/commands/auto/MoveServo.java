@@ -27,33 +27,34 @@ public class MoveServo extends CommandBase
     private TrapezoidProfile.Constraints m_constraints;
     private TrapezoidProfile.State m_goal = new TrapezoidProfile.State();
     private TrapezoidProfile.State m_setpoint = new TrapezoidProfile.State();
+    /* 
     private final ShuffleboardTab tab = Shuffleboard.getTab("MoveServo");
     private final NetworkTableEntry D_position = tab.add("m_dir", 0).getEntry();
     private final NetworkTableEntry D_setpoint_position = tab.add("Setpoint Position", 0).getEntry();
     private final NetworkTableEntry D_goal_position = tab.add("Goal Position", 0).getEntry();
+    */
     private int m_dir;
 
     private final double _startSpeed;
 
     /**
-     * This command moves the robot a certain distance following a trapezoidal speed profile.
+     * This command moves the servo a certain angke (degrees) following a trapezoidal speed profile.
      * <p>
      * 
-     * @param type - 0, 1 or 2 for x, y, or w speed
-     * @param dist - distance to move
+     * @param position - position in degrees
      * @param startSpeed -  starting speed of robot
-     * @param endSpeed - ending speed og robot
+     * @param endSpeed - ending speed of robot
      * @param maxSpeed - max speed of robot
      */
     //This move the robot a certain distance following a trapezoidal speed profile.
-    public MoveServo(double position, double startDegree, double endDegree, double maxSpeed)
+    public MoveServo(double position, double startSpeed, double endSpeed, double maxSpeed)
     {
-        _startSpeed = startDegree;
+        _startSpeed = startSpeed;
         
         
         m_constraints = new TrapezoidProfile.Constraints(maxSpeed, 50);
         
-        m_setpoint = new TrapezoidProfile.State(0, _startSpeed);
+        m_setpoint = new TrapezoidProfile.State(m_arm.getServoAngle0(), _startSpeed);
         
         //Negative distance don't seem to work with the library function????
         //Easier to make distance positive and use m_dir to keep track of negative speed.
@@ -62,7 +63,7 @@ public class MoveServo extends CommandBase
         position *= m_dir;          
         
         // m_goal = new TrapezoidProfile.State(position, endSpeed);
-        m_goal = new TrapezoidProfile.State(position, endDegree);
+        m_goal = new TrapezoidProfile.State(position, endSpeed);
         //addRequirements(m_drive); // Adds the subsystem to the command
      
     }
@@ -73,7 +74,7 @@ public class MoveServo extends CommandBase
     @Override
     public void initialize()
     {   
-        m_setpoint = new TrapezoidProfile.State(0, _startSpeed);
+        m_setpoint = new TrapezoidProfile.State(m_arm.getServoAngle0(), _startSpeed);
         m_endFlag = false;
     }
     /**
@@ -101,10 +102,11 @@ public class MoveServo extends CommandBase
             m_arm.setServoAngle0(m_goal.position*m_dir);
             m_endFlag = true;
         }
+        /* 
         D_position.setNumber(m_dir);
-        D_setpoint_position.setNumber(m_setpoint.position);
-        D_goal_position.setNumber(m_goal.position);
-
+        D_setpoint_position.setNumber(m_setpoint.position*m_dir);
+        D_goal_position.setNumber(m_goal.position*m_dir);
+*/
     }
 
     /**

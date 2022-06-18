@@ -42,7 +42,11 @@ public class AutoMainCmd extends SequentialCommandGroup
         super(
             //new MoveServo(0,0, 180, 20),
             //new MoveServo(90,0, 180, 20),
-            new MoveServo(75,0, 0, 100)
+            new MoveServo(90,0, 0, 100),
+            //  new MoveServo(0,0, 0, 100),
+            new MoveServo(180,0, 0, 100), // Does not go to -180 even though on shuffleboard it says so
+            new MoveServo(45,0, 0, 1) 
+            //new MoveServo(75,0, 0, -100)
             //new MoveServo(0,75, 0, 100)
             ///new MoveServo(270, 0, 0, 3)
             //new MoveIRSensor();

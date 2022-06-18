@@ -19,9 +19,10 @@ public class Arm extends SubsystemBase{
 
         servo0 = new Servo(0);
         servo1 = new Servo(1);
-
-        servo0.setAngle(150);
-        servo1.setAngle(150);
+        servo0.setAngle(0);
+        servo1.setAngle(0);
+        servoAngle0 = 0;
+        servoAngle1 = 0;
     }
     /**
      * Set Servo Angle for Servo0 in degrees
@@ -36,6 +37,9 @@ public class Arm extends SubsystemBase{
     public void setServoAngle1(final double degrees){
         servoAngle1 = degrees;
         servo1.setAngle(degrees);
+    }
+    public double getServoAngle0(){
+        return servoAngle0;
     }
 
     @Override
