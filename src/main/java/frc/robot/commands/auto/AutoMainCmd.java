@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 // import the commands
 import frc.robot.commands.auto.MoveRobot;
@@ -39,42 +40,24 @@ public class AutoMainCmd extends SequentialCommandGroup
     {
        
         
-        super(
-            //new MoveServo(0,0, 180, 20),
-            //new MoveServo(90,0, 180, 20),
-            new MoveServo(90,0, 0, 100),
-            //  new MoveServo(0,0, 0, 100),
-            new MoveServo(180,0, 0, 100), // Does not go to -180 even though on shuffleboard it says so
-            new MoveServo(45,0, 0, 1) 
-            //new MoveServo(75,0, 0, -100)
-            //new MoveServo(0,75, 0, 100)
-            ///new MoveServo(270, 0, 0, 3)
-            //new MoveIRSensor();
-            /* 
-            new MoveRobot(1, 0.5, 0, 0.0, 0.5),
-            new MoveTest() 
-            */
-                       /* 
-            new MoveRobot(1, 1, 0, 0,0.4),
-            new MoveRobot(2, Math.PI, 0, 0,Math.PI),
-            new MoveRobot(1, 1, 0, 0,Math.PI),
-            new MoveRobot(2, -Math.PI, 0, 0,Math.PI),
-            //new MoveRobotSense(1, 1, 0, 0, 0.4, endCondition())
-            */
-            //new MoveRobotSense(1, 3, 0, 0.0, 0.5, ()->RobotContainer.m_sensor.getIRDistance()<=20);
+        super( 
+            new MoveArm(new Translation2d(0.2, 0),25),
             
-            /* 
-            new MoveRobot(0, 0.1, 0, 0,0.4),
-            new MoveRobot(1, -0.1, 0, 0,0.4),  
-            new MoveRobot(0, -0.1, 0, 0,0.4),    
-            new MoveRobot(2, Math.PI*2, 0, 0,Math.PI)  
-            */
-            
-            
+            new MoveArm(new Translation2d(0.2, 0.2), 25),
+            new MoveArm(new Translation2d(0.05, 0), 25)
+            //new MoveArm(new Translation2d(0, 0), 25)
              );
        
+    }
+    @Override
+    public void initialize(){
+        // Initialize done before base initialization
+        RobotContainer.m_arm.initialize();
+        super.initialize();
         
     }
+    
+    
     
     
 }

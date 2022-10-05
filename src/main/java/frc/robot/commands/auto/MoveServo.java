@@ -27,6 +27,7 @@ public class MoveServo extends CommandBase
     private TrapezoidProfile.Constraints m_constraints;
     private TrapezoidProfile.State m_goal = new TrapezoidProfile.State();
     private TrapezoidProfile.State m_setpoint = new TrapezoidProfile.State();
+    
     /* 
     private final ShuffleboardTab tab = Shuffleboard.getTab("MoveServo");
     private final NetworkTableEntry D_position = tab.add("m_dir", 0).getEntry();

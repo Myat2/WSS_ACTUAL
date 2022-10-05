@@ -1,15 +1,13 @@
-package frc.robot.commands;
+package frc.robot.commands.tele;
 
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
-import frc.robot.commands.gamepad.OI;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.OmniDrive;
 import frc.robot.subsystems.Sensor;
-import java.lang.Math;
 
-import org.ejml.dense.row.MatrixFeatures_CDRM;
+//This command will be run during teleop mode
 public class TeleCmd extends CommandBase
 {
     /**
@@ -19,7 +17,6 @@ public class TeleCmd extends CommandBase
     private final Sensor m_sensor;
     private final Arm m_arm;
     private final OI m_oi;
-    
 
     /**
      * Constructor
@@ -61,30 +58,16 @@ public class TeleCmd extends CommandBase
         //Get other buttons?
 
         //Add code here to control servo motor etc.
-        /* 
-        double a[][] = {{ -0.866025, -0.5, 1, 0.1 },
-                        { 1, , 1, 0.1 },
-                        { 2, 1, 1, 7 }};*/
-        double s0, s1, s2;
-        /*
-         * s0 = -Math.sqrt(3)/2*x - 0.5*y + 1*w;
-        s1 = x + 1*w;
-        s2 = Math.sqrt(3)/2*y - 0.5*x + 1*w;
-         */
-        s0 = -0.5*x - Math.sqrt(3)/2*y + 1*w;
-        s1 = x + 1*w;
-        s2 = Math.sqrt(3)/2*y - 0.5*x + 1*w;
-         
+
         //m_omnidrive.setMotorOut012(s0,s1,s2);
-        double input_start = -1;    // The lowest number of the range input.
-        double input_end = 1;    // The largest number of the range input.
-        double output_start = 0; // The lowest number of the range output.
-        double output_end = 300;  // The largest number of the range output.
-        double output = output_start + ((output_end - output_start) / (input_end - input_start)) * (w - input_start);
-        m_arm.setServoAngle0(output);
-    
-        
-        m_omnidrive.setRobotSpeedXYW(x*0.6, y*0.6, w*Math.PI);
+        // m_arm.setServoAngle0( (w*150) + 150);
+        // m_arm.setServoAngle1( (w*150) + 150);
+        m_omnidrive.setRobotSpeedXYW(x, y, w*Math.PI);
+//        Translation2d pos = new Translation2d(0.25, 0.25); //90,90
+ //     Translation2d pos = new Translation2d(0.25, 0); //60,120
+ //Translation2d pos = new Translation2d(0.25/Math.sqrt(2)+0.25, 0.25/Math.sqrt(2));//45,45
+        Translation2d pos = new Translation2d(m_arm.getSliderX(), m_arm.getSliderY());
+        m_arm.setArmPos(pos);
 
     }
 
