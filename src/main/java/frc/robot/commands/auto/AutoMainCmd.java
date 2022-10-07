@@ -41,12 +41,20 @@ public class AutoMainCmd extends SequentialCommandGroup
        
         
         super( 
+            /* 
             new MoveArm(new Translation2d(0.2, 0),25),
             
             new MoveArm(new Translation2d(0.2, 0.2), 25),
             new MoveArm(new Translation2d(0.05, 0), 25)
             //new MoveArm(new Translation2d(0, 0), 25)
-             );
+            
+             */
+            new MoveArm(new Translation2d(0.2,0),25),
+            new MoveArm(new Translation2d(0.3,0),25),
+            new MoveArm(new Translation2d(0.3,0.3),25),
+            new MoveArm(new Translation2d(0.2,0.3),25),
+            new MoveArm(new Translation2d(0.2,0),25)
+            );
        
     }
     @Override

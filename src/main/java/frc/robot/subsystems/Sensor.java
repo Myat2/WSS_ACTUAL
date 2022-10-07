@@ -25,7 +25,7 @@ public class Sensor extends SubsystemBase
     // Sensors
     private final DigitalInput input10;
     private AnalogInput sharp;
-    
+    private Cobra cobra;
     
     private int i;
     
@@ -35,12 +35,15 @@ public class Sensor extends SubsystemBase
     private final NetworkTableEntry D_inputDisp = tab.add("inputDisp", false).getEntry();
     private final NetworkTableEntry D_cntDisp = tab.add("cntDisp", 0).getEntry();
     private final NetworkTableEntry D_IRSensor = tab.add("IR Value (cm)", 0).getEntry();
-    private final NetworkTableEntry D_Servo = tab.add("Servo", 0).getEntry();
+    private final NetworkTableEntry D_Cobra_0 = tab.add("Cobra (0)", 0).getEntry();
+    private final NetworkTableEntry D_Cobra_1 = tab.add("Cobra (1)", 0).getEntry();
+    private final NetworkTableEntry D_Cobra_2 = tab.add("Cobra (2)", 0).getEntry();
+    private final NetworkTableEntry D_Cobra_3 = tab.add("Cobra (3)", 0).getEntry();
     //Subsystem for sensors
     //This is just an example.
     public Sensor() {
         //Constuct a new instance
-        
+        cobra = new Cobra();
         sharp = new AnalogInput(0);
         input10 = new DigitalInput(Constants.INPUT0);
         
@@ -66,7 +69,7 @@ public class Sensor extends SubsystemBase
      * @return value between 0 and 2047 (11-bit)
      */
     public int getCobraRawValue(final int channel) {
-        return 0;
+        return cobra.getRawValue(channel); 
     }
 
 
@@ -94,6 +97,9 @@ public class Sensor extends SubsystemBase
         D_inputDisp.setBoolean(getSwitch());
         D_cntDisp.setNumber(i);
         D_IRSensor.setNumber(getIRDistance());
-        
+        D_Cobra_0.setNumber(getCobraRawValue(0));
+        D_Cobra_1.setNumber(getCobraRawValue(1));
+        D_Cobra_2.setNumber(getCobraRawValue(2));
+        D_Cobra_3.setNumber(getCobraRawValue(3));
     }
 }

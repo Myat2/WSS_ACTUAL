@@ -16,11 +16,15 @@ public class Arm extends SubsystemBase {
     private final Servo servo1;
     private final Servo servo2;
     private Translation2d m_pos;  //current arm tip position
-    private final double a1 = 0.25; 
-    private final double a2 = 0.25; 
+    private final double a1 = 0.24; 
+    private final double a2 = 0.335; 
 
     private double offset0 = 0;   //For making software adjustment to servo 
     private double offset1 = 0;
+    private double preset0 = -175.0;
+    private double preset1 = -40.0;
+    private double shoulderRatio = 4.0;
+    private double elbowRatio = 2.0;
     private double q1, q2;
     // Good for debugging
     // Shuffleboard
@@ -28,14 +32,14 @@ public class Arm extends SubsystemBase {
     private final NetworkTableEntry D_servo0 = tab.add("servo0", 0).getEntry();
     private final NetworkTableEntry D_servo1 = tab.add("servo1", 0).getEntry();
     private final NetworkTableEntry D_servo2 = tab.add("servo2", 0).getEntry();
-    private final NetworkTableEntry D_offset0 = tab.addPersistent("offset0", 0).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -10, "max", +10)).getEntry();
-    private final NetworkTableEntry D_offset1 = tab.addPersistent("offset1", 0).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -10, "max", +10)).getEntry();
+    private final NetworkTableEntry D_offset0 = tab.addPersistent("offset0", 0).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -200, "max", 200)).getEntry();
+    private final NetworkTableEntry D_offset1 = tab.addPersistent("offset1", 0).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -200, "max", 200)).getEntry();
 
     private final NetworkTableEntry D_posX = tab.add("posX", 0).getEntry();
     private final NetworkTableEntry D_posY = tab.add("posY", 0).getEntry();
-    private final NetworkTableEntry D_debug1 = tab.add("debug1", 0).getEntry();
-    private final NetworkTableEntry D_debug2 = tab.add("debug2", 0).getEntry();
-    private final NetworkTableEntry D_sliderX = tab.add("setX", 0.04).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0.05, "max", 0.4)) .getEntry();
+    private final NetworkTableEntry D_debug1 = tab.add("ElbowB", 0).getEntry();
+    private final NetworkTableEntry D_debug2 = tab.add("ShoulderA", 0).getEntry();
+    private final NetworkTableEntry D_sliderX = tab.add("setX", 0.04).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0.05, "max", 0.8)) .getEntry();
     private final NetworkTableEntry D_sliderY = tab.add("setY", 0).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0.0, "max", 0.4)) .getEntry();
     
    
@@ -43,11 +47,11 @@ public class Arm extends SubsystemBase {
         servo0 = new Servo(0);  //shoulder
         servo1 = new Servo(1);  //elbow
         servo2 = new Servo(2);  //gripper
-        m_pos = new Translation2d(0.05,0);
+        m_pos = new Translation2d(0.2,0);
         
     }
     public void initialize(){
-        m_pos = new Translation2d(0.05,0);
+        m_pos = new Translation2d(0.2,0);
         setArmPos(m_pos);
     }
     
@@ -71,8 +75,9 @@ public class Arm extends SubsystemBase {
     public double getSliderX( ) {
         return D_sliderX.getDouble(0.04);
     }
+    
 
-    /**
+    /*
      * Get slider-y value
      * <p>
      * 
@@ -135,21 +140,20 @@ public class Arm extends SubsystemBase {
         // When A is zero, arm-c is horizontal.
         // beta is servo1 angle wrt arm-c (BA)
         // When beta is zero, arm-c is closed  to arm-c
-        double B = beta;    //Use B to designate beta. Different from diagram.
+        double B = Math.PI - beta;    //Use B to designate beta. Different from diagram.
         double A = alpha + Math.atan2(y,x);
 
         //servo0 and servo1 might be mounted clockwise or anti clockwise.
         //offset0 and offset1 are used to adjust the zero the arm position.
         //This makes it easier to mount and tune the arm.
-        A = Math.toDegrees(A);
-        B = Math.toDegrees(B);
+        A = Math.toDegrees(A)*shoulderRatio;
+        B = Math.toDegrees(B)*elbowRatio;
 
         //Uncomment if servo direction needs to be flip.
-        //A = 300 - A;  
-        //B = 300 - A;
-
-        servo0.setAngle(A + offset0);
-        servo1.setAngle(B + offset1);
+        //A = 300 - A;
+          
+        servo0.setAngle( A + offset0); // servo0 is -15 * shoulderRatio
+        servo1.setAngle(B + offset1); // servo1 is -15 degrees * elbowARatio
 
         D_debug1.setDouble(A);
         D_debug2.setDouble(B);
@@ -177,27 +181,23 @@ public class Arm extends SubsystemBase {
         // When A is zero, arm-c is horizontal.
         // beta is servo1 angle wrt arm-c (BA)
         // When beta is zero, arm-c is closed  to arm-c
-        double B = beta;    //Use B to designate beta. Different from diagram.
+        double B = Math.PI - beta;    //Use B to designate beta. Different from diagram.
         double A = alpha + Math.atan2(y,x);
 
         //servo0 and servo1 might be mounted clockwise or anti clockwise.
         //offset0 and offset1 are used to adjust the zero the arm position.
         //This makes it easier to mount and tune the arm.
-        A = Math.toDegrees(A);
-        B = Math.toDegrees(B);
+        A = Math.toDegrees(A)*shoulderRatio;
+        B = Math.toDegrees(B)*elbowRatio;
 
-        //Uncomment if servo direction needs to be flip.
-        //A = 300 - A;  
-        //B = 300 - A;
-
-        anglesToReturn[0] = A + offset0;
-        anglesToReturn[1] = B + offset1;
+        anglesToReturn[0] = A + preset0;
+        anglesToReturn[1] = B + preset1;
 
         D_debug1.setDouble(A);
         D_debug2.setDouble(B);
         return anglesToReturn;
     }
-    public void setArmPos2(Translation2d pos ) {
+    /*public void setArmPos2(Translation2d pos ) {
 
 
         m_pos = pos;
@@ -215,16 +215,16 @@ public class Arm extends SubsystemBase {
         
         servo0.setAngle(Math.toDegrees(q1));
         servo1.setAngle(Math.toDegrees(q2));
-    }
+    }*/
     /**
      * Code that runs once every robot loop
      */
     @Override
     public void periodic()
     {
-        offset0 = D_offset0.getDouble(0.0);
-        offset1 = D_offset1.getDouble(0.0);
-
+        offset0 = D_offset0.getDouble(120);
+        offset1 = D_offset1.getDouble(-60);
+        
         D_servo0.setDouble(servo0.getAngle());
         D_servo1.setDouble(servo1.getAngle());
         D_servo2.setDouble(servo2.getAngle());
