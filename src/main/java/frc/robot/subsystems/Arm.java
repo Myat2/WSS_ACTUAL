@@ -40,7 +40,7 @@ public class Arm extends SubsystemBase {
     private final NetworkTableEntry D_debug1 = tab.add("ElbowB", 0).getEntry();
     private final NetworkTableEntry D_debug2 = tab.add("ShoulderA", 0).getEntry();
     private final NetworkTableEntry D_sliderX = tab.add("setX", 0.04).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0.05, "max", 0.8)) .getEntry();
-    private final NetworkTableEntry D_sliderY = tab.add("setY", 0).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0.0, "max", 0.4)) .getEntry();
+    private final NetworkTableEntry D_sliderY = tab.add("setY", 0).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -0.4, "max", 0.4)) .getEntry();
     
    
     public Arm () {
@@ -51,7 +51,7 @@ public class Arm extends SubsystemBase {
         
     }
     public void initialize(){
-        m_pos = new Translation2d(0.2,0);
+        m_pos = new Translation2d(0.33,0.24);
         setArmPos(m_pos);
     }
     

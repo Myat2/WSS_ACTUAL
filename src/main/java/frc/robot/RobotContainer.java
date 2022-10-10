@@ -18,7 +18,8 @@ public class RobotContainer {
   public final static OI m_oi = new OI();
   public final static OmniDrive m_omnidrive = new OmniDrive();
   public final static Sensor m_sensor = new Sensor(); 
-  public final static Arm m_arm = new Arm(); 
+  public final static Arm m_arm = new Arm();
+  public final static CobraSensor m_cobra = new CobraSensor();  
   //user menu
   public final static Menu m_menu = new Menu(m_oi);
   //commands
@@ -47,4 +48,5 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return m_teleCmd;
   }
+  
 }

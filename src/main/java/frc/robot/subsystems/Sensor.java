@@ -26,7 +26,7 @@ public class Sensor extends SubsystemBase
     private final DigitalInput input10;
     private AnalogInput sharp;
     private Cobra cobra;
-    
+    double cobraValue[];
     private int i;
     
     // Good for debugging
@@ -39,9 +39,12 @@ public class Sensor extends SubsystemBase
     private final NetworkTableEntry D_Cobra_1 = tab.add("Cobra (1)", 0).getEntry();
     private final NetworkTableEntry D_Cobra_2 = tab.add("Cobra (2)", 0).getEntry();
     private final NetworkTableEntry D_Cobra_3 = tab.add("Cobra (3)", 0).getEntry();
+    private final NetworkTableEntry D_CobraTotal = tab.add("Cobra Total", 0).getEntry();
     //Subsystem for sensors
     //This is just an example.
     public Sensor() {
+        cobraValue = new double[4];
+
         //Constuct a new instance
         cobra = new Cobra();
         sharp = new AnalogInput(0);
@@ -82,6 +85,10 @@ public class Sensor extends SubsystemBase
     public double getIRDistance() {
         return (Math.pow(sharp.getAverageVoltage(), -1.2045)) * 27.726;
     }
+    public double getCobraTotal()
+    {
+        return (cobra.getRawValue(0)+cobra.getRawValue(1)+cobra.getRawValue(2)+cobra.getRawValue(3));
+    }
     
     /**
      * Code that runs once every robot loop
@@ -101,5 +108,6 @@ public class Sensor extends SubsystemBase
         D_Cobra_1.setNumber(getCobraRawValue(1));
         D_Cobra_2.setNumber(getCobraRawValue(2));
         D_Cobra_3.setNumber(getCobraRawValue(3));
+        D_CobraTotal.setNumber(getCobraTotal());
     }
 }
