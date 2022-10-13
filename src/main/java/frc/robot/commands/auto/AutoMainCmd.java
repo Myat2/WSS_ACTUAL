@@ -34,6 +34,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 public class AutoMainCmd extends SequentialCommandGroup
 {   
 
+    private double maxSpeed = 0.5;
     private final static Sensor m_sensor = RobotContainer.m_sensor;
     
 	public AutoMainCmd()
@@ -41,26 +42,33 @@ public class AutoMainCmd extends SequentialCommandGroup
        
         
         super( 
-        //     new MoveRobot(0, 0, 0, 0, 0), // Move left
-        //    new MoveRobot(0, 0, 0, 0, 0), // Move Forward
+                // Base to PickUp
+                // new BaseToPickUp(), 
+                // //new LoopCmd(new SequentialCommandGroup(new PickUpToDeposit(), new DepositToPickUp())),
+                // //Pickup to Top
+                // new PickUpToDeposit(), 
 
-        //    new MoveRobot(0, 0, 0, 0, 0), // Move left
-        //    new MoveRobot(0, 0, 0, 0, 0) // Move Forward
-        new MoveRobot(1, 0.5, 0, 0, 5),
-        new MoveRobot(0, -1.1+0.4, 0, 0, 5),
-        new MoveRobotSense(1, 1, 0, 0, 5, ()-> m_sensor.getIRDistance()< 10),
-        new Pick(),
-        new MoveRobot(0, -3.26, 0, 0, 5),
-        new MoveRobotSense(1, 1, 0, 0, 5, ()-> m_sensor.getIRDistance()< 20),
-        new MoveRobotSense(0, -10, 0, 0, 5, () -> m_sensor.getCobraTotal() > 4500),
-        new Pick()
+                // //Top to Pickup
+                // new DepositToPickUp(), 
+                // //Pickup to Top
+                // new PickUpToDeposit(), 
 
-            //new Pick()
-            // new MoveArm(new Translation2d(0.2,0),25),
-            // new MoveArm(new Translation2d(0.3,0),25),
-            // new MoveArm(new Translation2d(0.3,0.3),25),
-            // new MoveArm(new Translation2d(0.2,0.3),25),
-            // new MoveArm(new Translation2d(0.2,0),25)
+                // //Top to Pickup
+                // new DepositToPickUp(),
+
+                // //PickUp Rotate
+                // new RotatePickUpToDeposit(),
+                // Rotate, DepositToBin
+               new RotateDepositToPickUp(),
+                // new MoveRobot(0, -2.5, 0, 0, 5),
+                
+                // new MoveRobotSense(0, 10, 0, 0, 0.25, () -> m_sensor.getCobraTotal() > 3500),
+                // new Pick()
+
+                // Pickup to base
+                new PickUpToBase()
+
+                
             );
        
     }

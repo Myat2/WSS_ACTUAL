@@ -87,7 +87,7 @@ public class Sensor extends SubsystemBase
     }
     public double getCobraTotal()
     {
-        return (cobra.getRawValue(0)+cobra.getRawValue(1)+cobra.getRawValue(2)+cobra.getRawValue(3));
+        return (cobra.getRawValue(1)+cobra.getRawValue(2));
     }
     
     /**
@@ -104,10 +104,10 @@ public class Sensor extends SubsystemBase
         D_inputDisp.setBoolean(getSwitch());
         D_cntDisp.setNumber(i);
         D_IRSensor.setNumber(getIRDistance());
-        D_Cobra_0.setNumber(getCobraRawValue(0));
-        D_Cobra_1.setNumber(getCobraRawValue(1));
-        D_Cobra_2.setNumber(getCobraRawValue(2));
-        D_Cobra_3.setNumber(getCobraRawValue(3));
+        // D_Cobra_0.setNumber(getCobraRawValue(0));
+        // D_Cobra_1.setNumber(getCobraRawValue(1));
+        // D_Cobra_2.setNumber(getCobraRawValue(2));
+        // D_Cobra_3.setNumber(getCobraRawValue(3));
         D_CobraTotal.setNumber(getCobraTotal());
     }
 }
