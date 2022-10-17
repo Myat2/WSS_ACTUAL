@@ -42,33 +42,8 @@ public class AutoMainCmd extends SequentialCommandGroup
        
         
         super( 
-                // Base to PickUp
-                // new BaseToPickUp(), 
-                // //new LoopCmd(new SequentialCommandGroup(new PickUpToDeposit(), new DepositToPickUp())),
-                // //Pickup to Top
-                // new PickUpToDeposit(), 
-
-                // //Top to Pickup
-                // new DepositToPickUp(), 
-                // //Pickup to Top
-                // new PickUpToDeposit(), 
-
-                // //Top to Pickup
-                // new DepositToPickUp(),
-
-                // //PickUp Rotate
-                // new RotatePickUpToDeposit(),
-                // Rotate, DepositToBin
-               new RotateDepositToPickUp(),
-                // new MoveRobot(0, -2.5, 0, 0, 5),
-                
-                // new MoveRobotSense(0, 10, 0, 0, 0.25, () -> m_sensor.getCobraTotal() > 3500),
-                // new Pick()
-
-                // Pickup to base
-                new PickUpToBase()
-
-                
+                new PickUpToDeposit(),
+                new DepositToPickUp()
             );
        
     }

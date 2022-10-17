@@ -52,6 +52,7 @@ public class Arm extends SubsystemBase {
     }
     public void initialize(){
         m_pos = new Translation2d(0.33,0.24);
+        setServoAngle2(300);
         setArmPos(m_pos);
     }
     
@@ -65,7 +66,25 @@ public class Arm extends SubsystemBase {
     public void setServoAngle0(final double degrees) {
         servo0.setAngle(degrees);
     }
+    /**
+     * Sets the servo1 angle
+     * <p>
+     * 
+     * @param degrees degree to set the servo to, range 0° - 300°
+     */
+    public void setServoAngle1(final double degrees) {
+        servo1.setAngle(degrees);
+    }
 
+    /**
+     * Sets the servo2 angle (Gripper)
+     * <p>
+     * 
+     * @param degrees degree to set the servo to, range 0° - 300°
+     */
+    public void setServoAngle2(final double degrees) {
+        servo2.setAngle(degrees);
+    }
     /**
      * Get slider-x value
      * <p>
@@ -104,14 +123,13 @@ public class Arm extends SubsystemBase {
         return servo1.getAngle();
     }
     /**
-     * Sets the servo1 angle
+     * Returns the servo2 angle (Gripper)
      * <p>
-     * 
-     * @param degrees degree to set the servo to, range 0° - 300°
      */
-    public void setServoAngle1(final double degrees) {
-        servo1.setAngle(degrees);
+    public double getServoAngle2() {
+        return servo2.getAngle();
     }
+    
     /**
      * Sets the arm tip (x,y) position
      * <p>
