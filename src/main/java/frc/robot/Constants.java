@@ -28,7 +28,8 @@ public final class Constants
     /**
      * Sensors
      */
-    public static final int SHARP           = 0;
+    public static final int FRONTIR           = 0;
+    public static final int GRIPPERIR           = 1;
     public static final int SONIC_TRIGG     = 8;
     public static final int SONIC_ECHO      = 9;
 

@@ -1,5 +1,6 @@
 package frc.robot.commands.auto;
 
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -8,15 +9,18 @@ import frc.robot.commands.auto.MoveRobot;
 import frc.robot.commands.auto.MoveRobotSense;
 import frc.robot.subsystems.Sensor;
 
-public class PickUpToDeposit extends SequentialCommandGroup {
+public class CoordPickUpToDeposit extends SequentialCommandGroup {
     private final static Sensor m_sensor = RobotContainer.m_sensor;
     private final static double maxSpeed1 = 0.2;
-    public PickUpToDeposit() {
+    private static double[] pickupBinCoord = new double[]{-1,1,1.2};
+    private static double[] depositBin = new double[]{-1,1,1.2};
+    public CoordPickUpToDeposit(Pose2d coord) {
+        
         
         super(
-        
+            
                 new Pick(),
-                new MoveRobot(0, -0.7, 0, 5, 5),
+                
                 new MoveRobotSense(1, 10, 0, 0, maxSpeed1,() -> m_sensor.getFrontIRDistance() < 60),
                 new MoveRobotSense(0, -10, 0, 0, maxSpeed1,() -> m_sensor.getFrontIRDistance() < 50),
                 new MoveRobotSense(1, 10, 0, 0, maxSpeed1,() -> m_sensor.getFrontIRDistance() < 20),
@@ -26,6 +30,7 @@ public class PickUpToDeposit extends SequentialCommandGroup {
                 
                 
                 );
+                sfasd = coord;
         
     }
 }

@@ -23,8 +23,8 @@ public class Sensor extends SubsystemBase
     //For servo testing also????
 
     // Sensors
-    private final DigitalInput input10;
-    private AnalogInput sharp;
+    private AnalogInput frontIR;
+    private AnalogInput gripperIR;
     private Cobra cobra;
     double cobraValue[];
     private int i;
@@ -34,36 +34,20 @@ public class Sensor extends SubsystemBase
     private final ShuffleboardTab tab = Shuffleboard.getTab("Sensors");
     private final NetworkTableEntry D_inputDisp = tab.add("inputDisp", false).getEntry();
     private final NetworkTableEntry D_cntDisp = tab.add("cntDisp", 0).getEntry();
-    private final NetworkTableEntry D_IRSensor = tab.add("IR Value (cm)", 0).getEntry();
-    private final NetworkTableEntry D_Cobra_0 = tab.add("Cobra (0)", 0).getEntry();
-    private final NetworkTableEntry D_Cobra_1 = tab.add("Cobra (1)", 0).getEntry();
-    private final NetworkTableEntry D_Cobra_2 = tab.add("Cobra (2)", 0).getEntry();
-    private final NetworkTableEntry D_Cobra_3 = tab.add("Cobra (3)", 0).getEntry();
-    private final NetworkTableEntry D_CobraTotal = tab.add("Cobra Total", 0).getEntry();
+    private final NetworkTableEntry D_FrontIR = tab.add("FrontIR (cm)", 0).getEntry();
+    private final NetworkTableEntry D_GripperIR = tab.add("GripperIR(cm)", 0).getEntry();
+    private final NetworkTableEntry D_CobraTotal = tab.add("Middle Two Cobra Total", 0).getEntry();
     //Subsystem for sensors
     //This is just an example.
     public Sensor() {
-        cobraValue = new double[4];
 
         //Constuct a new instance
         cobra = new Cobra();
-        sharp = new AnalogInput(0);
-        input10 = new DigitalInput(Constants.INPUT0);
+        frontIR = new AnalogInput(Constants.FRONTIR);
+        gripperIR = new AnalogInput(Constants.GRIPPERIR);
         
     }
-
-    /**
-     * Sets the servo angle
-     * <p>
-     * 
-     * @param degrees degree to set the servo to, range 0° - 300°
-     */
     
-    public Boolean getSwitch() {
-        return input10.get();
-    }
-
-
     /**
      * Call for the raw ADC value
      * <p>
@@ -77,13 +61,23 @@ public class Sensor extends SubsystemBase
 
 
     /**
-     * Call for the distance measured by the Sharp IR Sensor
+     * Call for the distance measured by Front IR Sensor
      * <p>
      * 
      * @return value between 0 - 100 (valid data range is 10cm - 80cm)
      */
-    public double getIRDistance() {
-        return (Math.pow(sharp.getAverageVoltage(), -1.2045)) * 27.726;
+    public double getFrontIRDistance() {
+        return (Math.pow(frontIR.getAverageVoltage(), -1.2045)) * 27.726;
+    }
+
+    /**
+     * Call for the distance measured by Gripper IR Sensor
+     * <p>
+     * 
+     * @return value between 0 - 100 (valid data range is 10cm - 80cm)
+     */
+    public double getGripperIRDistance() {
+        return (Math.pow(gripperIR.getAverageVoltage(), -1.2045)) * 27.726;
     }
     public double getCobraTotal()
     {
@@ -97,13 +91,15 @@ public class Sensor extends SubsystemBase
     // Runs every 20ms
     public void periodic()
     {
-        i++;
         //Display on shuffleboard
         //These display is good for debugging but may slow system down.
         //Good to remove unnecessary display during competition
-        D_inputDisp.setBoolean(getSwitch());
-        D_cntDisp.setNumber(i);
-        D_IRSensor.setNumber(getIRDistance());
+        D_FrontIR.setNumber(getFrontIRDistance());
+        D_GripperIR.setNumber(getGripperIRDistance());
         D_CobraTotal.setNumber(getCobraTotal());
+    }
+
+    public boolean getSwitch() {
+        return false;
     }
 }

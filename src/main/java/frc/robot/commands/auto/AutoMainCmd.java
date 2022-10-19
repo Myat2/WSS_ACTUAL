@@ -34,16 +34,14 @@ import edu.wpi.first.wpilibj.AnalogInput;
 public class AutoMainCmd extends SequentialCommandGroup
 {   
 
-    private double maxSpeed = 0.5;
+    private static double maxSpeed = 0.5;
     private final static Sensor m_sensor = RobotContainer.m_sensor;
     
 	public AutoMainCmd()
     {
        
-        
         super( 
-                new PickUpToDeposit(),
-                new DepositToPickUp()
+            new MoveRobot(0, -2.15, 0, 0, maxSpeed)
             );
        
     }

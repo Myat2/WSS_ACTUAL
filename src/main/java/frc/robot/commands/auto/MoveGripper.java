@@ -28,10 +28,11 @@ public class MoveGripper extends CommandBase
    
     private double targetAngle;
     /**
-     * This command moves the robot a certain distance following a trapezoidal speed profile.
+     * This command opens or closes the gripper
      * <p>
      * 
      * @param command - open or close
+     * @param maxSpeed - max speed of servo
      */
     //This move the robot a certain distance following a trapezoidal speed profile.
     public MoveGripper(String command, double maxSpeed)
