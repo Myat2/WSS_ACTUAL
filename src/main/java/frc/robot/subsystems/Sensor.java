@@ -17,37 +17,52 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Sensor extends SubsystemBase
-{
-    //Creates all necessary hardware interface here for sensors
-    //For servo testing also????
+public class Sensor extends SubsystemBase {
+    // Creates all necessary hardware interface here for sensors
+    // For servo testing also????
 
     // Sensors
-    private AnalogInput frontIR;
-    private AnalogInput gripperIR;
+    private final DigitalInput input10;
+    private AnalogInput sharp;
     private Cobra cobra;
     double cobraValue[];
     private int i;
-    
+
     // Good for debugging
     // Shuffleboard
     private final ShuffleboardTab tab = Shuffleboard.getTab("Sensors");
     private final NetworkTableEntry D_inputDisp = tab.add("inputDisp", false).getEntry();
     private final NetworkTableEntry D_cntDisp = tab.add("cntDisp", 0).getEntry();
-    private final NetworkTableEntry D_FrontIR = tab.add("FrontIR (cm)", 0).getEntry();
-    private final NetworkTableEntry D_GripperIR = tab.add("GripperIR(cm)", 0).getEntry();
-    private final NetworkTableEntry D_CobraTotal = tab.add("Middle Two Cobra Total", 0).getEntry();
-    //Subsystem for sensors
-    //This is just an example.
-    public Sensor() {
+    private final NetworkTableEntry D_IRSensor = tab.add("IR Value (cm)", 0).getEntry();
+    private final NetworkTableEntry D_Cobra_0 = tab.add("Cobra (0)", 0).getEntry();
+    private final NetworkTableEntry D_Cobra_1 = tab.add("Cobra (1)", 0).getEntry();
+    private final NetworkTableEntry D_Cobra_2 = tab.add("Cobra (2)", 0).getEntry();
+    private final NetworkTableEntry D_Cobra_3 = tab.add("Cobra (3)", 0).getEntry();
+    private final NetworkTableEntry D_CobraTotal = tab.add("Cobra Total", 0).getEntry();
 
-        //Constuct a new instance
+    // Subsystem for sensors
+    // This is just an example.
+    public Sensor() {
+        cobraValue = new double[4];
+
+        // Constuct a new instance
         cobra = new Cobra();
-        frontIR = new AnalogInput(Constants.FRONTIR);
-        gripperIR = new AnalogInput(Constants.GRIPPERIR);
-        
+        sharp = new AnalogInput(0);
+        input10 = new DigitalInput(Constants.INPUT0);
+
     }
-    
+
+    /**
+     * Sets the servo angle
+     * <p>
+     * 
+     * @param degrees degree to set the servo to, range 0° - 300°
+     */
+
+    public Boolean getSwitch() {
+        return input10.get();
+    }
+
     /**
      * Call for the raw ADC value
      * <p>
@@ -56,50 +71,42 @@ public class Sensor extends SubsystemBase
      * @return value between 0 and 2047 (11-bit)
      */
     public int getCobraRawValue(final int channel) {
-        return cobra.getRawValue(channel); 
+        return cobra.getRawValue(channel);
     }
 
-
     /**
-     * Call for the distance measured by Front IR Sensor
+     * Call for the distance measured by the Sharp IR Sensor
      * <p>
      * 
      * @return value between 0 - 100 (valid data range is 10cm - 80cm)
      */
-    public double getFrontIRDistance() {
-        return (Math.pow(frontIR.getAverageVoltage(), -1.2045)) * 27.726;
+    public double getIRDistance() {
+        return (Math.pow(sharp.getAverageVoltage(), -1.2045)) * 27.726;
     }
 
-    /**
-     * Call for the distance measured by Gripper IR Sensor
-     * <p>
-     * 
-     * @return value between 0 - 100 (valid data range is 10cm - 80cm)
-     */
-    public double getGripperIRDistance() {
-        return (Math.pow(gripperIR.getAverageVoltage(), -1.2045)) * 27.726;
+    public double getCobraTotal() {
+        // return
+        // (cobra.getRawValue(0)+cobra.getRawValue(1)+cobra.getRawValue(2)+cobra.getRawValue(3));
+        return (cobra.getRawValue(1) + cobra.getRawValue(2));
     }
-    public double getCobraTotal()
-    {
-        return (cobra.getRawValue(1)+cobra.getRawValue(2));
-    }
-    
+
     /**
      * Code that runs once every robot loop
      */
     @Override
     // Runs every 20ms
-    public void periodic()
-    {
-        //Display on shuffleboard
-        //These display is good for debugging but may slow system down.
-        //Good to remove unnecessary display during competition
-        D_FrontIR.setNumber(getFrontIRDistance());
-        D_GripperIR.setNumber(getGripperIRDistance());
-        D_CobraTotal.setNumber(getCobraTotal());
-    }
-
-    public boolean getSwitch() {
-        return false;
+    public void periodic() {
+        i++;
+        // Display on shuffleboard
+        // These display is good for debugging but may slow system down.
+        // Good to remove unnecessary display during competition
+        D_inputDisp.setBoolean(getSwitch());
+        D_cntDisp.setNumber(i);
+        D_IRSensor.setNumber(getIRDistance());
+        // D_Cobra_0.setNumber(getCobraRawValue(0));
+        D_Cobra_1.setNumber(getCobraRawValue(1));
+        D_Cobra_2.setNumber(getCobraRawValue(2));
+        // D_Cobra_3.setNumber(getCobraRawValue(3));
+        // D_CobraTotal.setNumber(getCobraTotal());
     }
 }

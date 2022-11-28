@@ -38,7 +38,7 @@ public class MoveGripper extends CommandBase
     public MoveGripper(String command, double maxSpeed)
     {
         if (command == "close"){
-            targetAngle = 300;
+            targetAngle = 150;
         }
         else if(command == "open"){
             targetAngle = 75;

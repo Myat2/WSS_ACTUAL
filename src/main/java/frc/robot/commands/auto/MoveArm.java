@@ -52,6 +52,7 @@ public class MoveArm extends CommandBase
     @Override
     public void initialize()
     {   
+        m_arm.setServoAngle3(300);
         targetAngles = m_arm.getArmAngles(tgt_pos);
         double start_pos_0 = m_arm.getServoAngle0();
         double start_pos_1 = m_arm.getServoAngle1();

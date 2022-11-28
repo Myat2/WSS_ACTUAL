@@ -8,10 +8,10 @@ import frc.robot.commands.auto.MoveRobot;
 import frc.robot.commands.auto.MoveRobotSense;
 import frc.robot.subsystems.Sensor;
 
-public class BaseToPickUp extends SequentialCommandGroup {
+public class BaseToYellow extends SequentialCommandGroup {
     private final static Sensor m_sensor = RobotContainer.m_sensor;
 
-    public BaseToPickUp() {
+    public BaseToYellow() {
         super(
                 new MoveRobot(1, 0.6, 0, 0, 5),
                 new MoveRobotSense(0, -10, 0, 0, 0.25, () -> m_sensor.getCobraTotal() > 3500),

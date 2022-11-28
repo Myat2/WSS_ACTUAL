@@ -12,25 +12,22 @@ import frc.robot.subsystems.Sensor;
 public class CoordPickUpToDeposit extends SequentialCommandGroup {
     private final static Sensor m_sensor = RobotContainer.m_sensor;
     private final static double maxSpeed1 = 0.2;
-    private static double[] pickupBinCoord = new double[]{-1,1,1.2};
-    private static double[] depositBin = new double[]{-1,1,1.2};
-    public CoordPickUpToDeposit(Pose2d coord) {
-        
-        
+    private static double[] pickupBinCoord = new double[] { -1, 1, 1.2 };
+    private static double[] depositBin = new double[] { -1, 1, 1.2 };
+
+    public CoordPickUpToDeposit(Pose2d coordx) {
+
         super(
-            
+
                 new Pick(),
-                
-                new MoveRobotSense(1, 10, 0, 0, maxSpeed1,() -> m_sensor.getFrontIRDistance() < 60),
-                new MoveRobotSense(0, -10, 0, 0, maxSpeed1,() -> m_sensor.getFrontIRDistance() < 50),
-                new MoveRobotSense(1, 10, 0, 0, maxSpeed1,() -> m_sensor.getFrontIRDistance() < 20),
+
+                new MoveRobotSense(1, 10, 0, 0, maxSpeed1, () -> m_sensor.getIRDistance() < 60),
+                new MoveRobotSense(0, -10, 0, 0, maxSpeed1, () -> m_sensor.getIRDistance() < 50),
+                new MoveRobotSense(1, 10, 0, 0, maxSpeed1, () -> m_sensor.getIRDistance() < 20),
                 new MoveRobotSense(0, -10, 0, 0, 0.25, () -> m_sensor.getCobraTotal() > 3500),
-                new MoveRobotSense(1, 1, 0, 0, maxSpeed1, () -> m_sensor.getFrontIRDistance() < 10)
-                
-                
-                
-                );
-                sfasd = coord;
-        
+                new MoveRobotSense(1, 1, 0, 0, maxSpeed1, () -> m_sensor.getIRDistance() < 10)
+
+        );
+
     }
 }

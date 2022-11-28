@@ -8,18 +8,19 @@ import frc.robot.commands.auto.MoveRobot;
 import frc.robot.commands.auto.MoveRobotSense;
 import frc.robot.subsystems.Sensor;
 
-public class RotatePickUpToDeposit extends SequentialCommandGroup{
+public class RotatePickUpToDeposit extends SequentialCommandGroup {
     private final static Sensor m_sensor = RobotContainer.m_sensor;
     private final static double maxSpeed1 = 0.2;
-    public RotatePickUpToDeposit(){
+
+    public RotatePickUpToDeposit() {
         super(
                 new Pick(),
                 new MoveRobot(2, Math.PI, 0, 0, 0.5),
-                new MoveRobotSense(0, 10, 0, 0, maxSpeed1,() -> m_sensor.getFrontIRDistance() < 55),
-                new MoveRobotSense(1, 10, 0, 0, maxSpeed1,() -> m_sensor.getFrontIRDistance() < 20),
+                new MoveRobotSense(0, 10, 0, 0, maxSpeed1, () -> m_sensor.getIRDistance() < 55),
+                new MoveRobotSense(1, 10, 0, 0, maxSpeed1, () -> m_sensor.getIRDistance() < 20),
                 new MoveRobotSense(0, 10, 0, 0, 0.25, () -> m_sensor.getCobraTotal() > 3500),
-                new MoveRobotSense(1, 1, 0, 0, maxSpeed1, () -> m_sensor.getFrontIRDistance() < 10)
-                
+                new MoveRobotSense(1, 1, 0, 0, maxSpeed1, () -> m_sensor.getIRDistance() < 10)
+
         );
     }
 }
