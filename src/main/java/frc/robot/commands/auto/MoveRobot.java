@@ -19,7 +19,7 @@ public class MoveRobot extends CommandBase
     //Grab the subsystem instance from RobotContainer
     private final static OmniDrive m_drive = RobotContainer.m_omnidrive;
     private double dT = 0.02;
-    private double time=0;
+    private double time = 0;
     private boolean m_endFlag = false;
     private int m_profType;
     private TrapezoidProfile.Constraints m_constraints;

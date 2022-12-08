@@ -16,9 +16,9 @@ public class SelectCmds extends SequentialCommandGroup
 {
 
     static public int selectCmd123() {
-        if (RobotContainer.m_sensor.getIRDistance()<30)
+        if (RobotContainer.m_sensor.getFrontIRDistance()<30)
             return 1;
-        else if (RobotContainer.m_sensor.getIRDistance()<50)
+        else if (RobotContainer.m_sensor.getFrontIRDistance()<50)
             return 2;
         else
             return 3;
@@ -30,7 +30,7 @@ public class SelectCmds extends SequentialCommandGroup
     }
     // use IR to select
     static public boolean selectCmd12_IR() {
-        return RobotContainer.m_sensor.getIRDistance()>30?true:false;
+        return RobotContainer.m_sensor.getFrontIRDistance()>30?true:false;
     }
 	public SelectCmds()
     {

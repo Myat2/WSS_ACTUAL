@@ -15,7 +15,7 @@ public class BottomToYellow extends SequentialCommandGroup {
 
                 new MoveRobot(0, 2, 0, 0, 5),
                 new MoveRobotSense(0, 10, 0, 0, 0.25, () -> RobotContainer.m_sensor.getCobraTotal() > 3500),
-                new MoveRobotSense(1, 1, 0, 0, 5, () -> RobotContainer.m_sensor.getIRDistance() < 10),
+                new MoveRobotSense(1, 1, 0, 0, 5, () -> RobotContainer.m_sensor.getFrontIRDistance() < 10),
                 new Pick());
     }
 }

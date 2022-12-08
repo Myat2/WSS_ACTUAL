@@ -22,6 +22,7 @@ import frc.robot.subsystems.OmniDrive;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private Command m_teleopCommand;
+  private Command m_testCommand;
   private RobotContainer m_robotContainer;
   private OmniDrive m_omnidrive;
   private Notifier m_follower;
@@ -113,6 +114,12 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
+    m_testCommand = m_robotContainer.getTestCommand();
+
+    // schedule the autonomous command (example)
+    if (m_testCommand != null) {
+      m_testCommand.schedule();
+    }
   }
 
   /**

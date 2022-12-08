@@ -13,6 +13,8 @@ public class Globals {
     public static double desOffsetX = 0.2;
     public static double desOffsetY = 0.2;
     public static double cW = RobotContainer.m_vision.getLine(2);
-    
-
+    public static double convertPxToMM = 0.1/50;
+    public static double pickDistX = -(RobotContainer.m_vision.getDettol(1) - 120) * convertPxToMM;
+    public static int curItem;
+    public static boolean useTF;
 }

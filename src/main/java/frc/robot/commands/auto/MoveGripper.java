@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 //WPI imports
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Globals;
 //RobotContainer import
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Arm;
@@ -25,24 +26,25 @@ public class MoveGripper extends CommandBase
     private TrapezoidProfile.State m_goal;
     private TrapezoidProfile.State m_setpoint;
     private TrapezoidProfile m_profile;
-   
+    private int isOpen;
     private double targetAngle;
+    private int[][] itemGripperSizes = {
+        {150,60}, // Dettol
+        {120,50}, // Jagabee
+        {150,50}, // Coke
+    };
     /**
      * This command opens or closes the gripper
      * <p>
      * 
-     * @param command - open or close
+     * @param open - 1 for open or 0 for close
      * @param maxSpeed - max speed of servo
      */
     //This move the robot a certain distance following a trapezoidal speed profile.
-    public MoveGripper(String command, double maxSpeed)
+    public MoveGripper(int pos, double maxSpeed)
     {
-        if (command == "close"){
-            targetAngle = 150;
-        }
-        else if(command == "open"){
-            targetAngle = 75;
-        }
+        
+        isOpen = pos;
         m_constraints = new TrapezoidProfile.Constraints(maxSpeed, maxSpeed);
         
     }
@@ -53,7 +55,7 @@ public class MoveGripper extends CommandBase
     @Override
     public void initialize()
     {   
-        
+        targetAngle = itemGripperSizes[Globals.curItem][isOpen];
         double start_pos = m_arm.getServoAngle2();
         
         m_goal = new TrapezoidProfile.State(targetAngle, 0);

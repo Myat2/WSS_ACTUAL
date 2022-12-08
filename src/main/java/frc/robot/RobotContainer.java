@@ -14,6 +14,7 @@ import frc.robot.Astar.Grid;
 import frc.robot.Astar.Layout;
 import frc.robot.commands.auto.*;
 import frc.robot.commands.tele.*;
+import frc.robot.commands.test.*;
 import frc.robot.subsystems.*;
 
 public class RobotContainer {
@@ -29,6 +30,7 @@ public class RobotContainer {
   public final static Menu m_menu = new Menu(m_oi);
   // commands
   public final static TeleCmd m_teleCmd = new TeleCmd(m_omnidrive, m_oi, m_arm);
+  public final static TestCmd m_testCmd = new TestCmd(m_omnidrive, m_oi, m_arm);
   public final static AutoMainCmd m_autoCmd = new AutoMainCmd();
   public static Layout m_layout;
   public static Grid m_Grid;
@@ -61,6 +63,10 @@ public class RobotContainer {
   public Command getTeleopCommand() {
     // An ExampleCommand will run in autonomous
     return m_teleCmd;
+  }
+  public Command getTestCommand() {
+    // An ExampleCommand will run in autonomous
+    return m_testCmd;
   }
 
 }

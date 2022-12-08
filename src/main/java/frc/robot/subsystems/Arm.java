@@ -20,11 +20,20 @@ public class Arm extends SubsystemBase {
 
     private double offset0 = 0; // For making software adjustment to servo
     private double offset1 = 0;
-    private double preset0 = -175.0;
-    private double preset1 = -40.0;
+    // Robot 6942
+    // private double preset0 = -175.0;
+    // private double preset1 = -40.0;
+
+    // Robot 4201
+    private double preset0 = -141.319000;
+    private double preset1 = -29.681000;
+
     private double shoulderRatio = 4.0;
     private double elbowRatio = 2.0;
     private double q1, q2;
+
+    private double A,B, m_x, m_y;
+    
     // Good for debugging
     // Shuffleboard
     private final ShuffleboardTab tab = Shuffleboard.getTab("Arm");
@@ -44,22 +53,26 @@ public class Arm extends SubsystemBase {
             .withProperties(Map.of("min", 0.05, "max", 0.8)).getEntry();
     private final NetworkTableEntry D_sliderY = tab.add("setY", 0.38).withWidget(BuiltInWidgets.kNumberSlider)
             .withProperties(Map.of("min", -0.4, "max", 0.4)).getEntry();
+    private final NetworkTableEntry D_sliderGripper = tab.add("GripperAngle", 75).withWidget(BuiltInWidgets.kNumberSlider)
+            .withProperties(Map.of("min", 0, "max", 150)).getEntry();
     private final NetworkTableEntry D_camera = tab.add("Camera", 300).withWidget(BuiltInWidgets.kNumberSlider)
     .withProperties(Map.of("min", 0, "max", 300)).getEntry();
 
     public Arm() {
         servo0 = new Servo(0); // shoulder
         servo1 = new Servo(1); // elbow
-        servo2 = new Servo(2); // gripper
+
+        servo2 = new Servo(2); // gripper 
         servo3 = new Servo(3); // camera
+
         m_pos = new Translation2d(0.24,0.335);
 
     }
 
     public void initialize() {
-        m_pos = new Translation2d(0.24,0.335);
+        m_pos = new Translation2d(0.34,0.25);
         setServoAngle2(150);
-        setServoAngle3(300);
+        setServoAngle3(290);
         setArmPos(m_pos);
     }
 
@@ -121,6 +134,15 @@ public class Arm extends SubsystemBase {
      */
     public double getSliderY() {
         return D_sliderY.getDouble(0.335);
+    }
+    /*
+     * Get slider-Gripper value
+     * <p>
+     * 
+     * @return return slider value
+     */
+    public double getSliderGripper() {
+        return D_sliderGripper.getDouble(0);
     }
     public double getSliderCamera() {
         return D_camera.getDouble(300);
@@ -246,6 +268,9 @@ public class Arm extends SubsystemBase {
         D_debug2.setDouble(B);
         return anglesToReturn;
     }
+    public Translation2d getArmPos(){
+        return m_pos;
+      } 
 
     /*
      * public void setArmPos2(Translation2d pos ) {

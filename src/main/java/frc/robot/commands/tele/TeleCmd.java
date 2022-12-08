@@ -85,6 +85,7 @@ public class TeleCmd extends CommandBase
         Translation2d pos = new Translation2d(m_arm.getSliderX(), m_arm.getSliderY());
         m_arm.setArmPos(pos);
         m_arm.setServoAngle3(m_arm.getSliderCamera());
+        m_arm.setServoAngle2(m_arm.getSliderGripper());
 
     }
 

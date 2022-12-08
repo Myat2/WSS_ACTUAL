@@ -22,18 +22,18 @@ public class MoveTest extends SequentialCommandGroup
     }
 /* 
     static public CommandSelector selectCmd123() {
-        if (RobotContainer.m_sensor.getIRDistance()<20)
+        if (RobotContainer.m_sensor.getFrontIRDistance()<20)
             return CommandSelector.ONE;
-        else if (RobotContainer.m_sensor.getIRDistance()<40)
+        else if (RobotContainer.m_sensor.getFrontIRDistance()<40)
             return CommandSelector.TWO;
         else
             return CommandSelector.THREE;
     }
 */
 /*static public Command selectCmd123_B() {
-        if (RobotContainer.m_sensor.getIRDistance()<20)
+        if (RobotContainer.m_sensor.getFrontIRDistance()<20)
         return new MoveLeft();
-    else if (RobotContainer.m_sensor.getIRDistance()<40)
+    else if (RobotContainer.m_sensor.getFrontIRDistance()<40)
         return new MoveBack();
     else
         return new MoveRight();
@@ -45,19 +45,19 @@ public class MoveTest extends SequentialCommandGroup
     }
     // use IR to select
     static public boolean selectCmd12_IR() {
-        return RobotContainer.m_sensor.getIRDistance()>30?true:false;
+        return RobotContainer.m_sensor.getFrontIRDistance()>30?true:false;
     }
     static public CommandSelector selectCmd123() {
-        if (RobotContainer.m_sensor.getIRDistance() < 20)
+        if (RobotContainer.m_sensor.getFrontIRDistance() < 20)
             return CommandSelector.ONE;
-        else if (RobotContainer.m_sensor.getIRDistance() > 40)
+        else if (RobotContainer.m_sensor.getFrontIRDistance() > 40)
             return CommandSelector.TWO;
         else
             return CommandSelector.THREE;
     }
      
     static public CommandSelector selectCmd12() {
-        if (RobotContainer.m_sensor.getIRDistance()<=20)
+        if (RobotContainer.m_sensor.getFrontIRDistance()<=20)
             return CommandSelector.ONE;
         else 
             return CommandSelector.TWO;
@@ -68,7 +68,7 @@ public class MoveTest extends SequentialCommandGroup
     {
 
         super(
-            //new MoveRobotSense(1, 0.5, 0, 0.0, 0.5, ()->RobotContainer.m_sensor.getIRDistance()<60),
+            //new MoveRobotSense(1, 0.5, 0, 0.0, 0.5, ()->RobotContainer.m_sensor.getFrontIRDistance()<60),
 
 
             //selectCmd123_B() // Didn't work

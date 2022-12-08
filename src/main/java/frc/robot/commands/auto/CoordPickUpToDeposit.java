@@ -21,11 +21,11 @@ public class CoordPickUpToDeposit extends SequentialCommandGroup {
 
                 new Pick(),
 
-                new MoveRobotSense(1, 10, 0, 0, maxSpeed1, () -> m_sensor.getIRDistance() < 60),
-                new MoveRobotSense(0, -10, 0, 0, maxSpeed1, () -> m_sensor.getIRDistance() < 50),
-                new MoveRobotSense(1, 10, 0, 0, maxSpeed1, () -> m_sensor.getIRDistance() < 20),
+                new MoveRobotSense(1, 10, 0, 0, maxSpeed1, () -> m_sensor.getFrontIRDistance() < 60),
+                new MoveRobotSense(0, -10, 0, 0, maxSpeed1, () -> m_sensor.getFrontIRDistance() < 50),
+                new MoveRobotSense(1, 10, 0, 0, maxSpeed1, () -> m_sensor.getFrontIRDistance() < 20),
                 new MoveRobotSense(0, -10, 0, 0, 0.25, () -> m_sensor.getCobraTotal() > 3500),
-                new MoveRobotSense(1, 1, 0, 0, maxSpeed1, () -> m_sensor.getIRDistance() < 10)
+                new MoveRobotSense(1, 1, 0, 0, maxSpeed1, () -> m_sensor.getFrontIRDistance() < 10)
 
         );
 

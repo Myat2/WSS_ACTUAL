@@ -1,6 +1,7 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Globals;
 //RobotContainer import
 import frc.robot.RobotContainer;
 
@@ -43,12 +44,13 @@ public class AlignRobot extends CommandBase{
         // centerY = 200.0;
 
         // Width = 200
-        centerX = 95;
-        centerY= 110; // wanted to change to 120
+        centerX = 100;
+        centerY= 100; 
         useW = true;
         targetW = -m_vision.getLine(2);
         targetX = (m_vision.getLine(0) - centerX);
         targetY = -(m_vision.getLine(1) - centerY);
+        
     }
     /**
      * Runs before execute
@@ -60,6 +62,7 @@ public class AlignRobot extends CommandBase{
         targetX = (m_vision.getLine(0) - centerX);
         targetY = -(m_vision.getLine(1) - centerY);
         m_endFlag = false;
+        Globals.useTF = false;
     }
     /**
      * Condition to end speed profile

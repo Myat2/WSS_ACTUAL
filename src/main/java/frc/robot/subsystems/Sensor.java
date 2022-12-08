@@ -23,7 +23,8 @@ public class Sensor extends SubsystemBase {
 
     // Sensors
     private final DigitalInput input10;
-    private AnalogInput sharp;
+    private AnalogInput frontIR;
+    private AnalogInput gripperIR;
     private Cobra cobra;
     double cobraValue[];
     private int i;
@@ -33,7 +34,9 @@ public class Sensor extends SubsystemBase {
     private final ShuffleboardTab tab = Shuffleboard.getTab("Sensors");
     private final NetworkTableEntry D_inputDisp = tab.add("inputDisp", false).getEntry();
     private final NetworkTableEntry D_cntDisp = tab.add("cntDisp", 0).getEntry();
-    private final NetworkTableEntry D_IRSensor = tab.add("IR Value (cm)", 0).getEntry();
+    private final NetworkTableEntry D_FrontIRSensor = tab.add("Front IR Value (cm)", 0).getEntry();
+    private final NetworkTableEntry D_GripperIRSensor = tab.add("Gripper IR Value (cm)", 0).getEntry();
+
     private final NetworkTableEntry D_Cobra_0 = tab.add("Cobra (0)", 0).getEntry();
     private final NetworkTableEntry D_Cobra_1 = tab.add("Cobra (1)", 0).getEntry();
     private final NetworkTableEntry D_Cobra_2 = tab.add("Cobra (2)", 0).getEntry();
@@ -47,7 +50,8 @@ public class Sensor extends SubsystemBase {
 
         // Constuct a new instance
         cobra = new Cobra();
-        sharp = new AnalogInput(0);
+        frontIR = new AnalogInput(0);
+        gripperIR = new AnalogInput(1);
         input10 = new DigitalInput(Constants.INPUT0);
 
     }
@@ -75,13 +79,22 @@ public class Sensor extends SubsystemBase {
     }
 
     /**
-     * Call for the distance measured by the Sharp IR Sensor
+     * Call for the distance measured by the Sharp IR Sensor located at the front of the Robot
      * <p>
      * 
      * @return value between 0 - 100 (valid data range is 10cm - 80cm)
      */
-    public double getIRDistance() {
-        return (Math.pow(sharp.getAverageVoltage(), -1.2045)) * 27.726;
+    public double getFrontIRDistance() {
+        return (Math.pow(frontIR.getAverageVoltage(), -1.2045)) * 27.726;
+    }
+    /**
+     * Call for the distance measured by the Sharp IR Sensor located at the gripper
+     * <p>
+     * 
+     * @return value between 0 - 100 (valid data range is 10cm - 80cm)
+     */
+    public double getGripperIRDistance() {
+        return (Math.pow(gripperIR.getAverageVoltage(), -1.2045)) * 27.726;
     }
 
     public double getCobraTotal() {
@@ -96,16 +109,13 @@ public class Sensor extends SubsystemBase {
     @Override
     // Runs every 20ms
     public void periodic() {
-        i++;
+        
         // Display on shuffleboard
         // These display is good for debugging but may slow system down.
         // Good to remove unnecessary display during competition
-        D_inputDisp.setBoolean(getSwitch());
-        D_cntDisp.setNumber(i);
-        D_IRSensor.setNumber(getIRDistance());
-        // D_Cobra_0.setNumber(getCobraRawValue(0));
-        D_Cobra_1.setNumber(getCobraRawValue(1));
-        D_Cobra_2.setNumber(getCobraRawValue(2));
+       
+        D_FrontIRSensor.setNumber(getFrontIRDistance());
+        D_GripperIRSensor.setNumber(getGripperIRDistance());
         // D_Cobra_3.setNumber(getCobraRawValue(3));
         // D_CobraTotal.setNumber(getCobraTotal());
     }

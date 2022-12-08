@@ -16,12 +16,12 @@ public class RotateDepositToPickUp extends SequentialCommandGroup {
     public RotateDepositToPickUp() {
         super(
                 new Place(),
-                new MoveRobotSense(1, -10, 0, 0, maxSpeed1, () -> m_sensor.getIRDistance() > 15),
+                new MoveRobotSense(1, -10, 0, 0, maxSpeed1, () -> m_sensor.getFrontIRDistance() > 15),
                 new MoveRobot(2, -Math.PI, 0, 0, maxSpeed2),
-                new MoveRobotSense(0, 5, 0, 0, maxSpeed1, () -> m_sensor.getIRDistance() < 50),
-                new MoveRobotSense(1, 5, 0, 0, maxSpeed1, () -> m_sensor.getIRDistance() < 15),
+                new MoveRobotSense(0, 5, 0, 0, maxSpeed1, () -> m_sensor.getFrontIRDistance() < 50),
+                new MoveRobotSense(1, 5, 0, 0, maxSpeed1, () -> m_sensor.getFrontIRDistance() < 15),
                 new MoveRobotSense(0, 10, 0, 0, maxSpeed1, () -> m_sensor.getCobraTotal() > 3500),
-                new MoveRobotSense(1, 1, 0, 0, maxSpeed1, () -> m_sensor.getIRDistance() < 10)
+                new MoveRobotSense(1, 1, 0, 0, maxSpeed1, () -> m_sensor.getFrontIRDistance() < 10)
 
         );
     }

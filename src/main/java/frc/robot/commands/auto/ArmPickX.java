@@ -14,7 +14,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Sensor;
 import frc.robot.subsystems.Vision;
 
-public class MoveArm extends CommandBase {
+public class ArmPickX extends CommandBase {
     private final static Vision m_vision = RobotContainer.m_vision;
     private final static Arm m_arm = RobotContainer.m_arm;
     private final static Sensor m_sensor = RobotContainer.m_sensor;
@@ -29,9 +29,9 @@ public class MoveArm extends CommandBase {
     private Translation2d tgt_pos, cur_pos, start_pos;
     
     private double _maxSpeed, tgt_dist, m_dx, m_dy;
-    public MoveArm(Translation2d pos, double maxSpeed){
+    public ArmPickX(double maxSpeed){
         _maxSpeed = maxSpeed;
-        tgt_pos = pos;
+        
         m_constraints = new TrapezoidProfile.Constraints(_maxSpeed, 1);
     }
      /**
@@ -39,7 +39,9 @@ public class MoveArm extends CommandBase {
      */
     @Override
     public void initialize() {
-        
+        xgoal = 0.335 - (getItemY(Globals.curItem) - 120) * Globals.convertPxToMM + 0.012;
+        ygoal = -0.095;
+        tgt_pos = new Translation2d(xgoal,ygoal);
         start_pos = m_arm.getArmPos();
         tgt_dist = start_pos.getDistance(tgt_pos);
         m_dx = tgt_pos.getX() - start_pos.getX();
@@ -48,6 +50,21 @@ public class MoveArm extends CommandBase {
         m_goal = new TrapezoidProfile.State(tgt_dist, 0);
         m_setpoint = new TrapezoidProfile.State(0,0);
         m_endFlag = false;
+    }
+    public double getItemY(int item) {
+        /*
+         * 0 - Dettol
+         * 1 - Jagabee
+         * 2 - Coke
+         */
+        //gets item type to pick and returns item coordinate
+        double[] itemCo = new double[3];
+
+        itemCo[0] = m_vision.getDettol(1);
+        itemCo[1] = m_vision.getJagabee(1);
+        itemCo[2] = m_vision.getCoke(1);
+        
+        return itemCo[item];
     }
     /**
      * Condition to end speed profile
@@ -68,7 +85,7 @@ public class MoveArm extends CommandBase {
 
         m_arm.setArmPos(cur_pos);
         
-        if (m_profile.isFinished(dT) || endCondition()) {
+        if (m_profile.isFinished(dT) || endCondition() || m_sensor.getGripperIRDistance() <= 5) {
             //distance reached End the command
             
             m_arm.setArmPos(tgt_pos);
