@@ -45,7 +45,7 @@ public class AlignPicker extends CommandBase {
     @Override
     public void initialize()
     {   
-        targetXDistance = ((getItemX(Globals.curItem) -160) * Globals.convertPxToMM);
+        targetXDistance = ((getItemX(Globals.curItem) - m_vision.getResolution(0)/2) * Globals.convertPxToMM);
        
         m_goal_x = new TrapezoidProfile.State(targetXDistance, 0);
         m_setpoint_x = new TrapezoidProfile.State(0, _startSpeed);

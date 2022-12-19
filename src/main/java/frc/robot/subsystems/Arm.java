@@ -1,14 +1,16 @@
 package frc.robot.subsystems;
 
 import java.util.Map;
+import frc.robot.Globals;
+import frc.robot.commands.auto.Pick;
 
 import com.studica.frc.Servo;
-
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Arm extends SubsystemBase {
@@ -18,6 +20,9 @@ public class Arm extends SubsystemBase {
     private final double a1 = 0.24;
     private final double a2 = 0.335;
 
+    private final double cameraY = 0.31;
+    private final double cameraX = 0.43;
+
     private double offset0 = 0; // For making software adjustment to servo
     private double offset1 = 0;
     // Robot 6942
@@ -25,8 +30,12 @@ public class Arm extends SubsystemBase {
     // private double preset1 = -40.0;
 
     // Robot 4201
-    private double preset0 = -141.319000;
-    private double preset1 = -29.681000;
+    // private double preset0 = -141.319000;
+    // private double preset1 = -29.681000;
+
+    // Robot 6666
+    private double preset0 = -170;
+    private double preset1 = -55;
 
     private double shoulderRatio = 4.0;
     private double elbowRatio = 2.0;
@@ -65,15 +74,16 @@ public class Arm extends SubsystemBase {
         servo2 = new Servo(2); // gripper 
         servo3 = new Servo(3); // camera
 
-        m_pos = new Translation2d(0.24,0.335);
-
+        m_pos = new Translation2d(0.34,0.25);
+        
     }
 
     public void initialize() {
         m_pos = new Translation2d(0.34,0.25);
         setServoAngle2(150);
-        setServoAngle3(290);
+        setServoAngle3(Globals.cameraAngle);
         setArmPos(m_pos);
+        SmartDashboard.putData("ElevatorMove: up", new Pick()); // new command
     }
 
     /**
@@ -228,6 +238,46 @@ public class Arm extends SubsystemBase {
         D_debug1.setDouble(A);
         D_debug2.setDouble(B);
     }
+    public void setCameraPos(Translation2d pos) {
+
+        // Refer to https://www.alanzucconi.com/2018/05/02/ik-2d-1/
+        m_pos = pos;
+        double x = pos.getX();
+        double y = pos.getY();
+        // arm tip cannot be physically in the area around origin
+        if ((x < 0.05) && (y < 0.1)) {
+            x = 0.05;
+            m_pos = new Translation2d(x, y);
+        }
+
+        double a = cameraX;
+        double c = cameraY;
+        double b = Math.sqrt(x * x + y * y);
+        double alpha = Math.acos((b * b + c * c - a * a) / (2 * b * c));
+        double beta = Math.acos((a * a + c * c - b * b) / (2 * a * c));
+
+        // A is servo0 angle wrt horizon
+        // When A is zero, arm-c is horizontal.
+        // beta is servo1 angle wrt arm-c (BA)
+        // When beta is zero, arm-c is closed to arm-c
+        double B = Math.PI - beta; // Use B to designate beta. Different from diagram.
+        double A = alpha + Math.atan2(y, x);
+
+        // servo0 and servo1 might be mounted clockwise or anti clockwise.
+        // offset0 and offset1 are used to adjust the zero the arm position.
+        // This makes it easier to mount and tune the arm.
+        A = Math.toDegrees(A) * shoulderRatio;
+        B = Math.toDegrees(B) * elbowRatio;
+
+        // Uncomment if servo direction needs to be flip.
+        // A = 300 - A;
+
+        servo0.setAngle(A + offset0); // servo0 is -15 * shoulderRatio
+        servo1.setAngle(B + offset1); // servo1 is -15 degrees * elbowARatio
+
+        D_debug1.setDouble(A);
+        D_debug2.setDouble(B);
+    }
 
     public double[] getArmAngles(Translation2d pos) {
 
@@ -307,5 +357,6 @@ public class Arm extends SubsystemBase {
         D_posX.setDouble(m_pos.getX());
         D_posY.setDouble(m_pos.getY());
         // D_posX.setDoubleArray( {m_pos.getX(), m_pos.getY()});
+        
     }
 }

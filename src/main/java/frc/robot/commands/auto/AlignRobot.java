@@ -45,7 +45,7 @@ public class AlignRobot extends CommandBase{
 
         // Width = 200
         centerX = 100;
-        centerY= 100; 
+        centerY= 110; 
         useW = true;
         targetW = -m_vision.getLine(2);
         targetX = (m_vision.getLine(0) - centerX);

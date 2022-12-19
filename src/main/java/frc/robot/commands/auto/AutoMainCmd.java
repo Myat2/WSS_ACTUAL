@@ -30,6 +30,7 @@ import frc.robot.commands.auto.RotateTest;
 import frc.robot.commands.auto.MoveRobotSense.end_func;
 import frc.robot.subsystems.Sensor;
 import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.Arm;
 import edu.wpi.first.wpilibj.AnalogInput;
 
 /**
@@ -46,7 +47,7 @@ public class AutoMainCmd extends SequentialCommandGroup {
     public static int depoPos2[] = { 1500, 3300, 0 };
     private final static Sensor m_sensor = RobotContainer.m_sensor;
     private final static Vision m_vision = RobotContainer.m_vision;
-
+    private final static Arm m_arm = RobotContainer.m_arm;
     // private static double pickUpX = -1.1;
     // private static double pickUpY = 1.2;
     // private static double pickUpW = 0;
@@ -60,117 +61,91 @@ public class AutoMainCmd extends SequentialCommandGroup {
     // private static double base2W = Math.PI / 2;
 
     public AutoMainCmd() {
+        /*
+         * 0 - Dettol
+         * 1 - Jagabee
+         * 2 - Coke
+         */
 
         super(
             
-            new MoveArm(new Translation2d(0.34,0.25), 50),
+            
+
+            new MoveArm(new Translation2d(0.33,0.24), 10),
+            new InstantCommand(()-> m_arm.setServoAngle3(295)),
             new InstantCommand(() -> Globals.useTF = false),
             new InstantCommand(m_vision::setUseTF),
             new WaitCommand(3),
             new AlignRobot(),
             new MoveRobotSense(1,1,0,0,.5,() -> m_sensor.getFrontIRDistance() <= 15),
+            new ArmToMidBin(5),
+            new InstantCommand(()-> m_arm.setServoAngle3(280)),
+            new WaitCommand(3),
+            new InstantCommand(() -> Globals.useTF = true),
+            new InstantCommand(m_vision::setUseTF),
+            new InstantCommand(() -> Globals.curItem = 0),
+            new WaitCommand(5),
+            new AlignPicker(50),
+            new Pick(),
+
+            new MoveArm(new Translation2d(0.33,0.24), 10),
+            new InstantCommand(()-> m_arm.setServoAngle3(295)),
+            new MoveRobotSense(1,-1,0,0,.5,() -> m_sensor.getFrontIRDistance() >= 30),
+            new MoveRobot(0,1.35,0,0,5),
+            new AlignRobot(),
+            new MoveRobotSense(1,1,0,0,.5,() -> m_sensor.getFrontIRDistance() <= 15),
+            new Place(),
+
+            new MoveArm(new Translation2d(0.33,0.24), 10),
+            new InstantCommand(()-> m_arm.setServoAngle3(295)),
+            new MoveRobotSense(1,-1,0,0,.5,() -> m_sensor.getFrontIRDistance() >= 30),
+            new MoveRobot(0,-1.35,0,0,5),
+            new AlignRobot(),
+            new MoveRobotSense(1,1,0,0,.5,() -> m_sensor.getFrontIRDistance() <= 15),
+            new ArmToMidBin(5),
+            new InstantCommand(()-> m_arm.setServoAngle3(280)),
+            new WaitCommand(3),
             new InstantCommand(() -> Globals.useTF = true),
             new InstantCommand(m_vision::setUseTF),
             new InstantCommand(() -> Globals.curItem = 1),
             new WaitCommand(5),
             new AlignPicker(50),
-            new Pick()
-        
+            new Pick(),
 
+            new MoveArm(new Translation2d(0.33,0.24), 10),
+            new InstantCommand(()-> m_arm.setServoAngle3(295)),
+            new MoveRobotSense(1,-1,0,0,.5,() -> m_sensor.getFrontIRDistance() >= 30),
+            new MoveRobot(0,1.35,0,0,5),
+            new AlignRobot(),
+            new MoveRobotSense(1,1,0,0,.5,() -> m_sensor.getFrontIRDistance() <= 15),
+            new Place(),
 
-
+            new MoveArm(new Translation2d(0.33,0.24), 10),
+            new InstantCommand(()-> m_arm.setServoAngle3(295)),
+            new MoveRobotSense(1,-1,0,0,.5,() -> m_sensor.getFrontIRDistance() >= 30),
+            new MoveRobot(0,-1.35,0,0,5),
+            new AlignRobot(),
+            new MoveRobotSense(1,1,0,0,.5,() -> m_sensor.getFrontIRDistance() <= 15),
+            new ArmToMidBin(5),
+            new InstantCommand(()-> m_arm.setServoAngle3(280)),
+            new WaitCommand(3),
+            new InstantCommand(() -> Globals.useTF = true),
+            new InstantCommand(m_vision::setUseTF),
+            new InstantCommand(() -> Globals.curItem = 2),
+            new WaitCommand(5),
+            new AlignPicker(50),
+            new Pick(),
            
 
-                // When width = 600, x >= 300, y >= 350
-                // new MoveArm(new Translation2d(0.24,0.335), 50),
-                //new WaitCommand(5),
-                
-                // new AlignRobot(100,115, "trolley")
-               // new AlignRobot()
-                // new MoveRobot(2, -Globals.cW,  0, 0, 0.05)
-                // new MoveRobotAlignW(Math.PI)
-                // new MoveRobotSense(0,-5,0,0,0.05, () -> m_vision.getLine(0) >= 140), // Working sort of
-                // new MoveRobotSense(1,5,0,0,0.05, () -> m_vision.getLine(1) >= 160) // Working sort of
-                // new WaitCommand(1),
-                
-                // new MoveRobotSense(1,5,0,0,0.05, () -> m_sensor.getFrontIRDistance() <15)
-
-                //   new MoveRobotSense(2, Math.PI,0,0,0.05, () -> -m_vision.getLine(2) <= 0.1),
-                //  new MoveRobotSense(0,-5,0,0,0.05, () -> m_vision.getLine(0) > 300),
-                //  new MoveRobotSense(1,5,0,0,0.05, () -> m_sensor.getFrontIRDistance() <15)
-               // new MovetoB(Layout.Convert_mm_Pose2d(testPos0)),
-                // new MoveRobot(1, 1, 0, 0, 0.4), // Move left
-                // new MovetoB(Layout.Convert_mm_Pose2d(testPos1)),
-                // new MoveRobot(2, -Math.PI / 2, 0, 0, Math.PI),
-                // new alignmentLeft(),
-                // new WaitCommand(1),
-                // new MovetoB(Layout.Convert_mm_Pose2d(depoPos1)),
-                // new MoveRobot(2, -Math.PI, 0, 0, Math.PI),
-                // new alignmentLeft(),
-                // new WaitCommand(1),
-                // new MoveRobot(2, -Math.PI, 0, 0, Math.PI),
-                // new MovetoB(Layout.Convert_mm_Pose2d(testPos1)),
-                // new alignmentLeft(),
-                // new WaitCommand(1),
-                // new MovetoB(Layout.Convert_mm_Pose2d(depoPos2)),
-                // new alignmentLeft(),
-                // new WaitCommand(1),
-                // new LoopCmd(new functionX(), () -> (Globals.loopCount++) > 8),
-                // new MoveRobot(2, Math.PI / 2, 0, 0, Math.PI),
-                // new MovetoB(Layout.Convert_mm_Pose2d(homeBase))
-
-        // new MoveRobot(0, 1, 0, 0, 0.4) // Move left
-
-        // new MoveRobot(1, 1.1 - .21, 0, 0, 0.5) // Move Forward
-
-        // new MoveRobot(0, 0, 0, 0, 0), // Move left
-        // new MoveRobot(0, 0, 0, 0, 0) // Move Forward
-
-        // new MoveRobot(1, 0.5, 0, 0, 5),
-        // new MoveRobot(0, -1.1 + 0.3, 0, 0, 5),
-        // new MoveRobotSense(1, 1, 0, 0, 5, () -> m_sensor.getFrontIRDistance() < 10),
-        // new Pick(),
-        // new MoveRobot(2, Math.PI, 0, 0, Math.PI),
-        // new MoveRobot(2, Math.PI, 0, 0, Math.PI),
-        // new MoveRobot(2, Math.PI, 0, 0, Math.PI),
-        // new MoveRobot(2, Math.PI, 0, 0, Math.PI)
-
-        // new CoordinateFromBase(pickUpX - Globals.baseOffsetX, pickUpY -
-        // Globals.baseOffsetY, 0.0), // base
-
-        // new CoordinateFromBase(base1X - pickUpX - Globals.desOffsetX,
-        // base1Y - pickUpY + 0.7 - Globals.desOffsetY,
-        // base1W), // 1st Deposit
-        // new CoordinateFromBase(base2X - base1X + Globals.desOffsetX, base2Y - base1Y
-        // + Globals.desOffsetY,
-        // base2W) // 2nd Desposit
-
-        // new LoopCmd(new functionX(), () -> (++Globals.loopCount) > 8)
-
-        // new MoveRobot(0, -2, 0, 0, 5),
-        // new MoveRobot(1, -.3, 0, 0, 5),
-        // new MoveRobot(2, (Math.PI - Math.PI / 7), 0, 0, Math.PI),
-        // new MoveRobotSense(0, 10, 0, 0, 0.25, () -> m_sensor.getCobraTotal() > 3500),
-        // new MoveRobotSense(1, 1, 0, 0, 5, () -> m_sensor.getFrontIRDistance() < 10),
-        // new Pick(),
-
-        // new MoveRobot(1, -.3, 0, 0, 5),
-        // new MoveRobot(2, (Math.PI - Math.PI / 7), 0, 0, Math.PI),
-
-        // new MoveRobot(0, 2, 0, 0, 5),
-        // new MoveRobotSense(0, 10, 0, 0, 0.25, () ->
-        // RobotContainer.m_sensor.getCobraTotal() > 3500),
-        // new MoveRobotSense(1, 1, 0, 0, 5, () ->
-        // RobotContainer.m_sensor.getFrontIRDistance() < 10),
-        // new Pick()
-
-        // new Pick()
-        // new MoveArm(new Translation2d(0.2,0),25),
-        // new MoveArm(new Translation2d(0.3,0),25),
-        // new MoveArm(new Translation2d(0.3,0.3),25),
-        // new MoveArm(new Translation2d(0.2,0.3),25),
-        // new MoveArm(new Translation2d(0.2,0),25)
+            new MoveArm(new Translation2d(0.33,0.24), 10),
+            new InstantCommand(()-> m_arm.setServoAngle3(295)),
+            new MoveRobotSense(1,-1,0,0,.5,() -> m_sensor.getFrontIRDistance() >= 30),
+            new MoveRobot(0,1.35,0,0,5),
+            new AlignRobot(),
+            new MoveRobotSense(1,1,0,0,.5,() -> m_sensor.getFrontIRDistance() <= 15),
+            new Place()
         );
+
 
     }
 

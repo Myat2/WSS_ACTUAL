@@ -1,6 +1,6 @@
 package frc.robot.commands.auto;
 
-import javax.swing.TransferHandler.TransferSupport;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
@@ -13,8 +13,7 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Sensor;
 import frc.robot.subsystems.Vision;
-
-public class ArmPickX extends CommandBase {
+public class ArmToMidBin extends CommandBase{
     private final static Vision m_vision = RobotContainer.m_vision;
     private final static Arm m_arm = RobotContainer.m_arm;
     private final static Sensor m_sensor = RobotContainer.m_sensor;
@@ -29,22 +28,27 @@ public class ArmPickX extends CommandBase {
     private Translation2d tgt_pos, cur_pos, start_pos;
     
     private double _maxSpeed, tgt_dist, m_dx, m_dy;
-    private double pickUpHeight = 0.00;
-    public ArmPickX(double maxSpeed){
+
+    private double arm_offset_y = 0.125;
+    private double arm_offset_z = 0.27;
+    private double gripper_offset = 0.18;
+   
+    private double targetX, targetY, pickUpHeight = 0.2; 
+    public ArmToMidBin(double maxSpeed){
         _maxSpeed = maxSpeed;
         
-        m_constraints = new TrapezoidProfile.Constraints(_maxSpeed, .5);
+        m_constraints = new TrapezoidProfile.Constraints(_maxSpeed, 1);
     }
      /**
      * Runs before execute
      */
     @Override
     public void initialize() {
-        // xgoal = 0.3 - (getItemY(Globals.curItem) - 120) * Globals.convertPxToMM + Globals.itemOffsets[Globals.curItem];
-        xgoal = m_arm.getArmPos().getX() + Globals.camera_offset - (getItemY(Globals.curItem) - m_vision.getResolution(1)/2) * Globals.convertPxToMM;
-        ygoal = pickUpHeight;
-        tgt_pos = new Translation2d(xgoal,ygoal - Globals.arm_offset_z+ Globals.gripper_offset);
+        
         start_pos = m_arm.getArmPos();
+        targetX = Globals.frontIROffset+m_sensor.getFrontIRDistance()/100+Globals.yellowBinDimension[1]/2;
+        targetY = pickUpHeight;
+        tgt_pos = new Translation2d(targetX-Globals.arm_offset_y-Globals.camera_offset, targetY-Globals.arm_offset_z+Globals.gripper_offset);
         tgt_dist = start_pos.getDistance(tgt_pos);
         m_dx = tgt_pos.getX() - start_pos.getX();
         m_dy = tgt_pos.getY() - start_pos.getY();
@@ -53,22 +57,7 @@ public class ArmPickX extends CommandBase {
         m_setpoint = new TrapezoidProfile.State(0,0);
         m_endFlag = false;
     }
-    public double getItemY(int item) {
-        /*
-         * 0 - Dettol
-         * 1 - Jagabee
-         * 2 - Coke
-         */
-        //gets item type to pick and returns item coordinate
-        double[] itemCo = new double[3];
-
-        itemCo[0] = m_vision.getDettol(1);
-        itemCo[1] = m_vision.getJagabee(1);
-        itemCo[2] = m_vision.getCoke(1);
-        
-        return itemCo[item];
-    }
-    /**
+     /**
      * Condition to end speed profile
      */
     public boolean endCondition()
@@ -79,8 +68,7 @@ public class ArmPickX extends CommandBase {
     public void execute()
     {
          
-        Globals.targetXArmPick = xgoal;
-        m_vision.D_targetXArm.setNumber(Globals.targetXArmPick);
+        
         m_profile = new TrapezoidProfile(m_constraints, m_goal, m_setpoint);
 
         m_setpoint = m_profile.calculate(dT);
@@ -88,7 +76,7 @@ public class ArmPickX extends CommandBase {
 
         m_arm.setArmPos(cur_pos);
         
-        if (m_profile.isFinished(dT) || endCondition() || m_sensor.getGripperIRDistance() <= 5) {
+        if (m_profile.isFinished(dT) || endCondition()) {
             //distance reached End the command
             
             m_arm.setArmPos(tgt_pos);
@@ -103,4 +91,5 @@ public class ArmPickX extends CommandBase {
     {
         return m_endFlag;
     }
+
 }

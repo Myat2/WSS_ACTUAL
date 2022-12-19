@@ -1,103 +1,86 @@
 package frc.robot.commands.auto;
 
+import edu.wpi.first.wpilibj2.command.CommandBase;
+
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
-//WPI imports
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.Globals;
 //RobotContainer import
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Arm;
 //Subsystem imports
-
-
-/**
- * SimpleDrive class
- * <p>
- * This class drives a motor 
- */
-public class MoveGripper extends CommandBase
-{
-    //Grab the subsystem instance from RobotContainer
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Sensor;
+import frc.robot.subsystems.Vision;
+public class MoveGripper extends CommandBase{
+    private final static Vision m_vision = RobotContainer.m_vision;
     private final static Arm m_arm = RobotContainer.m_arm;
+    private final static Sensor m_sensor = RobotContainer.m_sensor;
+
     private double dT = 0.02;
     private boolean m_endFlag = false;
     private TrapezoidProfile.Constraints m_constraints;
-    private TrapezoidProfile.State m_goal;
-    private TrapezoidProfile.State m_setpoint;
+    private TrapezoidProfile.State m_goal = new TrapezoidProfile.State();
+    private TrapezoidProfile.State m_setpoint = new TrapezoidProfile.State();
     private TrapezoidProfile m_profile;
-    private int isOpen;
-    private double targetAngle;
-    private int[][] itemGripperSizes = {
-        {150,60}, // Dettol
-        {120,50}, // Jagabee
-        {150,50}, // Coke
-    };
-    /**
-     * This command opens or closes the gripper
-     * <p>
-     * 
-     * @param open - 1 for open or 0 for close
-     * @param maxSpeed - max speed of servo
-     */
-    //This move the robot a certain distance following a trapezoidal speed profile.
-    public MoveGripper(int pos, double maxSpeed)
-    {
-        
-        isOpen = pos;
-        m_constraints = new TrapezoidProfile.Constraints(maxSpeed, maxSpeed);
-        
-    }
+    private double xgoal, ygoal;
+    private Translation2d tgt_pos, cur_pos, start_pos;
+    
+    private double _maxSpeed, tgt_dist, m_dx, m_dy;
 
-    /**
+    private double arm_offset_y = 0.125;
+    private double arm_offset_z = 0.27;
+    private double gripper_offset = 0.18;
+
+    public MoveGripper(Translation2d pos, double maxSpeed){
+        _maxSpeed = maxSpeed;
+        
+        tgt_pos = new Translation2d(pos.getX()-Globals.arm_offset_y, pos.getY()-Globals.arm_offset_z+Globals.gripper_offset);
+        m_constraints = new TrapezoidProfile.Constraints(_maxSpeed, 1);
+    }
+     /**
      * Runs before execute
      */
     @Override
-    public void initialize()
-    {   
-        targetAngle = itemGripperSizes[Globals.curItem][isOpen];
-        double start_pos = m_arm.getServoAngle2();
+    public void initialize() {
         
-        m_goal = new TrapezoidProfile.State(targetAngle, 0);
-        m_setpoint = new TrapezoidProfile.State(start_pos, 0);
+        start_pos = m_arm.getArmPos();
+        
+        tgt_dist = start_pos.getDistance(tgt_pos);
+        m_dx = tgt_pos.getX() - start_pos.getX();
+        m_dy = tgt_pos.getY() - start_pos.getY();
+        
+        m_goal = new TrapezoidProfile.State(tgt_dist, 0);
+        m_setpoint = new TrapezoidProfile.State(0,0);
         m_endFlag = false;
     }
-    /**
+     /**
      * Condition to end speed profile
      */
     public boolean endCondition()
     {
         return false;
     }
-    /**
-     * Called continously until command is ended
-     */
     @Override
     public void execute()
     {
-        //Create a new profile to calculate the next setpoint(speed) for the profile
+         
+        
         m_profile = new TrapezoidProfile(m_constraints, m_goal, m_setpoint);
-        
+
         m_setpoint = m_profile.calculate(dT);
+        cur_pos = start_pos.plus(new Translation2d((m_setpoint.position*m_dx/tgt_dist),(m_setpoint.position*m_dy/tgt_dist)));
+
+        m_arm.setArmPos(cur_pos);
         
-        m_arm.setServoAngle2(m_setpoint.position);
-        if (m_profile.isFinished(dT)) {
+        if (m_profile.isFinished(dT) || endCondition()) {
             //distance reached End the command
-            //m_arm.setServoAngle0( m_goal.position);
+            
+            m_arm.setArmPos(tgt_pos);
             m_endFlag = true;
         }
-        
     }
-
-    /**
-     * Called when the command is told to end or is interrupted
-     */
-    @Override
-    public void end(boolean interrupted)
-    {
-
-    }
-
     /**
      * Creates an isFinished condition if needed
      */
@@ -106,6 +89,5 @@ public class MoveGripper extends CommandBase
     {
         return m_endFlag;
     }
-    
 
 }

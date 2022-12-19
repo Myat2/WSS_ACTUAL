@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 //WPI imports
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Globals;
 
 public class Sensor extends SubsystemBase {
     // Creates all necessary hardware interface here for sensors
@@ -66,6 +67,7 @@ public class Sensor extends SubsystemBase {
     public Boolean getSwitch() {
         return input10.get();
     }
+   
 
     /**
      * Call for the raw ADC value

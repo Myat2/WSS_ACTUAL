@@ -19,7 +19,8 @@ public class Vision extends SubsystemBase{
     private final NetworkTableEntry D_AddedArmX = tab.add("AddedArmX", 0).getEntry();
     private final NetworkTableEntry D_AddedRobotX = tab.add("AddedRobotX", 0).getEntry();
     private final NetworkTableEntry D_useTF = tab.add("useTF", 0).getEntry();
-    
+    public final NetworkTableEntry D_targetXArm = tab.add("targetXArm", 0).getEntry();
+
     private final static Arm m_arm = RobotContainer.m_arm;
     public Vision(){
 
@@ -56,6 +57,13 @@ public class Vision extends SubsystemBase{
     }
     public void getOmega(){
         Globals.cW = getLine(2);
+    }
+    public double getResolution(int wh){
+        double[] dimension = new double[2];
+
+        dimension[0] = (SmartDashboard.getNumber("imW",0));
+        dimension[1] = (SmartDashboard.getNumber("imH",0));
+        return dimension[wh];
     }
     
     
@@ -98,8 +106,9 @@ public class Vision extends SubsystemBase{
     {
 
         D_currentItem.setString(items[Globals.curItem]);
-        D_AddedRobotX.setNumber(((getItemX(Globals.curItem) -160) * Globals.convertPxToMM));
-        D_AddedArmX.setNumber(-(getItemY(Globals.curItem) - 120) * Globals.convertPxToMM + 0.012);
+        D_AddedRobotX.setNumber(((getItemX(Globals.curItem) -getResolution(0)/2) * Globals.convertPxToMM));
+        D_AddedArmX.setNumber((getItemY(Globals.curItem) - getResolution(1)/2) * Globals.convertPxToMM);
         D_useTF.setBoolean(Globals.useTF);
+        
     }
 }

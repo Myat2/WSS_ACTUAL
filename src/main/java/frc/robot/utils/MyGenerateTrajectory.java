@@ -15,7 +15,7 @@ public class MyGenerateTrajectory {
     private Trajectory mTrajectory;
     
     //Create intermediate way points as A* output with right angle path
-    // are not suitable for trajectory generator
+    //are not suitable for trajectory generator
     //Intermediate way points are R distance from the original waypoint.
     //This will cause the path generated to be a small curve between the two intermediate waypoints
     public List<Translation2d> AddIntermediateWayPoints(List<Translation2d> wp, double R){
