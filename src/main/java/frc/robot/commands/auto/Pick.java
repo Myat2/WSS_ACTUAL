@@ -20,10 +20,10 @@ public class Pick extends SequentialCommandGroup {
     private final static int maxSpeedGripper = 20;
     public Pick() {
         super(
-                new Grip(1, maxSpeedGripper),
+                new Gripper(1, maxSpeedGripper),
                 new ArmPickX(5),
                 //new MoveGripper(new Translation2d(m_arm.getArmPos().getX() - Globals.arm_offset_y,0.02), maxSpeed),
-                new Grip(0, maxSpeedGripper),
+                new Gripper(0, maxSpeedGripper),
                 new MoveGripper(new Translation2d(0.4,0.3),maxSpeed)
                 // new WaitCommand(2),
                 

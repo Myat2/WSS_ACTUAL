@@ -17,8 +17,8 @@ public class LoopCmd extends CommandBase {
     public static boolean cmdEndFlag;
     private int state;
     private boolean scheduleFlag;
-    private boolean m_endFlag;
-    private SequentialCommandGroup cmd;
+    protected boolean m_endFlag;
+    protected SequentialCommandGroup cmd;
     private final end_func fn_ptr;
 
     interface end_func {
@@ -31,6 +31,11 @@ public class LoopCmd extends CommandBase {
         // addRequirements(m_drive);
     }
 
+    public LoopCmd(SequentialCommandGroup cmdToRun) {
+        cmd = cmdToRun;
+        fn_ptr = null;
+        
+    }
     @Override
     public void initialize() {
         state = 0;

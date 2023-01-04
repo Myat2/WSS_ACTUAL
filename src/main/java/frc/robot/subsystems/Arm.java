@@ -81,7 +81,7 @@ public class Arm extends SubsystemBase {
     public void initialize() {
         m_pos = new Translation2d(0.34,0.25);
         setServoAngle2(150);
-        setServoAngle3(Globals.cameraAngle);
+        setCameraAngle(Globals.cameraAngle);
         setArmPos(m_pos);
         SmartDashboard.putData("ElevatorMove: up", new Pick()); // new command
     }
@@ -122,7 +122,7 @@ public class Arm extends SubsystemBase {
      * 
      * @param degrees degree to set the servo to, range 0° - 300°
      */
-    public void setServoAngle3(final double degrees) {
+    public void setCameraAngle(final double degrees) {
         servo3.setAngle(degrees);
     }
 

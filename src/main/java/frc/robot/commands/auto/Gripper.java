@@ -16,7 +16,7 @@ import frc.robot.subsystems.Arm;
  * <p>
  * This class drives a motor 
  */
-public class Grip extends CommandBase
+public class Gripper extends CommandBase
 {
     //Grab the subsystem instance from RobotContainer
     private final static Arm m_arm = RobotContainer.m_arm;
@@ -41,7 +41,7 @@ public class Grip extends CommandBase
      * @param maxSpeed - max speed of servo
      */
     //This move the robot a certain distance following a trapezoidal speed profile.
-    public Grip(int pos, double maxSpeed)
+    public Gripper(int pos, double maxSpeed)
     {
         
         isOpen = pos;
@@ -55,7 +55,7 @@ public class Grip extends CommandBase
     @Override
     public void initialize()
     {   
-        targetAngle = itemGripperSizes[Globals.curItem][isOpen];
+        targetAngle = itemGripperSizes[Globals.curItemType][isOpen];
         double start_pos = m_arm.getServoAngle2();
         
         m_goal = new TrapezoidProfile.State(targetAngle, 0);
