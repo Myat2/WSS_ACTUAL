@@ -1,72 +1,51 @@
 package frc.robot.subsystems;
 
-import java.util.function.Supplier;
-
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Globals;
 import frc.robot.RobotContainer;
 
 public class Vision extends SubsystemBase{
-    
     private final ShuffleboardTab tab = Shuffleboard.getTab("Vision");
-    private NetworkTableInstance inst = NetworkTableInstance.getDefault();
-    private NetworkTable table = inst.getTable("Vision");
-    private final ShuffleboardTab tabsmart = Shuffleboard.getTab("SmartDashboard");
-    private final NetworkTableEntry D_area = tabsmart.add("area", 0).getEntry();
-    private final NetworkTableEntry D_cW = tab.add("cW", 0).getEntry();
-    private final NetworkTableEntry D_targetX = tab.add("TargetX", 0).getEntry();
-    private final NetworkTableEntry D_itemcnt = tab.add("itemcnt1", 0).getEntry();
-    private final NetworkTableEntry D_JagabeeCount = tab.add("JagCnt", 0).getEntry();
-    private final NetworkTableEntry D_DettolCount = tab.add("DettolCnt", 0).getEntry();
-    private final NetworkTableEntry D_CokeCount = tab.add("CokeCnt", 0).getEntry();
-
-
-    public final NetworkTableEntry D_targetXArm = tab.add("targetXArm", 0).getEntry();
-    private final static Arm m_arm = RobotContainer.m_arm;
     private final String[] items = {
-      "Jagabee",
-      "Dettol",
-      "Coke"
+        "Dettol",
+        "Jagabee",
+        "Coke"
     };
     private final NetworkTableEntry D_currentItem = tab.add("CurrentItem", 0).getEntry();
     private final NetworkTableEntry D_currentItemX = tab.add("CurrentItemX", 0).getEntry();
     private final NetworkTableEntry D_currentItemY = tab.add("CurrentItemY", 0).getEntry();
+
     private final NetworkTableEntry D_AddedArmX = tab.add("AddedArmX", 0).getEntry();
     private final NetworkTableEntry D_AddedRobotX = tab.add("AddedRobotX", 0).getEntry();
     private final NetworkTableEntry D_useTF = tab.add("useTF", 0).getEntry();
+    public final NetworkTableEntry D_targetXArm = tab.add("targetXArm", 0).getEntry();
+
     private double[] defaultValue = new double[] {0};
-    // private final NetworkTableEntry D_T1 = tab.add("T1_full", 0).getEntry();
-    // private final NetworkTableEntry D_T2 = tab.add("T2_full", 0).getEntry();
-    //private final NetworkTableEntry D_Array = tab.addDoubleArray("array", array1).get;
+
+    private final static Arm m_arm = RobotContainer.m_arm;
     public Vision(){
 
-        m_arm.setCameraAngle(280); // Look down
+        m_arm.setCameraAngle(290); // Look down
     }
-
-    public double [] getLine(){
-      double[] line = new double[3];
+    public double getLine(int xyw){
+        double[] line = new double[3];
 
       line[0] = (SmartDashboard.getNumber("Bl_X",0));
       line[1] = (SmartDashboard.getNumber("Bl_Y",0));
       line[2] = (SmartDashboard.getNumber("Bl_W",0));
-      return line;
+      return line[xyw];
     }
-    
     public double getJagabee(int xy){
-      double[] position = new double[2];
+        double[] position = new double[2];
 
-      position[0] = (SmartDashboard.getNumber("JagabeeX",0));
-      position[1] = (SmartDashboard.getNumber("JagabeeY",0));
-      return position[xy];
+        position[0] = (SmartDashboard.getNumber("JagabeeX",0));
+        position[1] = (SmartDashboard.getNumber("JagabeeY",0));
+        return position[xy];
     }
-
     public double getDettol(int xy){
         double[] position = new double[2];
 
@@ -74,7 +53,6 @@ public class Vision extends SubsystemBase{
         position[1] = (SmartDashboard.getNumber("DettolY",0));
         return position[xy];
     }
-
     public double getCoke(int xy){
         double[] position = new double[2];
 
@@ -82,33 +60,25 @@ public class Vision extends SubsystemBase{
         position[1] = (SmartDashboard.getNumber("CokeY",0));
         return position[xy];
     }
-
-    public double getVerticalLine(){
-      return SmartDashboard.getNumber("VerticalLine",0);
-    }
-
-    public void getOmega(){
-        //Globals.cW = getLine(2);
-    }
     
     public double getResolution(int wh){
-      double[] dimension = new double[2];
+        double[] dimension = new double[2];
 
-      dimension[0] = 800;//(SmartDashboard.getNumber("imW",0));
-      dimension[1] = 600;//(SmartDashboard.getNumber("imH",0));
-      return dimension[wh];
+        dimension[0] = (SmartDashboard.getNumber("imW",0));
+        dimension[1] = (SmartDashboard.getNumber("imH",0));
+        return dimension[wh];
     }
-
+    
+    
     public void setUseTF(){
-      SmartDashboard.putBoolean("UseTF", Globals.useTF);
+        SmartDashboard.putBoolean("UseTF", Globals.useTF);
     }
-
     public double getItemX(int item) {
         /*
-        * 1 - Dettol
-        * 2 - Jagabee
-        * 3 - Coke
-        */
+         * 1 - Dettol
+         * 2 - Jagabee
+         * 3 - Coke
+         */
         //gets item type to pick and returns item coordinate
         double[] itemCo = new double[3];
 
@@ -118,13 +88,12 @@ public class Vision extends SubsystemBase{
         
         return itemCo[item];
     }
-
     public double getItemY(int item) {
         /*
-        * 0 - Dettol
-        * 1 - Jagabee
-        * 2 - Coke
-        */
+         * 0 - Dettol
+         * 1 - Jagabee
+         * 2 - Coke
+         */
         //gets item type to pick and returns item coordinate
         double[] itemCo = new double[3];
 
@@ -134,98 +103,31 @@ public class Vision extends SubsystemBase{
         
         return itemCo[item];
     }
-    
-    public void getWOBItems(){
-      double[] defaultValue = new double[1];
-      // reads the array passed to the networktable
-      double[] Red = table.getEntry("Red").getDoubleArray(defaultValue);
-      double[] Green = table.getEntry("Green").getDoubleArray(defaultValue);
-      double[] Blue = table.getEntry("Blue").getDoubleArray(defaultValue);
-      // stores the data in Globals
-      int[][] Targets = new int[3][3];
-      for (int i = 0; i >= Red.length; i++){
-        Targets[0][i] = (int)(Red[i]);
-        Targets[1][i] = (int)(Green[i]);
-        Targets[2][i] = (int)(Blue[i]);
-      }
-      Globals.Targets = Targets;
-    }
-
-    public void ItemToPick(){
-      /*
-       * target 1 = one
-       * target 2 = two
-       * target 3 = three
-       */
-      // gets the item in the chosen column and assigns it to Globals.curItem
-      int Jag = 0;
-      int Dettol = 0;
-      int Coke = 0;
-      int total = 0;
-      for (int i = 0; i <= Globals.Targets.length; i++){
-        if (i==0)
-        Jag = Globals.Targets[Globals.curTarget][i];
-        else if (i==1)
-        Dettol = Globals.Targets[Globals.curTarget][i];
-        else if (i==2)
-        Coke = Globals.Targets[Globals.curTarget][i];
-      }
-      total = Jag+Dettol+Coke;
-			int[] Task = new int[total];
-      // Appends the items into array Task[]
-      for (int i = 0; i<Jag; i++) {
-        Task[i] = 1;  
-      }
-      for (int i = Jag; i<(Jag+Dettol); i++) {
-        Task[i] = 0;
-      }
-      for (int i = Jag+Dettol; i<(Coke+Jag+Dettol); i++) {
-        Task[i] = 2;
-      }
-      Globals.curItemType = Task[Globals.Itemcnt];
-      Globals.Itemcnt++;
-      if (Globals.Itemcnt >= total) {
-				Globals.curTarget++;
-				Globals.Itemcnt = 0;
-			}
-    }
     public double[] getObjects(){
-      /*
-       * 0 - Dettol Count
-       * 1,2 - Dettol X,Y
-       * 3 - Jagabee Count
-       * 4,5 - Jagabee X,Y 
-       * 6 - Coke Count
-       * 7,8 - Coke X,Y 
-       */
-     
-      double[] objects = (SmartDashboard.getEntry("objects").getDoubleArray(defaultValue));
-      
-      return objects;
-  }
+        /*
+         * 0 - Dettol Count
+         * 1,2 - Dettol X,Y
+         * 3 - Jagabee Count
+         * 4,5 - Jagabee X,Y 
+         * 6 - Coke Count
+         * 7,8 - Coke X,Y 
+         */
+       
+        double[] objects = (SmartDashboard.getEntry("objects").getDoubleArray(defaultValue));
+        
+        return objects;
+    }
+    
     @Override
     public void periodic()
     {
-        //Globals.cW = getLine(2);
-        //D_cW.setNumber(Globals.cW);
-        //D_targetX.setNumber(getLine(0) - 345);
         D_currentItem.setNumber(Globals.curItemType);
         D_currentItemX.setNumber(Globals.curItemX);
         D_currentItemY.setNumber(Globals.curItemY);
-        D_AddedRobotX.setNumber(((Globals.curItemX -400) * Globals.convertPxToM));
-        D_AddedArmX.setNumber(m_arm.getArmPos().getX() + Globals.camera_offset - (Globals.curItemY - getResolution(1)/2) * Globals.convertPxToM);
+        
+        D_AddedRobotX.setNumber(((Globals.curItemX -400 - 24) * Globals.convertPxToM));
+        D_AddedArmX.setNumber((Globals.curItemY - getResolution(1)/2) * Globals.convertPxToM);
         D_useTF.setBoolean(Globals.useTF);
-        //D_T1.setBoolean(Globals.target1_full);
-        //D_T2.setBoolean(Globals.target2_full);
-        D_itemcnt.setNumber(Globals.Itemcnt);
-        double[] defaultValue = new double[1];
-        double[] areas = table.getEntry("area").getDoubleArray(defaultValue);
-        D_JagabeeCount.setNumber(getObjects()[0]);
-        D_DettolCount.setNumber(getObjects()[3]);
-        D_CokeCount.setNumber(getObjects()[6]);
-        // D_CurrentItem.setNumber(Globals.curItemType);
-        // System.out.println(areas[0]);
-        // System.out.println(areas[1]);
-        // System.out.println(areas[2]);
+        
     }
 }

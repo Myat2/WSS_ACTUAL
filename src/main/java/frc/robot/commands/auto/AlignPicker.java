@@ -31,6 +31,7 @@ public class AlignPicker extends MoveRobot {
     private TrapezoidProfile m_profile_y;
     
     private boolean m_endFlag = false;
+    private int camera_offset_pixels = 25;
     private final double _startSpeed;
     public AlignPicker(){
         super(0, 0, 0, 0, 0.4 );
@@ -42,7 +43,7 @@ public class AlignPicker extends MoveRobot {
     @Override
     public void initialize()
     {   
-        super.m_dist = ((Globals.curItemX -400) * Globals.convertPxToM);
+        super.m_dist = ((Globals.curItemX -400 - camera_offset_pixels) * Globals.convertPxToM);
        
         super.initialize();
     }

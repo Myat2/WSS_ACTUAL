@@ -24,7 +24,6 @@ import frc.robot.commands.auto.LoopCmd;
 
 
 
-
 /**
  * DriveMotor class
  * <p>

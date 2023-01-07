@@ -19,7 +19,7 @@ public class LoopCmd extends CommandBase {
     private boolean scheduleFlag;
     protected boolean m_endFlag;
     protected SequentialCommandGroup cmd;
-    private final end_func fn_ptr;
+    protected final end_func fn_ptr;
 
     interface end_func {
         public boolean endCondition();

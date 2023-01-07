@@ -73,7 +73,7 @@ public class TeleCmd extends CommandBase
             m_arm.setServoAngle2(0);
         }
         m_arm.setServoAngle2(0);
-        // m_arm.setServoAngle3(90);
+        // m_arm.setCameraAngle(90);
         //Get other buttons?
 
         //Add code here to control servo motor etc.

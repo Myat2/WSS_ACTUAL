@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import java.util.Map;
 import frc.robot.Globals;
-import frc.robot.commands.auto.Pick;
 
 import com.studica.frc.Servo;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -83,7 +82,6 @@ public class Arm extends SubsystemBase {
         setServoAngle2(150);
         setCameraAngle(Globals.cameraAngle);
         setArmPos(m_pos);
-        SmartDashboard.putData("ElevatorMove: up", new Pick()); // new command
     }
 
     /**
