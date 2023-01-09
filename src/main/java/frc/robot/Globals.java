@@ -36,6 +36,8 @@ public class Globals
     public static boolean target1_full = false;
     public static boolean target2_full = false;
     public static boolean target3_full = false;
+    public static int imH = 600;
+    public static int imW = 800;
     /*
 	 *                                               J|D|C              
 	 *                                            T1|x|x|x|

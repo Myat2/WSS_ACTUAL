@@ -31,91 +31,33 @@ public class Vision extends SubsystemBase{
 
         m_arm.setCameraAngle(290); // Look down
     }
-    public double getLine(int xyw){
-        double[] line = new double[3];
+    public double[] getLine(){
 
-      line[0] = (SmartDashboard.getNumber("Bl_X",0));
-      line[1] = (SmartDashboard.getNumber("Bl_Y",0));
-      line[2] = (SmartDashboard.getNumber("Bl_W",0));
-      return line[xyw];
-    }
-    public double getJagabee(int xy){
-        double[] position = new double[2];
+        // Changed not tested
+        double[] line = (SmartDashboard.getEntry("line").getDoubleArray(defaultValue));
 
-        position[0] = (SmartDashboard.getNumber("JagabeeX",0));
-        position[1] = (SmartDashboard.getNumber("JagabeeY",0));
-        return position[xy];
-    }
-    public double getDettol(int xy){
-        double[] position = new double[2];
-
-        position[0] = (SmartDashboard.getNumber("DettolX",0));
-        position[1] = (SmartDashboard.getNumber("DettolY",0));
-        return position[xy];
-    }
-    public double getCoke(int xy){
-        double[] position = new double[2];
-
-        position[0] = (SmartDashboard.getNumber("CokeX",0));
-        position[1] = (SmartDashboard.getNumber("CokeY",0));
-        return position[xy];
+      return line;
     }
     
-    public double getResolution(int wh){
-        double[] dimension = new double[2];
-
-        dimension[0] = (SmartDashboard.getNumber("imW",0));
-        dimension[1] = (SmartDashboard.getNumber("imH",0));
-        return dimension[wh];
-    }
     
     
     public void setUseTF(){
         SmartDashboard.putBoolean("UseTF", Globals.useTF);
     }
-    public double getItemX(int item) {
-        /*
-         * 1 - Dettol
-         * 2 - Jagabee
-         * 3 - Coke
-         */
-        //gets item type to pick and returns item coordinate
-        double[] itemCo = new double[3];
 
-        itemCo[0] = getDettol(0);
-        itemCo[1] = getJagabee(0);
-        itemCo[2] = getCoke(0);
-        
-        return itemCo[item];
-    }
-    public double getItemY(int item) {
-        /*
-         * 0 - Dettol
-         * 1 - Jagabee
-         * 2 - Coke
-         */
-        //gets item type to pick and returns item coordinate
-        double[] itemCo = new double[3];
-
-        itemCo[0] = getDettol(1);
-        itemCo[1] = getJagabee(1);
-        itemCo[2] = getCoke(1);
-        
-        return itemCo[item];
-    }
     public double[] getObjects(){
-        /*
-         * 0 - Dettol Count
-         * 1,2 - Dettol X,Y
-         * 3 - Jagabee Count
-         * 4,5 - Jagabee X,Y 
-         * 6 - Coke Count
-         * 7,8 - Coke X,Y 
-         */
+        // Jagabee, Dettol, Coke
        
         double[] objects = (SmartDashboard.getEntry("objects").getDoubleArray(defaultValue));
         
         return objects;
+    }
+    public double[] getWOB(){
+        // Red (Jagabee, Dettol, Coke), Green (Jagabee, Dettol, Coke), Blue (Jagabee, Dettol, Coke)
+       
+        double[] wob = (SmartDashboard.getEntry("wob").getDoubleArray(defaultValue));
+        
+        return wob;
     }
     
     @Override
@@ -126,7 +68,7 @@ public class Vision extends SubsystemBase{
         D_currentItemY.setNumber(Globals.curItemY);
         
         D_AddedRobotX.setNumber(((Globals.curItemX -400 - 24) * Globals.convertPxToM));
-        D_AddedArmX.setNumber((Globals.curItemY - getResolution(1)/2) * Globals.convertPxToM);
+        D_AddedArmX.setNumber((Globals.curItemY - 300) * Globals.convertPxToM);
         D_useTF.setBoolean(Globals.useTF);
         
     }

@@ -24,7 +24,6 @@ import frc.robot.Globals;
 // import the commands
 import frc.robot.commands.auto.MoveRobot;
 import frc.robot.commands.auto.MoveTest;
-import frc.robot.commands.auto.functionX;
 //import frc.robot.commands.auto.MoveIRSensor;
 import frc.robot.commands.auto.RotateTest;
 import frc.robot.commands.auto.MoveRobotSense.end_func;
@@ -68,13 +67,8 @@ public class AutoMainCmd extends SequentialCommandGroup {
          */
 
         super(
-            
+                       
             new ViewItem(), 
-            // new InstantCommand(() -> Globals.curItemType = 0),
-            // new InstantCommand(() -> Globals.curItemY = m_vision.getObjects()[Globals.curItemType*3+2]),
-            // new InstantCommand(() -> Globals.curItemX = m_vision.getObjects()[Globals.curItemType*3+1]),
-            
-            // new ProcessSeq()
             new LoopCommands(new ProcessSeq())
         );
 

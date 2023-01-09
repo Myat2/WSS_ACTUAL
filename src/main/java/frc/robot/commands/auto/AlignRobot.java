@@ -34,22 +34,21 @@ public class AlignRobot extends CommandBase{
         useW = object == "trolley"? false:true;
         centerX = x;
         centerY = y;
+        double[] line = m_vision.getLine();
         // targetW = -m_vision.getLine(2);
-        targetX = (m_vision.getLine(0) - centerX);
-        targetY = -(m_vision.getLine(1) - centerY);
+        targetX = (line[0] - centerX);
+        targetY = -(line[1] - centerY);
+        
     }
     public AlignRobot(){
-        // When Width = 300
-        // centerX = 155.0;
-        // centerY = 200.0;
-
-        // Width = 200
+ 
         centerX = 100;
         centerY= 110; 
         useW = true;
-        targetW = -m_vision.getLine(2);
-        targetX = (m_vision.getLine(0) - centerX);
-        targetY = -(m_vision.getLine(1) - centerY);
+        double[] line = m_vision.getLine();
+        targetW = -line[2];
+        targetX = (line[0] - centerX);
+        targetY = -(line[1] - centerY);
         
     }
     /**
@@ -58,9 +57,10 @@ public class AlignRobot extends CommandBase{
     @Override
     public void initialize()
     {   
-        targetW = -m_vision.getLine(2);
-        targetX = (m_vision.getLine(0) - centerX);
-        targetY = -(m_vision.getLine(1) - centerY);
+        double[] line = m_vision.getLine();
+        targetW = -line[2];
+        targetX = (line[0] - centerX);
+        targetY = -(line[1] - centerY);
         m_endFlag = false;
         Globals.useTF = false;
     }
@@ -78,9 +78,10 @@ public class AlignRobot extends CommandBase{
     @Override
     public void execute()
     {
-        targetW = -m_vision.getLine(2);
-        targetX = (m_vision.getLine(0) - centerX);
-        targetY = -(m_vision.getLine(1) - centerY);
+        double[] line = m_vision.getLine();
+        targetW = -line[2];
+        targetX = (line[0] - centerX);
+        targetY = -(line[1] - centerY);
         speedX = 0.002 * targetX;
         speedY = 0.002 * targetY;
         speedW = useW? 0.5 * targetW: 0;
@@ -88,8 +89,7 @@ public class AlignRobot extends CommandBase{
         m_drive.setRobotSpeedType(1, speedY); 
         m_drive.setRobotSpeedType(2, speedW);
         
-        if (((m_vision.getLine(0) - centerX)) <1 && -(m_vision.getLine(1) - centerY) < 1 && 
-        -m_vision.getLine(2)<0.05){
+        if (((line[0] - centerX)) <1 && -(line[1] - centerY) < 1 && -line[2] < 0.05){
             m_endFlag = true;
             m_drive.setRobotSpeedType(0, 0);
             m_drive.setRobotSpeedType(1, 0); 
