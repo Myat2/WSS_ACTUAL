@@ -31,24 +31,16 @@ import frc.robot.commands.auto.LoopCmd;
  */
 public class PickItem extends SequentialCommandGroup
 {   
-    
-    double temp;
     private final static Sensor m_sensor = RobotContainer.m_sensor;
     private final static Vision m_vision = RobotContainer.m_vision;
     private final static Arm m_arm = RobotContainer.m_arm;
-
 	public PickItem() 
-    {
- 
-        
+    { 
         super(
-            
-        new AlignPicker(),
-        new InstantCommand(()-> m_arm.setCameraAngle(240)),
-        new PickUp(),
-        new MoveArm(new Translation2d(0.33,0.24), 0.5)
-
+            new AlignGripper(),
+            new InstantCommand(()-> m_arm.setCameraAngle(240)),
+            new Grab(),
+            new MoveArm(new Translation2d(0.33,0.24), 0.5)     
         );
     }
-    
 }

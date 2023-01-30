@@ -1,18 +1,3 @@
-######## Webcam Object Detection Using Tensorflow-trained Classifier #########
-#
-# Author: Evan Juras
-# Date: 10/27/19
-# Description: 
-# This program uses a TensorFlow Lite model to perform object detection on a live webcam
-# feed. It draws boxes and scores around the objects of interest in each frame from the
-# webcam. To improve FPS, the webcam object runs in a separate thread from the main program.
-# This script will work with either a Picamera or regular USB webcam.
-#
-# This code is based off the TensorFlow Lite image classification example at:
-# https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/examples/python/label_image.py
-#
-# I added my own method of drawing boxes and labels using OpenCV.
-
 # Import packages
 import os
 import argparse
@@ -44,7 +29,7 @@ with cond:
 print("Connected!")
 
 sd = NetworkTables.getTable("SmartDashboard")
-useTF = sd.getBoolean("useTF",False)
+cvMode = sd.getNumber("cvMode",0)
 
 # Define VideoStream class to handle streaming of video from webcam in separate processing thread
 # Source - Adrian Rosebrock, PyImageSearch: https://www.pyimagesearch.com/2015/12/28/increasing-raspberry-pi-fps-with-python-and-opencv/
@@ -205,7 +190,7 @@ def main():
     #vid = cv2.VideoCapture(0)
     cX, cY, cW = 0 , 0, 0
     maxY1, maxY2 = 0, 0
-    # cvMode = sd.getBoolean("useTF",False)
+    #cvMode = sd.getNumber("cvMode",0)
     cvMode = 0
     while True:
         if cvMode == 0:
@@ -238,7 +223,7 @@ def main():
                 cv2.putText(result, "center", (cX - 20, cY - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255))
             except Exception as e:
                 print(e)
-            useTF = sd.getBoolean("UseTF", False)
+            cvMode = sd.getNumber("cvMode",0)
             sd.putNumberArray("line" , line)
             
             cv2.imshow("mask", mask_bgr)        
@@ -301,19 +286,25 @@ def main():
                     
                     label = '%s: %d%%' % (object_name, int(scores[i]*100)) # Example: 'person: 72%'
                     
-                    if object_name == "Jagabee":
+                    if object_name == "CokeU":
                         objects[0] += 1
                         objects[1] = cX
                         objects[2] = cY
-                        
-                    elif object_name == "Dettol":
+
+                    elif object_name == "Coke":
                         objects[3] += 1
                         objects[4] = cX
                         objects[5] = cY
-                    elif object_name == "Coke":
+
+                    elif object_name == "Dettol":
                         objects[6] += 1
                         objects[7] = cX
                         objects[8] = cY
+
+                    elif object_name == "Jagabee":
+                        objects[9] += 1
+                        objects[10] = cX
+                        objects[11] = cY
                     
                     
                     labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2) # Get font size
@@ -321,7 +312,7 @@ def main():
                     cv2.rectangle(frame, (xmin, label_ymin-labelSize[1]-10), (xmin+labelSize[0], label_ymin+baseLine-10), (255, 255, 255), cv2.FILLED) # Draw white box to put label text in
                     cv2.putText(frame, label, (xmin, label_ymin-7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2) # Draw label text
             # Send data to networktables
-            # useTF = sd.getBoolean("UseTF", False)
+            cvMode = sd.getNumber("cvMode",0)
             
             sd.putNumberArray("objects", objects)
             
@@ -341,6 +332,7 @@ def main():
             # Press 'q' to quit
             if cv2.waitKey(1) == ord('q'):
                 break
+
         elif cvMode == 2:
             t1 = cv2.getTickCount()
 
@@ -455,6 +447,7 @@ def main():
             array = newArray.flatten('C')
             print(array)
             sd.putNumberArray('WOB', array)
+            cvMode = sd.getNumber("cvMode",0)
             # Press 'q' to quit
             if cv2.waitKey(1) == ord('q'):
                 break

@@ -15,9 +15,11 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //WPI imports
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Globals;
 import frc.robot.Astar.Layout;
 import frc.robot.utils.OmniDriveOdometry;
 
@@ -275,6 +277,7 @@ public class OmniDrive extends SubsystemBase
    }
 
    public void initialise(){
+        setRobotSpeedXYW(0,0,0);
         m_odometry.resetPosition(Layout.Convert_mm_Pose2d(Layout.startPos));
         gyro.zeroYaw();
         curHeading = targetHeading = getYawRad();
@@ -319,6 +322,10 @@ public class OmniDrive extends SubsystemBase
         D_odometry0.setDouble(value[0]);
         D_odometry1.setDouble(value[1]);
         D_odometry2.setDouble(value[2]);
+
+        
+        Globals.curPose = getPose();
+        SmartDashboard.putString("curPose", Globals.curPose.toString());
   
     }
 }

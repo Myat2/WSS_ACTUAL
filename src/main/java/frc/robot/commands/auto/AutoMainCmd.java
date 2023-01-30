@@ -16,11 +16,14 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ProxyScheduleCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.Astar.Layout;
 import frc.robot.Globals;
+import frc.robot.Points;
+import frc.robot.Robot;
 // import the commands
 import frc.robot.commands.auto.MoveRobot;
 import frc.robot.commands.auto.MoveTest;
@@ -47,17 +50,7 @@ public class AutoMainCmd extends SequentialCommandGroup {
     private final static Sensor m_sensor = RobotContainer.m_sensor;
     private final static Vision m_vision = RobotContainer.m_vision;
     private final static Arm m_arm = RobotContainer.m_arm;
-    // private static double pickUpX = -1.1;
-    // private static double pickUpY = 1.2;
-    // private static double pickUpW = 0;
-
-    // private static double base1X = -3.25;
-    // private static double base1Y = 0.285;
-    // private static double base1W = Math.PI;
-
-    // private static double base2X = -4.2;
-    // private static double base2Y = 1.135;
-    // private static double base2W = Math.PI / 2;
+    private  final static Points m_points = RobotContainer.m_points;
 
     public AutoMainCmd() {
         /*
@@ -68,8 +61,36 @@ public class AutoMainCmd extends SequentialCommandGroup {
 
         super(
                        
-            new ViewItem(), 
-            new LoopCommands(new ProcessSeq())
+            // new ViewItem(), 
+            // new LoopCommands(new ProcessSeq())
+            // new MovetoB(new Pose2d(1.00, 1.33, new Rotation2d(0)))
+            
+            
+            // new InstantCommand(()-> m_vision.setFlag(-1))
+            // new MoveArm(new Translation2d(0.3,0.4), 2),
+            // new InstantCommand(()-> m_arm.setCameraAngle(280)),
+            // new InstantCommand(() -> RobotContainer.m_vision.setFlag(-1)),
+    
+            // // Move out of the way
+            // new MoveRobot(0, -0.05, 0, 0, 5),
+            // new MoveRobot(1, 0.25, 0, 0, 5),
+    
+    
+            // new loopMoveRobotWaypoint(),
+            // new LoopCmd(new loopMoveRobotWaypoint(), () -> Globals.endConditionCP5()),
+            // new InstantCommand(() -> RobotContainer.m_vision.setFlag(-2))
+            
+            new CP5()
+            // new MoveArm(new Translation2d(0.3,0.4), 2),
+            // new MoveRobot(2,Math.PI/2,0,0, Math.PI/2),
+            // new WaitCommand(3),
+            // new InstantCommand(()-> m_arm.setCameraAngle(285)),
+            // new InstantCommand(()-> m_vision.updatePoint("GreenTarget")),
+            // new WaitCommand(2),
+            // new MovetoPoint("GreenTarget")
+            
+
+
         );
 
 
@@ -83,6 +104,7 @@ public class AutoMainCmd extends SequentialCommandGroup {
         RobotContainer.m_arm.initialize();
         RobotContainer.m_omnidrive.initialise();
         Globals.useTF = false;
+        Globals.loopCount=0;
     }
 
 }

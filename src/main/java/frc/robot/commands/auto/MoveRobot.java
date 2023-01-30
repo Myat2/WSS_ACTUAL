@@ -21,13 +21,13 @@ public class MoveRobot extends CommandBase
     private double dT = 0.02;
     private double time = 0;
     private boolean m_endFlag = false;
-    private int m_profType;
-    private TrapezoidProfile.Constraints m_constraints;
-    private TrapezoidProfile.State m_goal;
-    private TrapezoidProfile.State m_setpoint;
-    private TrapezoidProfile m_profile;
+    protected int m_profType;
+    protected TrapezoidProfile.Constraints m_constraints;
+    protected TrapezoidProfile.State m_goal;
+    protected TrapezoidProfile.State m_setpoint;
+    protected TrapezoidProfile m_profile;
 
-    protected final double m_startSpeed, m_endSpeed;
+    protected double m_startSpeed, m_endSpeed, m_maxSpeed;
     protected double m_dist;
     private int m_dir;
 
@@ -47,15 +47,11 @@ public class MoveRobot extends CommandBase
         m_startSpeed = startSpeed;
         m_endSpeed = endSpeed;
         m_profType = type;
-        if (type==2){
-            m_constraints = new TrapezoidProfile.Constraints(maxSpeed, 2.0*Math.PI);
-        }
-        else{
-            m_constraints = new TrapezoidProfile.Constraints(maxSpeed, 0.3);
-        }
+        m_dist = dist;
+        m_maxSpeed = maxSpeed;
  
         
-        m_goal = new TrapezoidProfile.State(dist, m_endSpeed);
+        m_goal = new TrapezoidProfile.State(m_dist, m_endSpeed);
 
         //addRequirements(m_drive); // Adds the subsystem to the command
      
@@ -67,6 +63,13 @@ public class MoveRobot extends CommandBase
     @Override
     public void initialize()
     {   
+        if (m_profType==2){
+            m_constraints = new TrapezoidProfile.Constraints(m_maxSpeed, 2.0*Math.PI);
+        }
+        else{
+            m_constraints = new TrapezoidProfile.Constraints(m_maxSpeed, 0.3);
+        }
+
         m_setpoint = new TrapezoidProfile.State(0, m_startSpeed);
         m_endFlag = false;        
         

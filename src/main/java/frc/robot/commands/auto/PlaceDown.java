@@ -34,7 +34,7 @@ public class PlaceDown extends SequentialCommandGroup
       
       super(
      
-      // new ArmToMidBin(0.5),
+   
       new MoveArm(new Translation2d(0.35,RobotContainer.m_arm.getArmPos().getY()),0.5),
       new MoveArm(new Translation2d(0.35,0),0.5),
       

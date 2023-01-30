@@ -14,16 +14,16 @@ import edu.wpi.first.wpilibj.geometry.Translation2d;
  * <p>
  * This class creates the inline auto command to pick up objects
  */
-public class PickUp extends SequentialCommandGroup
+public class Grab extends SequentialCommandGroup
 {
     
-    public PickUp()
+    public Grab()
     {
       
       super(
         new Gripper(1, 60),
-        new ArmPickX(0),
-        new ArmPickX(1),
+        new ArmPick(0),
+        new ArmPick(1),
         new Gripper(0, 60), 
         new MoveGripper(new Translation2d(0.4,0.3),0.5)
       

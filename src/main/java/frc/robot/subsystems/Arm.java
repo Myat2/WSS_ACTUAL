@@ -19,9 +19,6 @@ public class Arm extends SubsystemBase {
     private final double a1 = 0.24;
     private final double a2 = 0.335;
 
-    private final double cameraY = 0.31;
-    private final double cameraX = 0.43;
-
     private double offset0 = 0; // For making software adjustment to servo
     private double offset1 = 0;
     // Robot 6942
@@ -33,8 +30,8 @@ public class Arm extends SubsystemBase {
     // private double preset1 = -29.681000;
 
     // Robot 6666
-    private double preset0 = -170;
-    private double preset1 = -55;
+    private double preset0 = -160;
+    private double preset1 = -45;
 
     private double shoulderRatio = 4.0;
     private double elbowRatio = 2.0;
@@ -236,86 +233,7 @@ public class Arm extends SubsystemBase {
         D_debug1.setDouble(A);
         D_debug2.setDouble(B);
     }
-    public void setCameraPos(Translation2d pos) {
-
-        // Refer to https://www.alanzucconi.com/2018/05/02/ik-2d-1/
-        m_pos = pos;
-        double x = pos.getX();
-        double y = pos.getY();
-        // arm tip cannot be physically in the area around origin
-        if ((x < 0.05) && (y < 0.1)) {
-            x = 0.05;
-            m_pos = new Translation2d(x, y);
-        }
-
-        double a = cameraX;
-        double c = cameraY;
-        double b = Math.sqrt(x * x + y * y);
-        double alpha = Math.acos((b * b + c * c - a * a) / (2 * b * c));
-        double beta = Math.acos((a * a + c * c - b * b) / (2 * a * c));
-
-        // A is servo0 angle wrt horizon
-        // When A is zero, arm-c is horizontal.
-        // beta is servo1 angle wrt arm-c (BA)
-        // When beta is zero, arm-c is closed to arm-c
-        double B = Math.PI - beta; // Use B to designate beta. Different from diagram.
-        double A = alpha + Math.atan2(y, x);
-
-        // servo0 and servo1 might be mounted clockwise or anti clockwise.
-        // offset0 and offset1 are used to adjust the zero the arm position.
-        // This makes it easier to mount and tune the arm.
-        A = Math.toDegrees(A) * shoulderRatio;
-        B = Math.toDegrees(B) * elbowRatio;
-
-        // Uncomment if servo direction needs to be flip.
-        // A = 300 - A;
-
-        servo0.setAngle(A + offset0); // servo0 is -15 * shoulderRatio
-        servo1.setAngle(B + offset1); // servo1 is -15 degrees * elbowARatio
-
-        D_debug1.setDouble(A);
-        D_debug2.setDouble(B);
-    }
-
-    public double[] getArmAngles(Translation2d pos) {
-
-        double[] anglesToReturn = new double[2];
-        // Refer to https://www.alanzucconi.com/2018/05/02/ik-2d-1/
-        m_pos = pos;
-        double x = pos.getX();
-        double y = pos.getY();
-        // arm tip cannot be physically in the area around origin
-        if ((x < 0.05) && (y < 0.1)) {
-            x = 0.05;
-            m_pos = new Translation2d(x, y);
-        }
-
-        double a = a2;
-        double c = a1;
-        double b = Math.sqrt(x * x + y * y);
-        double alpha = Math.acos((b * b + c * c - a * a) / (2 * b * c));
-        double beta = Math.acos((a * a + c * c - b * b) / (2 * a * c));
-
-        // A is servo0 angle wrt horizon
-        // When A is zero, arm-c is horizontal.
-        // beta is servo1 angle wrt arm-c (BA)
-        // When beta is zero, arm-c is closed to arm-c
-        double B = Math.PI - beta; // Use B to designate beta. Different from diagram.
-        double A = alpha + Math.atan2(y, x);
-
-        // servo0 and servo1 might be mounted clockwise or anti clockwise.
-        // offset0 and offset1 are used to adjust the zero the arm position.
-        // This makes it easier to mount and tune the arm.
-        A = Math.toDegrees(A) * shoulderRatio;
-        B = Math.toDegrees(B) * elbowRatio;
-
-        anglesToReturn[0] = A + preset0;
-        anglesToReturn[1] = B + preset1;
-
-        D_debug1.setDouble(A);
-        D_debug2.setDouble(B);
-        return anglesToReturn;
-    }
+    
     public Translation2d getArmPos(){
         return m_pos;
       } 

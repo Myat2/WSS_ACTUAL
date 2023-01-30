@@ -43,13 +43,13 @@ public class MovetoB extends SequentialCommandGroup {
     static private final TrajectoryConfig m_Config = new TrajectoryConfig(0.5, 0.5).addConstraint(m_CurveConstraint)
             .setReversed(false);
 
-    private Pose2d m_posB;
+    protected Pose2d m_posB;
 
     static MyGenerateTrajectory myGenerateTrajectory = new MyGenerateTrajectory();
 
     @Override
     public void initialize() {
-
+        
         // Astar works in cells (tiles)
         // Need to convert from real unit (x,y) position into nearest tile
         //
