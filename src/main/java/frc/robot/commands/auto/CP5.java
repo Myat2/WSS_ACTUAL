@@ -15,59 +15,22 @@ import frc.robot.subsystems.Arm;
 public class CP5 extends SequentialCommandGroup {
 
   private final static Arm m_arm = RobotContainer.m_arm;
-  public CP5(){
+  public CP5(String target){
     super(  
       
-
+        // Puts camera in viewing position
         new MoveArm(new Translation2d(0.3,0.4), 2),
-        new InstantCommand(()-> m_arm.setCameraAngle(280)),
-        new InstantCommand(() -> RobotContainer.m_vision.setFlag(-1)),
-
+        new InstantCommand(()-> m_arm.setCameraAngle(295)),
+        // Sets the python script to perspective transformation with HSV mode
+        new InstantCommand(() -> RobotContainer.m_vision.setCVMode(3)),
         // Move out of the way
         new MoveRobot(0, -0.05, 0, 0, 5),
         new MoveRobot(1, 0.25, 0, 0, 5),
-
-
+        // Loop MoveRobot Commands until target area is found
         new loopMoveRobotWaypoint(),
-        new LoopCmd(new loopMoveRobotWaypoint(), () -> Globals.endConditionCP5()),
-
-        new InstantCommand(()-> RobotContainer.m_vision.setFlag(0)), // 0 Red, 1 Green, 2 Blue
-
-        // new MovetoPoint("RedTarget"),
-        // new CheckRotation("RedTarget"),
-       
-
-        // new MoveArm(new Translation2d(0.335,0.24), 2),
-        // new InstantCommand(()-> m_arm.setCameraAngle(295)),
-        // new WaitCommand(5),
-        // new AlignRobot(320,240),
-        // new MoveRobot(1, 0.4, 0, 0, 5),
-        // new WaitCommand(1)
-        
-        new InstantCommand(()-> RobotContainer.m_vision.setFlag(1)), // 0 Red, 1 Green, 2 Blue
-
-        new MovetoPoint("GreenTarget"),
-        new CheckRotation("GreenTarget"),
-        new MoveRobot(1, 0.4, 0, 0, 5)
-        // new MoveArm(new Translation2d(0.335,0.24), 2),
-        // new InstantCommand(()-> m_arm.setCameraAngle(295)),
-        // new WaitCommand(5),
-        // new AlignRobot(320,240),
-        // new MoveRobot(1, 0.4, 0, 0, 5),
-        // new WaitCommand(1)
-
-        // new InstantCommand(()-> RobotContainer.m_vision.setFlag(2)), // 0 Red, 1 Green, 2 Blue
-        // new MovetoPoint("BlueTarget"),
-        // new CheckRotation("BlueTarget"),
-        // new WaitCommand(1),
-
-        // new MoveArm(new Translation2d(0.335,0.24), 2),
-        // new InstantCommand(()-> m_arm.setCameraAngle(295)),
-        // new WaitCommand(3),
-        // new AlignRobot(320,240),
-        // new MoveRobot(1, 0.4, 0, 0, 5)
-        
-        
+        new LoopCmd(new loopMoveRobotWaypoint(), () -> Globals.endConditionCP5(target)),
+        new MovetoPoint(target),
+        new MoveRobot(1, 0.2, 0, 0, 5)
       
     );
   }

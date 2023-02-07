@@ -20,7 +20,6 @@ import frc.robot.Globals;
 
 public class Sensor extends SubsystemBase {
     // Creates all necessary hardware interface here for sensors
-    // For servo testing also????
 
     // Sensors
     private final DigitalInput input10;
@@ -38,12 +37,7 @@ public class Sensor extends SubsystemBase {
     private final NetworkTableEntry D_FrontIRSensor = tab.add("Front IR Value (cm)", 0).getEntry();
     private final NetworkTableEntry D_GripperIRSensor = tab.add("Gripper IR Value (cm)", 0).getEntry();
 
-    private final NetworkTableEntry D_Cobra_0 = tab.add("Cobra (0)", 0).getEntry();
-    private final NetworkTableEntry D_Cobra_1 = tab.add("Cobra (1)", 0).getEntry();
-    private final NetworkTableEntry D_Cobra_2 = tab.add("Cobra (2)", 0).getEntry();
-    private final NetworkTableEntry D_Cobra_3 = tab.add("Cobra (3)", 0).getEntry();
-    private final NetworkTableEntry D_CobraTotal = tab.add("Cobra Total", 0).getEntry();
-
+    
     // Subsystem for sensors
     // This is just an example.
     public Sensor() {

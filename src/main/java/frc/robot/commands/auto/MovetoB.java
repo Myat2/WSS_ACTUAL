@@ -26,15 +26,7 @@ import frc.robot.utils.OmniTrackTrajectoryCommand;
  * This class creates the inline auto command to drive the motor
  */
 public class MovetoB extends SequentialCommandGroup {
-    // Waypoints for testing purpose
-    // static private List<Translation2d> waypoints = List.of(
-    // new Translation2d(0.0, 0.0), // start
-    // new Translation2d(0.5, 0.5),
-    // new Translation2d(1.0, 0.5),
-    // new Translation2d(1.0, 1.0),
-    // new Translation2d(0.0, 0.1)
 
-    // );
     private Trajectory m_Trajectory;
     private List<Translation2d> m_pathWayPoints;
     // Set max velocity, acceleration and centripedal acceleration (turn speed)
@@ -135,8 +127,8 @@ public class MovetoB extends SequentialCommandGroup {
                         // Position contollers
                         new PIDController(0.25, 0, 0),
                         new PIDController(0.25, 0, 0),
-                        new ProfiledPIDController(1, 0, 0, new Constraints(Math.PI, Math.PI)),
-                        RobotContainer.m_omnidrive)
+                        new ProfiledPIDController(1, 0, 0, new Constraints(Math.PI, Math.PI)))
+                        //RobotContainer.m_omnidrive)
 
         // End with rotation to the target heading???
 

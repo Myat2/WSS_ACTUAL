@@ -16,4 +16,3 @@ public class MoveRobotWayPoint extends MoveRobot {
         super.initialize();
     }
 }
-// Changes

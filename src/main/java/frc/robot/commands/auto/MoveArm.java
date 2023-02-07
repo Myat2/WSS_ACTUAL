@@ -93,7 +93,4 @@ public class MoveArm extends CommandBase{
     {
         return m_endFlag;
     }
-
-    
-
 }

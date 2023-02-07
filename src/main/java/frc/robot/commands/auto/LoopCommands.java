@@ -14,11 +14,11 @@ public class LoopCommands extends LoopCmd
     private final static Vision m_vision = RobotContainer.m_vision;
     
     public boolean endCondition(){
-        for (int id=0; id<3; id++) {
-            if(m_vision.getObjects()[id*3]>0){
+        for (int id=0; id<4; id++) {
+            if(m_vision.getObjects()[id*4]>0){
                 Globals.curItemType = id;
-                Globals.curItemY = m_vision.getObjects()[Globals.curItemType*3+2];
-                Globals.curItemX = m_vision.getObjects()[Globals.curItemType*3+1];
+                Globals.curItemY = m_vision.getObjects()[Globals.curItemType*4+2];
+                Globals.curItemX = m_vision.getObjects()[Globals.curItemType*4+1];
                 return false;
             }
         }

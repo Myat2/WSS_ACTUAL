@@ -12,10 +12,9 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
-
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //WPI imports
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -98,8 +97,8 @@ public class OmniDrive extends SubsystemBase
         // x, y and w speed controler
         pidControllers = new PIDController[Constants.PID_NUM];
         //Speed control
-        pidControllers[0] = new PIDController(0.4,12.0,0.00, pid_dT);  //x
-        pidControllers[1] = new PIDController(0.4,12.0,0.00, pid_dT);  //y 2.0,32.0,0.02
+        pidControllers[0] = new PIDController(1.2,12.0,0.00, pid_dT);  //x
+        pidControllers[1] = new PIDController(1.2,12.0,0.00, pid_dT);  //y 2.0,32.0,0.02
         pidControllers[2] = new PIDController(2.0,0.0,0.1, pid_dT);    //w
         pidControllers[2].enableContinuousInput(-Math.PI, Math.PI);
 
@@ -112,10 +111,105 @@ public class OmniDrive extends SubsystemBase
         gyro.zeroYaw();
         curHeading = targetHeading = getYawRad();
 
-        m_odometry = new OmniDriveOdometry( Layout.Convert_mm_Pose2d(Layout.startPos));
+        m_odometry = new OmniDriveOdometry(Layout.Convert_mm_Pose2d(Layout.startPos));
 
     }
+    public double getDir(){
+        Globals.curDir = m_odometry.getPose().getRotation().getDegrees();
+        return m_odometry.getPose().getRotation().getDegrees();
+    }
+    /**
+     * This method calculates the coordinates of the robot offset from the trolley/color paper
+     * @param XY - x and y coordinates of trolley/color paper
+     * @param num - 0 for trolley, 1 for target area
+     * @return - offset coordinates
+     */
+    public double[] getCoord(Translation2d XY){
+        double[] coord = new double[2];
+        double x = XY.getX(),
+               y = XY.getY();
+        //double offset = (num==0)?0.4:0.39;
 
+        if (y > 4.29 && x > 0.21 && x < 2.04){ // Left
+            x += 0;
+            y -= 0.4;
+         }
+        else if (y < 0.21 && x > 0.21 && x < 2.04){ //Right
+            x += 0;
+            y += 0.4;
+        }
+
+        else if (x < 0.75 && y > 0.21 && y < 4.29){ // Bottom
+            x += 0.4;
+            y += 0;
+        }
+
+        else if (x > 2.04 && y > 4.29){ // Top Left
+            x -= 0.3;
+            y -= 0.3;
+        }
+
+        else if (x > 2.04 && y < 0.21){ // Top Right
+            x -= 0.3;
+            y += 0.3;
+        }
+
+        else if (x < 0.21 && y > 4.29){ // Bottom Left
+            x += 0.3;
+            y -= 0.3;
+        }
+
+        else { // Top or anywhere else
+            x -= 0.4;
+            y += 0;
+        }
+        coord[0] = x;
+        coord[1] = y;
+
+        return coord;
+    }
+    // public double[] getColorCoord(Translation2d XY){
+    //     double[] coord = new double[2];
+    //     double x = XY.getX(),
+    //            y = XY.getY();
+
+    //     if (y > 4.29 && x > 0.21 && x < 2.04){
+    //         x += 0;
+    //         y -= 0.39;
+    //      }
+    //     else if (y < 0.21 && x > 0.21 && x < 2.04){
+    //         x += 0;
+    //         y += 0.39;
+    //     }
+
+    //     else if (x < 0.75 && y > 0.21 && y < 4.29){
+    //         x += 0.39;
+    //         y += 0;
+    //     }
+
+    //     else if (x > 2.04 && y > 4.29){
+    //         x -= 0.35;
+    //         y -= 0.35;
+    //     }
+
+    //     else if (x > 2.04 && y < 0.21){
+    //         x -= 0.35;
+    //         y += 0.35;
+    //     }
+
+    //     else if (x < 0.21 && y > 4.29){
+    //         x += 0.35;
+    //         y -= 0.35;
+    //     }
+
+    //     else {
+    //         x -= 0.39;
+    //         y += 0;
+    //     }
+    //     coord[0] = x;
+    //     coord[1] = y;
+    //     return coord;
+    // }
     public Pose2d getPose() {
         return m_odometry.getPose();
     }
@@ -229,7 +323,8 @@ public class OmniDrive extends SubsystemBase
 
         //Estimates x and y speed from individual wheel speeds
         //See formula below
-        double speedX = (-(wheelSpeeds[0] + wheelSpeeds[2]) + wheelSpeeds[1])/2;
+        double xratio = 1;//3.88/4.0;
+        double speedX = xratio * (-(wheelSpeeds[0] + wheelSpeeds[2]) + wheelSpeeds[1])/2;
         double speedY = (-wheelSpeeds[0] + wheelSpeeds[2])/(0.866025*2);
 
         //PID control for x and y speed
@@ -281,6 +376,9 @@ public class OmniDrive extends SubsystemBase
         m_odometry.resetPosition(Layout.Convert_mm_Pose2d(Layout.startPos));
         gyro.zeroYaw();
         curHeading = targetHeading = getYawRad();
+        for(int i = 0; i< Constants.PID_NUM; i++){
+            pidControllers[i].reset();
+        }
    }
     /**
      * Code that runs once every robot loop
@@ -304,15 +402,15 @@ public class OmniDrive extends SubsystemBase
          */
 
         //D_curHeading.setDouble(curHeading);
-        D_curHeading.setDouble(curHeading*180/Math.PI);
-        D_tgtHeading.setDouble(targetHeading*180/Math.PI);
-        D_navYaw.setDouble(-gyro.getYaw());
+        // D_curHeading.setDouble(curHeading*180/Math.PI);
+        // D_tgtHeading.setDouble(targetHeading*180/Math.PI);
+        // D_navYaw.setDouble(-gyro.getYaw());
 
-        //Titan encoder
-        D_encoderDisp0.setDouble(encoderSpeeds[0]);//encoderSpeeds[0]);
-        D_encoderDisp1.setDouble(encoderSpeeds[1]);//encoders[1].getEncoderDistance());//encoderSpeeds[1]);
-        D_encoderDisp2.setDouble(encoderSpeeds[2]);//encoderSpeeds[2]);
-        D_inputW.setDouble(pidInputs[2]);
+        // //Titan encoder
+        // D_encoderDisp0.setDouble(encoderSpeeds[0]);//encoderSpeeds[0]);
+        // D_encoderDisp1.setDouble(encoderSpeeds[1]);//encoders[1].getEncoderDistance());//encoderSpeeds[1]);
+        // D_encoderDisp2.setDouble(encoderSpeeds[2]);//encoderSpeeds[2]);
+        // D_inputW.setDouble(pidInputs[2]);
         double [] value;
         value = new double[3];
         value[0] = m_odometry.getPose().getTranslation().getX();
@@ -322,10 +420,7 @@ public class OmniDrive extends SubsystemBase
         D_odometry0.setDouble(value[0]);
         D_odometry1.setDouble(value[1]);
         D_odometry2.setDouble(value[2]);
-
-        
         Globals.curPose = getPose();
-        SmartDashboard.putString("curPose", Globals.curPose.toString());
-  
+        
     }
 }

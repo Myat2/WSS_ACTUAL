@@ -7,7 +7,7 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Astar.AStarAlgorithm;
 import frc.robot.Astar.Grid;
@@ -44,6 +44,7 @@ public class RobotContainer {
     // m_omnidrive.setDefaultCommand(m_teleCmd);
     m_layout = new Layout();
     m_Grid = new Grid(m_layout);
+    
     m_Grid.ExpandObstacles(200);
 
     // Create solver

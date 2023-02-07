@@ -21,10 +21,12 @@ public class Grab extends SequentialCommandGroup
     {
       
       super(
-        new Gripper(1, 60),
+        
         new ArmPick(0),
+        new ArmPick(2),
+        new Gripper(1, 80),
         new ArmPick(1),
-        new Gripper(0, 60), 
+        new Gripper(0, 60),
         new MoveGripper(new Translation2d(0.4,0.3),0.5)
       
 

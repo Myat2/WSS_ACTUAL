@@ -9,11 +9,11 @@ import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Arm extends SubsystemBase {
-    private final Servo servo0, servo1, servo2, servo3;
+    private final Servo servo0, servo1, servo2, servo3, servo4;
 
     private Translation2d m_pos; // current arm tip position
     private final double a1 = 0.24;
@@ -21,23 +21,11 @@ public class Arm extends SubsystemBase {
 
     private double offset0 = 0; // For making software adjustment to servo
     private double offset1 = 0;
-    // Robot 6942
-    // private double preset0 = -175.0;
-    // private double preset1 = -40.0;
 
-    // Robot 4201
-    // private double preset0 = -141.319000;
-    // private double preset1 = -29.681000;
-
-    // Robot 6666
-    private double preset0 = -160;
-    private double preset1 = -45;
 
     private double shoulderRatio = 4.0;
     private double elbowRatio = 2.0;
-    private double q1, q2;
 
-    private double A,B, m_x, m_y;
     
     // Good for debugging
     // Shuffleboard
@@ -69,15 +57,15 @@ public class Arm extends SubsystemBase {
 
         servo2 = new Servo(2); // gripper 
         servo3 = new Servo(3); // camera
-
-        m_pos = new Translation2d(0.34,0.25);
+        servo4 = new Servo(4); // trolley holder
+        m_pos = new Translation2d(0.335,0.24);
         
     }
 
     public void initialize() {
-        m_pos = new Translation2d(0.34,0.25);
-        setServoAngle2(150);
-        setCameraAngle(Globals.cameraAngle);
+        m_pos = new Translation2d(0.335,0.24);
+        setGripperAngle(150);
+        setCameraAngle(Globals.defaultCameraAngle);
         setArmPos(m_pos);
     }
 
@@ -87,7 +75,7 @@ public class Arm extends SubsystemBase {
      * 
      * @param degrees degree to set the servo to, range 0° - 300°
      */
-    public void setServoAngle0(final double degrees) {
+    public void setShoulderAngle(final double degrees) {
         servo0.setAngle(degrees);
     }
 
@@ -97,7 +85,7 @@ public class Arm extends SubsystemBase {
      * 
      * @param degrees degree to set the servo to, range 0° - 300°
      */
-    public void setServoAngle1(final double degrees) {
+    public void setElbowAngle(final double degrees) {
         servo1.setAngle(degrees);
     }
 
@@ -107,7 +95,7 @@ public class Arm extends SubsystemBase {
      * 
      * @param degrees degree to set the servo to, range 0° - 300°
      */
-    public void setServoAngle2(final double degrees) {
+    public void setGripperAngle(final double degrees) {
         servo2.setAngle(degrees);
     }
 
@@ -120,7 +108,24 @@ public class Arm extends SubsystemBase {
     public void setCameraAngle(final double degrees) {
         servo3.setAngle(degrees);
     }
-
+    /**
+     * Sets the servo4 angle (Trollley Holder)
+     * <p>
+     * 
+     * @param degrees degree to set the servo to, range 0° - 300°
+     */
+    public void setTrolleyAngle(final double degrees){
+        servo4.setAngle(degrees);
+      }
+    /**
+     * Get Trolley Servo Angle
+     * <p>
+     * 
+     * @return return slider value
+     */
+    public double getTrolleyAngle(){
+        return servo4.getAngle();
+      }
     /**
      * Get slider-x value
      * <p>
@@ -238,27 +243,7 @@ public class Arm extends SubsystemBase {
         return m_pos;
       } 
 
-    /*
-     * public void setArmPos2(Translation2d pos ) {
-     * 
-     * 
-     * m_pos = pos;
-     * double x = pos.getX();
-     * double y = pos.getY();
-     * 
-     * // q2 = Math.acos( (x*x + y*y - a1*a1 - a2*a2)/(2*a1*a2) );
-     * // q1 = Math.atan(y/x) - Math.atan(a2*Math.sin(q2)/(a1+a2*Math.cos(q2)));
-     * 
-     * q2 = Math.acos( (x*x + y*y - a1*a1 - a2*a2)/(2*a1*a2) );
-     * q2 = -(Math.PI-q2);
-     * 
-     * q1 = Math.atan(y/x) + Math.atan(a2*Math.sin(q2)/(a1+a2*Math.cos(q2)));
-     * 
-     * 
-     * servo0.setAngle(Math.toDegrees(q1));
-     * servo1.setAngle(Math.toDegrees(q2));
-     * }
-     */
+    
     /**
      * Code that runs once every robot loop
      */
@@ -272,7 +257,6 @@ public class Arm extends SubsystemBase {
         D_servo2.setDouble(servo2.getAngle());
         D_posX.setDouble(m_pos.getX());
         D_posY.setDouble(m_pos.getY());
-        // D_posX.setDoubleArray( {m_pos.getX(), m_pos.getY()});
         
     }
 }

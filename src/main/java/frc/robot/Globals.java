@@ -16,27 +16,29 @@ public class Globals
     public static double desOffsetY = 0.2;
 
     public static double convertPxToM = 0.000625; // 0.56/800 , 0.00058 good
-    public static double cameraAngle = 290;
+    public static double defaultCameraAngle = 300;
     public static double armDefaultX = 0.20;
     public static double armDefaultY = 0.09;
-    public static double[] itemOffsets = {0.01,0.003,0.015};
+
+    public static double curDir; 
     public static double targetXArmPick;
     public static double[] yellowBinDimension = {0.415,0.295};
-    public static double frontIROffset = 0.215;
+
+
     public static double camera_offset = 0.12;
     public static double camera_mount_offset = 0.015;
     public static double arm_offset_y = 0.13; 
     public static double arm_offset_z = 0.25;
     public static double gripper_offset = 0.16;
+    public static double CokeRatio = 0.85;
+    
     public static int curItemType = 0;
     public static double curItemX;
     public static double curItemY;
     public static int curTarget;
     public static boolean useTF;
-    public static int Itemcnt = 0, Itemcnt2 = 0, Itemcnt3 = 0;
-    public static boolean target1_full = false;
-    public static boolean target2_full = false;
-    public static boolean target3_full = false;
+    
+
     public static int imH = 600;
     public static int imW = 800;
     public static int totalItems;
@@ -48,14 +50,13 @@ public class Globals
 	 *                                            T2|x|x|X|
 	 *                                            T3|x|x|x|
 	 */
-    public static int[][] Targets = new int[][] { 
-                                                }; 
+    
 
 
     public static int loopCount = 0;
-    public static boolean endConditionCP5(){
+    public static boolean endConditionCP5(String targetArea){
         loopCount++;
-        if(loopCount<19){
+        if(loopCount<19 && RobotContainer.m_vision.getDistanceTarget(targetArea)[0] == 0){
             return false;
         }
         else{
@@ -64,26 +65,17 @@ public class Globals
         }
     } 
 
-    // public static boolean endConditionCP7(){
-    //     loopCount++;
-        
-    //     if(loopCount<19 && (RobotContainer.m_vision.getDistanceTarget("Trolley")[0] == 0)){
-    //         return false;
-    //     }
-    //     else{
-    //         loopCount = 0;
-    //         return true;
-    //     }
-    // } 
-
-    // public static double[][] moveCommands = {
-    //     {2,Math.PI/2,0,0, Math.PI/2},
-    //     {0,0.2,0,0,5},
-    //     {0,-0.2,0,0,5},
-    //     {2,-Math.PI/2,0,0, Math.PI/2},
-    //     {0, -0.43, 0, 0, 5},
-    //     {0, -0.43, 0, 0, 5}
-    // };
+    public static boolean endConditionCP7(){
+        loopCount++;
+        // Count 19
+        if(loopCount<19 && (RobotContainer.m_vision.getDistanceTarget("Trolley")[0] == 0)){
+            return false;
+        }
+        else{
+            loopCount = 0;
+            return true;
+        }
+    } 
 
     public static double[][] moveCommands = {
         {2,Math.PI/2,0,0, Math.PI/2},
@@ -92,7 +84,5 @@ public class Globals
         {0, -0.43, 0, 0, 5}
     };
     
-    public static int flag = 0;
 
-    public static String targetName;
 }

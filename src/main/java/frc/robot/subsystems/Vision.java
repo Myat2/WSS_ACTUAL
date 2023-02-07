@@ -1,12 +1,13 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Globals;
 
@@ -14,57 +15,81 @@ import frc.robot.RobotContainer;
 
 public class Vision extends SubsystemBase{
     private final ShuffleboardTab tab = Shuffleboard.getTab("Vision");
-    
+    private NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    private NetworkTable visionTable = inst.getTable("Shuffleboard/Vision");
     private final NetworkTableEntry D_currentItem = tab.add("CurrentItem", 0).getEntry();
     private final NetworkTableEntry D_currentItemX = tab.add("CurrentItemX", 0).getEntry();
     private final NetworkTableEntry D_currentItemY = tab.add("CurrentItemY", 0).getEntry();
-
-    private final NetworkTableEntry D_AddedArmX = tab.add("AddedArmX", 0).getEntry();
-    private final NetworkTableEntry D_AddedRobotX = tab.add("AddedRobotX", 0).getEntry();
-    private final NetworkTableEntry D_useTF = tab.add("useTF", 0).getEntry();
+    private final NetworkTableEntry D_cvMode = tab.add("cvMode", -1).getEntry();
+    private final NetworkTableEntry D_colorMode = tab.add("ColorMode", 0).getEntry();
     public final NetworkTableEntry D_targetXArm = tab.add("targetXArm", 0).getEntry();
 
-    private double[] defaultValue = new double[] {0};
-    private double[] RedTargetPointPos = new double[2];
-    private double[] GreenTargetPointPos = new double[2];
-    private double[] BlueTargetPointPos = new double[2];
+    private double[] defaultValue = new double[12];
+
     private final static Arm m_arm = RobotContainer.m_arm;
 
 
     public Vision(){
 
-        m_arm.setCameraAngle(290); // Look down
+        m_arm.setCameraAngle(Globals.defaultCameraAngle); // Look down
     }
     public double[] getLine(){
 
-        double[] line = (SmartDashboard.getEntry("line").getDoubleArray(defaultValue));
+        double[] line = (visionTable.getEntry("line").getDoubleArray(defaultValue));
 
       return line;
     }
     
     
-    
     public void setCVMode(int mode){
-
-        SmartDashboard.putNumber("cvMode", mode);
+        /*
+         * Video : -1
+         * Color Detection : 0
+         * Object Detection: 1
+         * WOB Detection : 2
+         * Perspective Transformation : 3
+         * Trolley Detection with Transformation: 4
+         */
+        D_cvMode.setNumber(mode);
+      
     }
 
     public double[] getObjects(){
-        // Jagabee, Dettol, Coke
+        // CokeU, Coke, Dettol, Jagabee
        
-        double[] objects = (SmartDashboard.getEntry("objects").getDoubleArray(defaultValue));
+        double[] objects = (visionTable.getEntry("objects").getDoubleArray(defaultValue));
         
         return objects;
     }
 
     // Get Distance of colored target from camera
-    // Changes
+
     public double[] getDistanceTarget(String targetName){
-        double[] distance = (SmartDashboard.getEntry(targetName).getDoubleArray(defaultValue));
+        double[] distance = (visionTable.getEntry(targetName).getDoubleArray(defaultValue));
         return distance;
     }
-    public void setFlag(int mode){
-        SmartDashboard.putNumber("flag", mode);
+    public void setColor(String color){
+        /*
+         * Black : 0
+         * Red : 1
+         * Green : 2
+         * Blue: 3
+         */
+        int mode = 0;
+        if (color == "Black"){
+            mode = 0;
+        }
+        else if(color == "Red"){
+            mode = 1;
+        }
+        else if(color == "Green"){
+            mode = 2 ;
+        }
+        else if(color == "Blue"){
+            mode = 3;
+        }
+        D_colorMode.setNumber(mode);
+        
     }
     
     public void updatePoint(String targetName){
@@ -82,7 +107,7 @@ public class Vision extends SubsystemBase{
     }
     
     public void updateAllPoints(){
-        String[] targetAreas = {"RedTarget", "GreenTarget", "BlueTarget"};
+        String[] targetAreas = {"RedTarget", "GreenTarget", "BlueTarget", "Trolley"};
         for (String targetName: targetAreas){
             if(getDistanceTarget(targetName)[0] != 0 && getDistanceTarget(targetName)[1] != 0 ){
                 updatePoint(targetName);
@@ -97,24 +122,6 @@ public class Vision extends SubsystemBase{
         D_currentItemX.setNumber(Globals.curItemX);
         D_currentItemY.setNumber(Globals.curItemY);
         
-        D_AddedRobotX.setNumber(((Globals.curItemX -400 - 24) * Globals.convertPxToM));
-        D_AddedArmX.setNumber((Globals.curItemY - 300) * Globals.convertPxToM);
-        D_useTF.setBoolean(Globals.useTF);
-        SmartDashboard.putNumber("LoopCount", Globals.loopCount);
-        SmartDashboard.putString("RedTargetPose", RobotContainer.m_points.getPoint("RedTarget").toString());
-        SmartDashboard.putString("GreenTargetPose", RobotContainer.m_points.getPoint("GreenTarget").toString());
-        SmartDashboard.putString("BlueTargetPose", RobotContainer.m_points.getPoint("BlueTarget").toString());
-        
-        RedTargetPointPos[0] = RobotContainer.m_points.getPoint("RedTarget").getTranslation().getX();
-        RedTargetPointPos[1] = RobotContainer.m_points.getPoint("RedTarget").getTranslation().getY();
-        SmartDashboard.putNumberArray("RedTargetPointPos", RedTargetPointPos);
-
-        GreenTargetPointPos[0] = RobotContainer.m_points.getPoint("GreenTarget").getTranslation().getX();
-        GreenTargetPointPos[1] = RobotContainer.m_points.getPoint("GreenTarget").getTranslation().getY();
-        SmartDashboard.putNumberArray("GreenTargetPointPos", GreenTargetPointPos);
-
-        BlueTargetPointPos[0] = RobotContainer.m_points.getPoint("BlueTarget").getTranslation().getX();
-        BlueTargetPointPos[1] = RobotContainer.m_points.getPoint("BlueTarget").getTranslation().getY();
-        SmartDashboard.putNumberArray("BlueTargetPointPos", BlueTargetPointPos);  
+       
     }
 }

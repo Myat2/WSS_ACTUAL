@@ -1,15 +1,13 @@
 package frc.robot;
 
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-
-
+import frc.robot.Astar.AStarAlgorithm;
+import frc.robot.Astar.Grid;
+import frc.robot.Astar.Layout;
 
 public class Points{
 
@@ -19,15 +17,15 @@ public class Points{
   public Pose2d redTarget = new Pose2d();
   public Pose2d greenTarget = new Pose2d();
   public Pose2d blueTarget = new Pose2d();
+  public Pose2d trolley = new Pose2d();
+
   public Pose2d camOffset = new Pose2d(0.015, 0.67, new Rotation2d(0)); // Update this
  
- 
-
   public Points() {
     pointMap.put("RedTarget", redTarget);
     pointMap.put("GreenTarget", greenTarget);
     pointMap.put("BlueTarget", blueTarget);
-
+    pointMap.put("Trolley", trolley);
   }
   
 
@@ -62,4 +60,5 @@ public class Points{
       return Globals.curPose;
     
   }
+
 }

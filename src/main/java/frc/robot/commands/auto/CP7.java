@@ -13,22 +13,18 @@ public class CP7 extends SequentialCommandGroup {
     public CP7(){
 
         super(
+            // Puts camera in viewing position
             new MoveArm(new Translation2d(0.3,0.4), 2),
-            new InstantCommand(()-> m_arm.setCameraAngle(285)),
-            new InstantCommand(() -> RobotContainer.m_vision.setFlag(-1)),
+            new InstantCommand(()-> m_arm.setCameraAngle(290)),
+            // Put to finding trolley and transform point 
+            new InstantCommand(() -> RobotContainer.m_vision.setCVMode(4)),
+            // Move out of the way
+            new MoveRobot(0, -0.05, 0, 0, 5),
+            new MoveRobot(1, 0.25, 0, 0, 5),
+            // Loop MoveRobot Commands until target area is found
             new loopMoveRobotWaypoint(),
-            // new LoopCmd(new loopMoveRobotWaypoint(), () -> Globals.endConditionCP7()),
-
-
-            new MovetoPoint("Trolley"),
-            // new CheckRotation("Trolley"), Idk if you need this 
-            
-            new InstantCommand(()-> RobotContainer.m_vision.setFlag(3)), // 0 Red, 1 Green, 2 Blue, 3 Black
-            new MoveArm(new Translation2d(0.335,0.24), 2),
-            new InstantCommand(()-> m_arm.setCameraAngle(295)),
-            new WaitCommand(3),
-            new AlignRobot(320,240),
-            new MoveArm(new Translation2d(0.335, 0.1), 0.5)
+            new LoopCmd(new loopMoveRobotWaypoint(), () -> Globals.endConditionCP7()),
+            new MovetoPoint("Trolley")
             );
     }
 }

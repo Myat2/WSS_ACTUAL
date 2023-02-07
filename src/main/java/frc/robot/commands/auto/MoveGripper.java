@@ -21,9 +21,4 @@ public class MoveGripper extends MoveArm{
         super.tgt_pos = new Translation2d(pos.getX()-Globals.arm_offset_y, pos.getY()-Globals.arm_offset_z+Globals.gripper_offset);
         
     }
-     /**
-     * Runs before execute
-     */
-    
-
 }

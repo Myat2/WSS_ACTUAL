@@ -5,13 +5,11 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 
 public class loopMoveRobotWaypoint extends SequentialCommandGroup {
-
-
     public loopMoveRobotWaypoint(){
         super(
             new MoveRobotWayPoint(),
-            new WaitCommand(3),
+            new WaitCommand(4),
             new InstantCommand(() -> RobotContainer.m_vision.updateAllPoints())
         );
     }
-}// Changes
+}

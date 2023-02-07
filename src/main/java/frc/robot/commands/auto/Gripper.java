@@ -29,9 +29,10 @@ public class Gripper extends CommandBase
     private int isOpen;
     private double targetAngle;
     private int[][] itemGripperSizes = {
-        {120,60}, // Dettol
-        {120,50}, // Jagabee
-        {120,60}, // Coke
+        {210,90}, // CokeUp
+        {210,0}, // Coke
+        {210,0}, // Dettol
+        {220,0} // Jagabee
     };
     /**
      * This command opens or closes the gripper
@@ -80,10 +81,10 @@ public class Gripper extends CommandBase
         
         m_setpoint = m_profile.calculate(dT);
         
-        m_arm.setServoAngle2(m_setpoint.position);
+        m_arm.setGripperAngle(m_setpoint.position);
         if (m_profile.isFinished(dT)) {
             //distance reached End the command
-            //m_arm.setServoAngle0( m_goal.position);
+            //m_arm.setShoulderAngle( m_goal.position);
             m_endFlag = true;
         }
         

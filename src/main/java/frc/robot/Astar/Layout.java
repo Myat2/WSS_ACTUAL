@@ -1,5 +1,8 @@
 package frc.robot.Astar;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
@@ -24,85 +27,51 @@ public class Layout {
         {0,     y_size_mm,  x_size_mm,     y_size_mm   }, 
         {x_size_mm,  y_size_mm,  x_size_mm,     0}, 
         
-
-        //Bottom
-        // {0,     680,   340,   680}, 
-        // {1013,  0,     1013,  680}, 
-        // {2023,  0,     2023,  680}, 
-        // {3033,  0,     3033,  680}, 
-        // //Top
-        // {1787,  2038,  1787,  2038-450}, 
-        // {3007,  2038,  3007,  2038-300}, 
     };
-
 
     //List all fixed rectangular obstacles in layout here
     public static final int obs_mm[][] = {
         //(x0,y0) - centre of box
         //x0   y0    xSize ySize Angle
-        {1400, 1100,  300,  420, 0 },   //corridoor gurney
-        {115, 3250,  230,  320,  0 }, 
-        {1140, 4390,  320, 230,  0 }, 
+        {1400, 1100,  300,  420, 0 },   //Pick Up bin 1
+        {1400, 2450,  300,  420, 0 },   //Pick Up bin 2
+        // {1140, 4390,  320, 230,  0 }, 
         // {1957, 2038-425,  150,  210,  0 }, 
-        // {3007, 2038-425,  150,  210,  0 }, 
-        // {1546, 115,       150,  210, 0}, //Room gurney
-        // {2546, 115,       150,  210, 0}, 
-        // {3546, 115,       150,  210, 0}, 
-        // {3546, 2038-115,  150,  210, 0}, 
-        // {2546, 2038-115,  150,  210, 0}, 
-
-        // //Room med cube obstacle are not really necessary but good for checking if positions are right
-        // {1546-185, 50,       60,  60, 0}, //Room med cube stand. 
-        // {2546-185, 50,       60,  60, 0}, 
-        // {3546-185, 50,       60,  60, 0}, 
-        // {3546+185, 2038-50,  60,  60, 0}, 
-        // {2546+185, 2038-50,  60,  60, 0}, 
-
-        // {1546+185, 50,       60,  60, 0}, //Room hazmat cube stand. 
-        // {2546+185, 50,       60,  60, 0}, 
-        // {3546+185, 50,       60,  60, 0}, 
-        // {3546-185, 2038-50,  60,  60, 0}, 
-        // {2546-185, 2038-50,  60,  60, 0}, 
-        // {525,  2038-50,   650,  100,  0 },  //Dispensary
+       
     };
+    // Changes
+    public LinkedList<int[]> vision_obs_mm = new LinkedList<int[]>();
+    
 
-    //These are initial positions for robots to go to place medicine cube
-    //Each row corresponds to a room (room-0, room-1 etc)
-    //Robot needs to make final adjustment to align with stand
-    public static final int PickUpBinPos[][] = {
-        //x, y, angle
-        //Robot stops 250mm from stand. To be adjusted
-        {850, 950,       90}, //Room med cube stand. 
-        
-    };
-    //These are initial positions for robots to go to retrieve hazmat cube
-    public static final int hazMatStandPos[][] = {
-        //x, y, angle
-        {0, 0, 0},
-    };
+    //Coordinates of PickUp bin
+    public static final int PickUpBinPos[] = {700,1100,0};
+    public static final int PickUpBin2Pos[] = {700,2450,0};
+    //These are coordinates of the red colored target area (NOTE: indicate the angle of orientation)
+    public static final int RedPos[] = {1900,3469, 0};
+  
+    //These are coordinates of the green colored target area
+    public static final int GreenPos[] = {175,2660, 0};
 
-    //These are initial room gurney positions for robots to go to 
-    public static final int roomGurneyPos[][] = {
-        //x, y, angle
-        {0, 0, 0},
-    };
+    //These are coordinates of the blue colored target area
+    public static final int BluePos[] = {1400,1800, 0};
 
-    // Initial Position for robot to go to for dispensary
-    public static final int dispensaryPos[] = {525, 2038-500, 90};  
+    //These are coordinates of the trolleys (NOTE: indicate the angle of orientation)
+    public static final int T1Pos[] = {150,4350, 45};
+  
+    public static final int T2Pos[] = {830,4350, 0};
+
+    public static final int T3Pos[] = {1400,4350, -90};
 
     // Position for robot to go to for reading work order
-    public static final int workOrderPos[] = {950, 2038-500, 90};
+    public static final int workOrderPos[] = {350, 1200, -90};
 
-    // Initial Position for robot to go to for disposing hazmat
-    public static final int HazMatBinPos[] = {500, 980, 180};
-
-    // Robot start position. Also the cleaning position
-    public static final int startPos[] = {210, 210,  -90}; //start position
+    // Robot start position.
+    public static final int startPos[] = {210, 210, -90}; //start position
     // public static final int startPos[] = {960, 1100, -90}; //For open house
 
     private int walls[][];
     private int obs[][];
-    
+
     public Layout() {
         int i, j;
         

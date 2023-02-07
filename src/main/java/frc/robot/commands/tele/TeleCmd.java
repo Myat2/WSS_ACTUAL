@@ -67,25 +67,25 @@ public class TeleCmd extends CommandBase
         // m_arm.setArmPos(new Translation2d(0.33,-0.07));
         
         if(open){
-            m_arm.setServoAngle2(300);
+            m_arm.setGripperAngle(300);
         }
         else{
-            m_arm.setServoAngle2(0);
+            m_arm.setGripperAngle(0);
         }
-        m_arm.setServoAngle2(0);
+        m_arm.setGripperAngle(0);
         // m_arm.setCameraAngle(90);
         //Get other buttons?
 
         //Add code here to control servo motor etc.
 
         //m_omnidrive.setMotorOut012(s0,s1,s2);
-        // m_arm.setServoAngle0( (w*150) + 150);
-        // m_arm.setServoAngle1( (w*150) + 150);
+        // m_arm.setShoulderAngle( (w*150) + 150);
+        // m_arm.setElbowAngle( (w*150) + 150);
         m_omnidrive.setRobotSpeedXYW(x, y, w*Math.PI);
         Translation2d pos = new Translation2d(m_arm.getSliderX(), m_arm.getSliderY());
         m_arm.setArmPos(pos);
         m_arm.setCameraAngle(m_arm.getSliderCamera());
-        m_arm.setServoAngle2(m_arm.getSliderGripper());
+        m_arm.setGripperAngle(m_arm.getSliderGripper());
 
     }
 

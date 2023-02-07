@@ -51,8 +51,8 @@ public class TestCmd extends CommandBase
 
     }
     public void calibrateArm(double shoulderAngle, double elbowAngle){
-        m_arm.setServoAngle0(shoulderAngle);
-        m_arm.setServoAngle1(elbowAngle);
+        m_arm.setShoulderAngle(shoulderAngle);
+        m_arm.setElbowAngle(elbowAngle);
     }
 
     /**
