@@ -26,7 +26,7 @@ public class Globals
 
 
     public static double camera_offset = 0.12;
-    public static double camera_mount_offset = 0.015;
+    public static double camera_mount_offset_x = 0.01;
     public static double arm_offset_y = 0.13; 
     public static double arm_offset_z = 0.25;
     public static double gripper_offset = 0.16;

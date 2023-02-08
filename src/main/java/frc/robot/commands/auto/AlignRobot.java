@@ -92,12 +92,23 @@ public class AlignRobot extends CommandBase{
         m_drive.setRobotSpeedType(1, speedY); 
         m_drive.setRobotSpeedType(2, speedW);
         
-        if (Math.abs(line[0] - centerX) <2 && - Math.abs(line[1] - centerY) < 2 && Math.abs(line[2]) < 0.05){
-            m_endFlag = true;
-            m_drive.setRobotSpeedType(0, 0);
-            m_drive.setRobotSpeedType(1, 0); 
-            m_drive.setRobotSpeedType(2, 0);
+        if (useW){
+            if (Math.abs(line[0] - centerX) <2 && - Math.abs(line[1] - centerY) < 2 && Math.abs(line[2]) < 0.05){
+                m_endFlag = true;
+                m_drive.setRobotSpeedType(0, 0);
+                m_drive.setRobotSpeedType(1, 0); 
+                m_drive.setRobotSpeedType(2, 0);
+            }
         }
+        else{
+            if (Math.abs(line[0] - centerX) <2 && - Math.abs(line[1] - centerY) < 2){
+                m_endFlag = true;
+                m_drive.setRobotSpeedType(0, 0);
+                m_drive.setRobotSpeedType(1, 0); 
+                m_drive.setRobotSpeedType(2, 0);
+            }
+        }
+        
  
     }
      /**

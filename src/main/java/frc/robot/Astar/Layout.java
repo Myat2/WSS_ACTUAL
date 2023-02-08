@@ -66,8 +66,8 @@ public class Layout {
     public static final int workOrderPos[] = {350, 1200, -90};
 
     // Robot start position.
-    public static final int startPos[] = {210, 210, -90}; //start position
-    // public static final int startPos[] = {960, 1100, -90}; //For open house
+    // public static final int startPos[] = {210, 210, -90}; //start position
+    public static final int startPos[] = {960, 1100, -90}; //For open house / CP1
 
     private int walls[][];
     private int obs[][];

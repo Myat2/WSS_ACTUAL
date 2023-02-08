@@ -18,22 +18,16 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ProxyScheduleCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
+
 import frc.robot.RobotContainer;
-import frc.robot.Astar.Layout;
+
 import frc.robot.Globals;
 import frc.robot.Points;
-import frc.robot.Robot;
-// import the commands
-import frc.robot.commands.auto.MoveRobot;
 
-//import frc.robot.commands.auto.MoveIRSensor;
-import frc.robot.commands.auto.RotateTest;
-import frc.robot.commands.auto.MoveRobotSense.end_func;
 import frc.robot.subsystems.Sensor;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Arm;
-import edu.wpi.first.wpilibj.AnalogInput;
+
 
 /**
  * DriveMotor class
@@ -50,11 +44,7 @@ public class AutoMainCmd extends SequentialCommandGroup {
     public AutoMainCmd() {
 
         super(
-                       
             new CP1()
-          
-
-
         );
 
 

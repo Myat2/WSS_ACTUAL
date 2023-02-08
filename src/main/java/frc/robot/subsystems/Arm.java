@@ -66,6 +66,7 @@ public class Arm extends SubsystemBase {
         m_pos = new Translation2d(0.335,0.24);
         setGripperAngle(150);
         setCameraAngle(Globals.defaultCameraAngle);
+        setTrolleyAngle(0);
         setArmPos(m_pos);
     }
 

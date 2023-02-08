@@ -15,10 +15,10 @@ public class LoopCommands extends LoopCmd
     
     public boolean endCondition(){
         for (int id=0; id<4; id++) {
-            if(m_vision.getObjects()[id*4]>0){
+            if(m_vision.getObjects()[id*3]>0){
                 Globals.curItemType = id;
-                Globals.curItemY = m_vision.getObjects()[Globals.curItemType*4+2];
-                Globals.curItemX = m_vision.getObjects()[Globals.curItemType*4+1];
+                Globals.curItemY = m_vision.getObjects()[Globals.curItemType*3+2];
+                Globals.curItemX = m_vision.getObjects()[Globals.curItemType*3+1];
                 return false;
             }
         }

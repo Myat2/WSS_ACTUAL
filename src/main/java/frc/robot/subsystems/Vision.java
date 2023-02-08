@@ -5,14 +5,15 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Globals;
-
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
-
+import java.util.Map;
 public class Vision extends SubsystemBase{
     private final ShuffleboardTab tab = Shuffleboard.getTab("Vision");
     private NetworkTableInstance inst = NetworkTableInstance.getDefault();
@@ -23,6 +24,17 @@ public class Vision extends SubsystemBase{
     private final NetworkTableEntry D_cvMode = tab.add("cvMode", -1).getEntry();
     private final NetworkTableEntry D_colorMode = tab.add("ColorMode", 0).getEntry();
     public final NetworkTableEntry D_targetXArm = tab.add("targetXArm", 0).getEntry();
+
+    private final NetworkTableEntry D_CameraMountOffsetX = tab.addPersistent("CameraMountOffsetX", 0.01).withWidget(BuiltInWidgets.kNumberSlider)
+    .withProperties(Map.of("min", 0, "max", 0.1)).getEntry();
+    private final NetworkTableEntry D_ConvertPxToM = tab.addPersistent("ConvertPxToM", 0.000625).withWidget(BuiltInWidgets.kNumberSlider)
+    .withProperties(Map.of("min", 0, "max", 0.0007)).getEntry();
+    private final NetworkTableEntry D_ArmOffsetZ = tab.addPersistent("ArmOffsetZ", 0.25).withWidget(BuiltInWidgets.kNumberSlider)
+            .withProperties(Map.of("min", 0, "max", 0.5)).getEntry();
+    private final NetworkTableEntry D_GripperOffsetZ = tab.addPersistent("GripperOffsetZ", 0.16).withWidget(BuiltInWidgets.kNumberSlider)
+            .withProperties(Map.of("min", 0, "max", 0.25)).getEntry();
+    private final NetworkTableEntry D_CokeRatio = tab.addPersistent("CokeRatio", 0.85).withWidget(BuiltInWidgets.kNumberSlider)
+            .withProperties(Map.of("min", 0, "max", 1)).getEntry();
 
     private double[] defaultValue = new double[12];
 
@@ -118,10 +130,16 @@ public class Vision extends SubsystemBase{
     @Override
     public void periodic()
     {
+        Globals.convertPxToM = D_ConvertPxToM.getDouble(0.000625);
+        Globals.camera_mount_offset_x = D_CameraMountOffsetX.getDouble(0.01);
+        Globals.arm_offset_z = D_ArmOffsetZ.getDouble(0.25);
+        Globals.gripper_offset = D_GripperOffsetZ.getDouble(0.16);
+        Globals.CokeRatio = D_CokeRatio.getDouble(0.85);
         D_currentItem.setNumber(Globals.curItemType);
         D_currentItemX.setNumber(Globals.curItemX);
         D_currentItemY.setNumber(Globals.curItemY);
-        
-       
+        SmartDashboard.putString("TrolleyPose", RobotContainer.m_points.obstacleMap.get("Trolley").toString());
+        SmartDashboard.putString("GreenTargetPose", RobotContainer.m_points.pointMap.get("GreenTarget").toString());
+
     }
 }
