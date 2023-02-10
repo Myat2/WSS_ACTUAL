@@ -32,8 +32,8 @@ public class AlignRobot extends CommandBase{
 
     public AlignRobot(String object){
         useW = object == "trolley"? false:true;
-        centerX = 100;
-        centerY = 110;
+        centerX = 105;
+        centerY = 115;
         double[] line = m_vision.getLine();
         // targetW = -m_vision.getLine(2);
         targetX = (line[0] - centerX);

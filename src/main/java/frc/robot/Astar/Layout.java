@@ -6,12 +6,15 @@ import java.util.LinkedList;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
+import frc.robot.subsystems.Vision;
 import edu.wpi.first.wpilibj.geometry.Transform2d;
 
 public class Layout {
     // Dimension of layout in real unit
-    public static final int x_size_mm = 2250;
-    public static final int y_size_mm = 4500;
+    // public static final int x_size_mm = 2250;
+    // public static final int y_size_mm = 4500;
+    public static final int x_size_mm = 1830;
+    public static final int y_size_mm = 2180;
     public static final int tile_size_mm = 25;
     public static final float tile_size_meter = tile_size_mm/1000.0f;
     public static final int X_SIZE = Math.round((float)x_size_mm/tile_size_mm)+1; //??
@@ -34,17 +37,17 @@ public class Layout {
         //(x0,y0) - centre of box
         //x0   y0    xSize ySize Angle
         {1400, 1100,  300,  420, 0 },   //Pick Up bin 1
-        {1400, 2450,  300,  420, 0 },   //Pick Up bin 2
+        {1400, 2450,  300,  420, 0 }   //Pick Up bin 2
+        // {980,230,300,300,0}
         // {1140, 4390,  320, 230,  0 }, 
         // {1957, 2038-425,  150,  210,  0 }, 
        
     };
-    // Changes
-    public LinkedList<int[]> vision_obs_mm = new LinkedList<int[]>();
+    
     
 
     //Coordinates of PickUp bin
-    public static final int PickUpBinPos[] = {700,1100,0};
+    public static final int PickUpBinPos[] = {700,1100,-90};
     public static final int PickUpBin2Pos[] = {700,2450,0};
     //These are coordinates of the red colored target area (NOTE: indicate the angle of orientation)
     public static final int RedPos[] = {1900,3469, 0};
@@ -63,15 +66,17 @@ public class Layout {
     public static final int T3Pos[] = {1400,4350, -90};
 
     // Position for robot to go to for reading work order
-    public static final int workOrderPos[] = {350, 1200, -90};
+
+    public static final int workOrderPos[] = {1200, 350, -90};
+    public static final int demoWorkOrderPos[] = {800, 350, -90};
 
     // Robot start position.
-    // public static final int startPos[] = {210, 210, -90}; //start position
-    public static final int startPos[] = {960, 1100, -90}; //For open house / CP1
+    public static final int startPos[] = {210, 210, -90}; //start position
+    // public static final int startPos[] = {960, 1100, -90}; //For open house /
 
     private int walls[][];
     private int obs[][];
-
+    private static int obsList[][];
     public Layout() {
         int i, j;
         
@@ -93,6 +98,7 @@ public class Layout {
         }
 
     }
+    
 
     static public Translation2d Convert_cell_m(Translation2d pt) {
         Translation2d pt_m = new Translation2d(pt.getX()*tile_size_meter, pt.getY()*tile_size_meter);

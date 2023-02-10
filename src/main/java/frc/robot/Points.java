@@ -7,6 +7,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Transform2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -23,13 +24,15 @@ public class Points{
 
   public Map<String, Pose2d> pointMap = new HashMap<>();
   public Map<String, Pose2d> obstacleMap = new HashMap<>();
+  private Layout layout = RobotContainer.m_layout;
     // Target Areas
   public Pose2d redTarget = new Pose2d();
   public Pose2d greenTarget = new Pose2d();
   public Pose2d blueTarget = new Pose2d();
   public Pose2d trolley = new Pose2d();
   private double[] defaultValue = new double[12];
-  public Pose2d camOffset = new Pose2d(0.015, 0.6, new Rotation2d(0)); // Update this
+  // public Pose2d camOffset = new Pose2d(0.015, 0.6, new Rotation2d(0)); // Update this
+  public Pose2d camOffset = new Pose2d(-0.015, 0.55, new Rotation2d(0)); // Update this
 
   // public Pose2d camOffset = new Pose2d(0.015, 0.67, new Rotation2d(0)); // Update this
   // public Pose2d camOffset = new Pose2d(0.015, 1.02, new Rotation2d(0)); // Update this
@@ -38,6 +41,7 @@ public class Points{
     pointMap.put("RedTarget", redTarget);
     pointMap.put("GreenTarget", greenTarget);
     pointMap.put("BlueTarget", blueTarget);
+    pointMap.put("Trolley", trolley);
     obstacleMap.put("Trolley", trolley);
   }
   
@@ -49,6 +53,13 @@ public class Points{
 
   public void updatePoint(String pointname, Pose2d newpose) {
     pointMap.put(pointname, newpose);
+    if (pointname == "Trolley"){
+      obstacleMap.put(pointname, newpose.plus(new Transform2d(new Translation2d(0,0.38),new Rotation2d())));
+    }
+    else{
+      obstacleMap.put(pointname, newpose.plus(new Transform2d(new Translation2d(0,0.255),new Rotation2d())));
+    }
+    
     
   }
   public void updateObsPoint(String pointname, Pose2d newpose) {
@@ -62,7 +73,14 @@ public class Points{
     
   }
   public void addObstaclePoint(String pointname, Pose2d newpose) {
-    obstacleMap.put(pointname, newpose);
+    Pose2d pose = newpose;
+    if (pointname == "Trolley"){
+      obstacleMap.put(pointname, pose.plus(new Transform2d(new Translation2d(0,0.38),new Rotation2d())));
+    }
+    else{
+      obstacleMap.put(pointname, pose.plus(new Transform2d(new Translation2d(0,0.255),new Rotation2d())));
+    }
+    obstacleMap.put(pointname, pose);
   }
 
   
@@ -82,25 +100,8 @@ public class Points{
     
   }
   
-  // Changes
-  public void updateLayout(){
-    for (String obsName: obstacleMap.keySet()){
-      if(obsName == "Trolley"){
-        int[] arr = new int[]{(int)(getObstacle(obsName).getTranslation().getX()*1000),(int)(getObstacle(obsName).getTranslation().getY()*1000), 295,  295, 0};
-        RobotContainer.m_layout.vision_obs_mm.add(arr);
-      }
-    }
-    // for (Map.Entry<String, Pose2d> set : obstacleMap.entrySet()) {
-    //   if (set.getKey() == "Bin"){
-    //     int[] arr = new int[]{(int)set.getValue().getTranslation().getX()*1000,(int)set.getValue().getTranslation().getY()*1000, 300,  420, 0};
-    //     RobotContainer.m_layout.vision_obs_mm.add(arr);
-    //   }
-    //   else if(set.getKey() == "Trolley"){
-    //     int[] arr = new int[]{(int)set.getValue().getTranslation().getX()*1000,(int)set.getValue().getTranslation().getY()*1000, 295,  295, 0};
-    //     RobotContainer.m_layout.vision_obs_mm.add(arr);
-    //   }
-    // }
-  }
+  
+ 
   public double[] getDistanceTarget(String targetName){
     double[] distance = (pointsTable.getEntry(targetName).getDoubleArray(defaultValue));
     return distance;
@@ -149,22 +150,17 @@ public void updateAllObs(){
 }
 
   public void updateGrid(){
-    for (int i = 0; i< RobotContainer.m_layout.vision_obs_mm.size(); i++){
-      int[] obs = RobotContainer.m_layout.vision_obs_mm.get(i);
-      SmartDashboard.putNumber("obs", (double)obs[0]);
-      RobotContainer.m_Grid.AddObstacle(obs[0], obs[1], obs[2], obs[3], obs[4]);
+    int tile_size_mm = RobotContainer.m_layout.tile_size_mm;
+   
+    for (Map.Entry<String, Pose2d> obstacleEntry :obstacleMap.entrySet()) {
+          int cx_mm = (int)(obstacleEntry.getValue().getTranslation().getX()*1000);
+          int cy_mm= (int)(obstacleEntry.getValue().getTranslation().getY()*1000);
+          RobotContainer.m_Grid.AddObstacle(Math.round((float)cx_mm/tile_size_mm), Math.round((float)cy_mm/tile_size_mm), Math.round((float)300/tile_size_mm), Math.round((float)300/tile_size_mm), obstacleEntry.getValue().getRotation().getRadians());  
     }
+        
+    RobotContainer.m_Grid.ExpandObstacles(210);
   }
-  public void updateAstar(){
+
     
-    
-    
-    RobotContainer.m_layout = new Layout();
-    updateLayout();
-    RobotContainer.m_Grid = new Grid(RobotContainer.m_layout);
-    updateGrid();
-    RobotContainer.m_Grid.ExpandObstacles(300);
-    RobotContainer.m_Astar = new AStarAlgorithm(RobotContainer.m_Grid);
-  }
 
 }

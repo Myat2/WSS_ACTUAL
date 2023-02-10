@@ -51,6 +51,20 @@ public class Vision extends SubsystemBase{
 
       return line;
     }
+    public void getWOBItems(){
+        // reads the array passed to the networktable
+        double[] WOB = visionTable.getEntry("WOB").getDoubleArray(defaultValue);
+        // stores the data in Globals in a 2d array
+        int[][] Targets = new int[3][3];
+        int index = 0;
+            for (int ROW = 0; ROW < 3; ROW++){
+              for (int COL = 0; COL < 3; COL++) {
+              Targets[ROW][COL] = (int) WOB[index];
+              index++;
+              }
+            }
+        Globals.Targets = Targets;
+      }
     
     
     public void setCVMode(int mode){
@@ -138,8 +152,9 @@ public class Vision extends SubsystemBase{
         D_currentItem.setNumber(Globals.curItemType);
         D_currentItemX.setNumber(Globals.curItemX);
         D_currentItemY.setNumber(Globals.curItemY);
-        SmartDashboard.putString("TrolleyPose", RobotContainer.m_points.obstacleMap.get("Trolley").toString());
+        SmartDashboard.putString("TrolleyPose", RobotContainer.m_points.pointMap.get("Trolley").toString());
         SmartDashboard.putString("GreenTargetPose", RobotContainer.m_points.pointMap.get("GreenTarget").toString());
-
+        SmartDashboard.putString("TrolleyObs", RobotContainer.m_points.obstacleMap.get("Trolley").toString());
+        SmartDashboard.putString("ObsMap", RobotContainer.m_points.obstacleMap.toString());
     }
 }

@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Arm extends SubsystemBase {
-    private final Servo servo0, servo1, servo2, servo3, servo4;
+    private final Servo shoulderServo, elbowServo, gripperServo, cameraServo, trolleyServo;
 
     private Translation2d m_pos; // current arm tip position
     private final double a1 = 0.24;
@@ -30,9 +30,9 @@ public class Arm extends SubsystemBase {
     // Good for debugging
     // Shuffleboard
     private final ShuffleboardTab tab = Shuffleboard.getTab("Arm");
-    private final NetworkTableEntry D_servo0 = tab.add("servo0", 0).getEntry();
-    private final NetworkTableEntry D_servo1 = tab.add("servo1", 0).getEntry();
-    private final NetworkTableEntry D_servo2 = tab.add("servo2", 0).getEntry();
+    private final NetworkTableEntry D_shoulderServo = tab.add("shoulderServo", 0).getEntry();
+    private final NetworkTableEntry D_elbowServo = tab.add("elbowServo", 0).getEntry();
+    private final NetworkTableEntry D_gripperServo = tab.add("gripperServo", 0).getEntry();
     private final NetworkTableEntry D_offset0 = tab.addPersistent("offset0", 0).withWidget(BuiltInWidgets.kNumberSlider)
             .withProperties(Map.of("min", -200, "max", 200)).getEntry();
     private final NetworkTableEntry D_offset1 = tab.addPersistent("offset1", 0).withWidget(BuiltInWidgets.kNumberSlider)
@@ -52,12 +52,12 @@ public class Arm extends SubsystemBase {
     .withProperties(Map.of("min", 0, "max", 300)).getEntry();
 
     public Arm() {
-        servo0 = new Servo(0); // shoulder
-        servo1 = new Servo(1); // elbow
+        shoulderServo = new Servo(0); // shoulder
+        elbowServo = new Servo(1); // elbow
 
-        servo2 = new Servo(2); // gripper 
-        servo3 = new Servo(3); // camera
-        servo4 = new Servo(4); // trolley holder
+        gripperServo = new Servo(2); // gripper 
+        cameraServo = new Servo(3); // camera
+        trolleyServo = new Servo(4); // trolley holder
         m_pos = new Translation2d(0.335,0.24);
         
     }
@@ -71,52 +71,52 @@ public class Arm extends SubsystemBase {
     }
 
     /**
-     * Sets the servo0 angle
+     * Sets the shoulderServo angle
      * <p>
      * 
      * @param degrees degree to set the servo to, range 0° - 300°
      */
     public void setShoulderAngle(final double degrees) {
-        servo0.setAngle(degrees);
+        shoulderServo.setAngle(degrees);
     }
 
     /**
-     * Sets the servo1 angle
+     * Sets the elbowServo angle
      * <p>
      * 
      * @param degrees degree to set the servo to, range 0° - 300°
      */
     public void setElbowAngle(final double degrees) {
-        servo1.setAngle(degrees);
+        elbowServo.setAngle(degrees);
     }
 
     /**
-     * Sets the servo2 angle (Gripper)
+     * Sets the gripperServo angle (Gripper)
      * <p>
      * 
      * @param degrees degree to set the servo to, range 0° - 300°
      */
     public void setGripperAngle(final double degrees) {
-        servo2.setAngle(degrees);
+        gripperServo.setAngle(degrees);
     }
 
     /**
-     * Sets the servo2 angle (Camera)
+     * Sets the gripperServo angle (Camera)
      * <p>
      * 
      * @param degrees degree to set the servo to, range 0° - 300°
      */
     public void setCameraAngle(final double degrees) {
-        servo3.setAngle(degrees);
+        cameraServo.setAngle(degrees);
     }
     /**
-     * Sets the servo4 angle (Trollley Holder)
+     * Sets the trolleyServo angle (Trollley Holder)
      * <p>
      * 
      * @param degrees degree to set the servo to, range 0° - 300°
      */
     public void setTrolleyAngle(final double degrees){
-        servo4.setAngle(degrees);
+        trolleyServo.setAngle(degrees);
       }
     /**
      * Get Trolley Servo Angle
@@ -125,8 +125,11 @@ public class Arm extends SubsystemBase {
      * @return return slider value
      */
     public double getTrolleyAngle(){
-        return servo4.getAngle();
+        return trolleyServo.getAngle();
       }
+    public double getCameraAngle(){
+        return cameraServo.getAngle();
+    }
     /**
      * Get slider-x value
      * <p>
@@ -161,36 +164,36 @@ public class Arm extends SubsystemBase {
 
     /**
      * <p>
-     * Returns the servo0 angle
+     * Returns the shoulderServo angle
      * 
      */
 
     public double getServoAngle0() {
-        return servo0.getAngle();
+        return shoulderServo.getAngle();
     }
 
     /**
-     * Returns the servo1 angle
+     * Returns the elbowServo angle
      * <p>
      */
     public double getServoAngle1() {
-        return servo1.getAngle();
+        return elbowServo.getAngle();
     }
 
     /**
-     * Returns the servo2 angle (Gripper)
+     * Returns the gripperServo angle (Gripper)
      * <p>
      */
     public double getServoAngle2() {
-        return servo2.getAngle();
+        return gripperServo.getAngle();
     }
 
     /**
-     * Returns the servo3 angle (Camera)
+     * Returns the cameraServo angle (Camera)
      * <p>
      */
     public double getServoAngle3() {
-        return servo3.getAngle();
+        return cameraServo.getAngle();
     }
 
     /**
@@ -217,14 +220,14 @@ public class Arm extends SubsystemBase {
         double alpha = Math.acos((b * b + c * c - a * a) / (2 * b * c));
         double beta = Math.acos((a * a + c * c - b * b) / (2 * a * c));
 
-        // A is servo0 angle wrt horizon
+        // A is shoulderServo angle wrt horizon
         // When A is zero, arm-c is horizontal.
-        // beta is servo1 angle wrt arm-c (BA)
+        // beta is elbowServo angle wrt arm-c (BA)
         // When beta is zero, arm-c is closed to arm-c
         double B = Math.PI - beta; // Use B to designate beta. Different from diagram.
         double A = alpha + Math.atan2(y, x);
 
-        // servo0 and servo1 might be mounted clockwise or anti clockwise.
+        // shoulderServo and elbowServo might be mounted clockwise or anti clockwise.
         // offset0 and offset1 are used to adjust the zero the arm position.
         // This makes it easier to mount and tune the arm.
         A = Math.toDegrees(A) * shoulderRatio;
@@ -233,8 +236,8 @@ public class Arm extends SubsystemBase {
         // Uncomment if servo direction needs to be flip.
         // A = 300 - A;
 
-        servo0.setAngle(A + offset0); // servo0 is -15 * shoulderRatio
-        servo1.setAngle(B + offset1); // servo1 is -15 degrees * elbowARatio
+        shoulderServo.setAngle(A + offset0); // shoulderServo is -15 * shoulderRatio
+        elbowServo.setAngle(B + offset1); // elbowServo is -15 degrees * elbowARatio
 
         D_debug1.setDouble(A);
         D_debug2.setDouble(B);
@@ -253,9 +256,9 @@ public class Arm extends SubsystemBase {
         offset0 = D_offset0.getDouble(120);
         offset1 = D_offset1.getDouble(-60);
 
-        D_servo0.setDouble(servo0.getAngle());
-        D_servo1.setDouble(servo1.getAngle());
-        D_servo2.setDouble(servo2.getAngle());
+        D_shoulderServo.setDouble(shoulderServo.getAngle());
+        D_elbowServo.setDouble(elbowServo.getAngle());
+        D_gripperServo.setDouble(gripperServo.getAngle());
         D_posX.setDouble(m_pos.getX());
         D_posY.setDouble(m_pos.getY());
         

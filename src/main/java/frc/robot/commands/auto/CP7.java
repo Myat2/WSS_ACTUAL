@@ -15,7 +15,7 @@ public class CP7 extends SequentialCommandGroup {
         super(
             // Puts camera in viewing position
             new MoveArm(new Translation2d(0.3,0.4), 2),
-            new InstantCommand(()-> m_arm.setCameraAngle(290)),
+            new MoveCamera(290),
             // Put to finding trolley and transform point 
             new InstantCommand(() -> RobotContainer.m_vision.setCVMode(4)),
             // Move out of the way

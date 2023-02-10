@@ -1,6 +1,7 @@
 package frc.robot.Astar;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Grid extends Network{
 
@@ -39,7 +40,7 @@ public class Grid extends Network{
         for(int i=0; i< obs.length; i++) {
             AddObstacle(obs[i][0], obs[i][1], obs[i][2], obs[i][3], obs[i][4]*Math.PI/180);
         }
-
+        
         //Expand obstacles. Do here????
     }
 
