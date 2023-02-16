@@ -50,7 +50,7 @@ public class ArmPick extends MoveArm {
         }
         else { // CLEARANCE HEIGHT FOR OPENING GRIPPER
             if (Globals.curItemType==0){// for cokeU
-                double y = (pickUpHeight + 0.12) - Globals.arm_offset_z+ Globals.gripper_offset;
+                double y = (pickUpHeight + 0.13) - Globals.arm_offset_z+ Globals.gripper_offset;
                 pos = new Translation2d(m_arm.getArmPos().getX(), y);   
             }
             else{

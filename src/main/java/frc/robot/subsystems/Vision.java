@@ -152,9 +152,11 @@ public class Vision extends SubsystemBase{
         D_currentItem.setNumber(Globals.curItemType);
         D_currentItemX.setNumber(Globals.curItemX);
         D_currentItemY.setNumber(Globals.curItemY);
-        SmartDashboard.putString("TrolleyPose", RobotContainer.m_points.pointMap.get("Trolley").toString());
-        SmartDashboard.putString("GreenTargetPose", RobotContainer.m_points.pointMap.get("GreenTarget").toString());
-        SmartDashboard.putString("TrolleyObs", RobotContainer.m_points.obstacleMap.get("Trolley").toString());
-        SmartDashboard.putString("ObsMap", RobotContainer.m_points.obstacleMap.toString());
+        // SmartDashboard.putString("TrolleyPose", RobotContainer.m_points.pointMap.get("Trolley").toString());
+        // SmartDashboard.putString("GreenTargetPose", RobotContainer.m_points.pointMap.get("GreenTarget").toString());
+        // SmartDashboard.putString("TrolleyObs", RobotContainer.m_points.obstacleMap.get("Trolley").toString());
+        // SmartDashboard.putString("ObsMap", RobotContainer.m_points.obstacleMap.toString());
+        // SmartDashboard.putString("CurPose", Globals.curPose.toString());
+        // SmartDashboard.putNumber("LineY", RobotContainer.m_vision.getLine()[1]);
     }
 }

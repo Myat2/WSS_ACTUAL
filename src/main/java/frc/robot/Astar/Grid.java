@@ -222,6 +222,26 @@ public class Grid extends Network{
             }
         }
     }
+     /**
+   * Remove rectangular shape obstacle to field.
+   *
+   * @param x0 centre X pos
+   * @param y0 centre Y pos
+   * @param xSize X size of rect
+   * @param ySize Y size of rect
+   * @param angle orientation of rectangle
+   */
+    public void RemoveObstacle(int x0, int y0, int xSize, int ySize, double angle) {
+        for (int x=-xSize/2; x<xSize/2; x++) {
+            for (int y=-ySize/2; y<ySize/2; y++) {
+                int xx = (int)Math.round(x*Math.cos(angle) - y*Math.sin(angle));
+                int yy = (int)Math.round(x*Math.sin(angle) + y*Math.cos(angle));
+                Tile t = find(xx+x0,yy+y0);
+                if (t!=null)
+                    t.setObsValue(0.0);
+            }
+        }
+    }
      
     /**
      * function findLine() - to find that belong to line connecting the two points

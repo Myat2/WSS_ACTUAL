@@ -46,30 +46,45 @@ public class AutoMainCmd extends SequentialCommandGroup {
     public AutoMainCmd() {
 
         super(
-            //new MovetoB(Layout.Convert_mm_Pose2d(Layout.demoWorkOrderPos)),
-            //new ReadWOB()
-            // new FYPDemo(),
-            
-            new InstantCommand(() -> RobotContainer.m_points.addObstaclePoint("Trolley", new Pose2d(new Translation2d(0.98,0.23), new Rotation2d()))),
-            // new WaitCommand(1),
-            new InstantCommand(() ->RobotContainer.m_points.updateGrid()),
-            new MovetoB(new Pose2d(new Translation2d(1.31,0.28), new Rotation2d()))
-            
+           
+            // new CheckRotationPose(Layout.Convert_mm_Pose2d(Layout.T0Pos)),
+            // new MovetoB(Layout.Convert_mm_Pose2d(Layout.T0Pos)),
+            // new CheckRotationPose(Layout.Convert_mm_Pose2d(Layout.PickUpBinPos)),
+            // new MovetoB(Layout.Convert_mm_Pose2d(Layout.PickUpBinPos))
 
+            // new MoveArm(new Translation2d(0.335,0.24), 0.5), // Line detection position
+            // new MoveCamera(300),
+            // new InstantCommand(() -> RobotContainer.m_vision.setCVMode(0)),
+            // new WaitCommand(3),
+            // new AlignRobot(),
+            // new WaitCommand(2),
+            // new InstantCommand(()-> RobotContainer.m_omnidrive.UpdatePosition(Layout.Convert_mm_Pose2d(Layout.PickUpBinPos))),
+
+            // new MovetoB(Layout.Convert_mm_Pose2d(Layout.PickUpBinPos))
+            //new ReadWOB()
+            // new MoveArm(new Translation2d(0.335,0.4), 0.5), // Line detection position
+
+            // // new WaitCommand(2),
+            // new MoveArm(new Translation2d(0.335,0.24), 0.5), // Line detection position
+            // new MoveCamera(300),
+            // new InstantCommand(() -> RobotContainer.m_vision.setCVMode(0)),
+            // new MovetoB(Layout.Convert_mm_Pose2d(Layout.PickUpBinPos)),
+            // new WaitCommand(2),
+            // new AlignRobot(),
+            // new WaitCommand(3),
+            // new InstantCommand(()-> RobotContainer.m_omnidrive.UpdatePosition(Layout.Convert_mm_Pose2d(Layout.PickUpBinPos)))
+
+
+            // new FYPDemo()
+            new CP1()
+
+            //  new Align2Trolley()
+            // new CP5("RedTarget")
+            //new CP1()
             
         );
 
 
-    }
-
-    @Override
-    public void initialize() {
-        // Initialize done before base initialization
-
-        super.initialize();
-        RobotContainer.m_arm.initialize();
-        RobotContainer.m_omnidrive.initialise();
-        Globals.loopCount=0;
     }
 
 }

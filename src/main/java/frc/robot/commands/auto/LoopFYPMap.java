@@ -12,7 +12,8 @@ public class LoopFYPMap extends SequentialCommandGroup{
         super(
             new MoveRobot(0, 0.38, 0, 0, 5),
             new WaitCommand(4),
-            new InstantCommand(()->RobotContainer.m_points.updateAllTarget())
+            // new InstantCommand(()->RobotContainer.m_points.updateAllTarget())
+            new InstantCommand(() -> RobotContainer.m_vision.updateAllPoints())
         );
     }
 }

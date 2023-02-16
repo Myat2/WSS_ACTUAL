@@ -54,8 +54,8 @@ public class SortItems extends SequentialCommandGroup{
                     SortItems::selectTarget
                 ),
             new PlaceDown(),
-            new MoveRobot(1, -0.07, 0, 0, 5),
             new MoveArm(new Translation2d(0.33,0.24), 0.5),
+            new MoveRobot(1, -0.07, 0, 0, 5),
             new CheckRotationPose(Layout.Convert_mm_Pose2d(Layout.PickUpBinPos)),
             new MovetoB(Layout.Convert_mm_Pose2d(Layout.PickUpBinPos)),
             new InstantCommand(() -> m_vision.setCVMode(0)),

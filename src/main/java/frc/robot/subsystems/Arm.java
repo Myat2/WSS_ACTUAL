@@ -58,12 +58,12 @@ public class Arm extends SubsystemBase {
         gripperServo = new Servo(2); // gripper 
         cameraServo = new Servo(3); // camera
         trolleyServo = new Servo(4); // trolley holder
-        m_pos = new Translation2d(0.335,0.24);
+        m_pos = new Translation2d(0.335,0.34);
         
     }
 
     public void initialize() {
-        m_pos = new Translation2d(0.335,0.24);
+        m_pos = new Translation2d(0.335,0.34);
         setGripperAngle(150);
         setCameraAngle(Globals.defaultCameraAngle);
         setTrolleyAngle(0);

@@ -14,10 +14,10 @@ public class Align2Trolley extends SequentialCommandGroup{
   public Align2Trolley(){
     super(
       new MoveArm(new Translation2d(0.335,0.24), 2),
-      new WaitCommand(2),
       new InstantCommand(() -> RobotContainer.m_vision.setCVMode(0)),
+      new WaitCommand(3),
       new AlignRobot("trolley"),
-      new InstantCommand(() -> RobotContainer.m_vision.setCVMode(1))
+      new InstantCommand(() -> RobotContainer.m_vision.setCVMode(-1))
       // new MoveRobot(1, 0.07, 0, 0, 0.1)
       
     );

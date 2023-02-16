@@ -14,7 +14,7 @@ public class Layout {
     // public static final int x_size_mm = 2250;
     // public static final int y_size_mm = 4500;
     public static final int x_size_mm = 1830;
-    public static final int y_size_mm = 2180;
+    public static final int y_size_mm = 2200;
     public static final int tile_size_mm = 25;
     public static final float tile_size_meter = tile_size_mm/1000.0f;
     public static final int X_SIZE = Math.round((float)x_size_mm/tile_size_mm)+1; //??
@@ -58,6 +58,7 @@ public class Layout {
     //These are coordinates of the blue colored target area
     public static final int BluePos[] = {1400,1800, 0};
 
+    public static final int T0Pos[] = {600,1600, 0};
     //These are coordinates of the trolleys (NOTE: indicate the angle of orientation)
     public static final int T1Pos[] = {150,4350, 45};
   
@@ -68,11 +69,11 @@ public class Layout {
     // Position for robot to go to for reading work order
 
     public static final int workOrderPos[] = {1200, 350, -90};
-    public static final int demoWorkOrderPos[] = {800, 350, -90};
+    public static final int demoWorkOrderPos[] = {900, 300, -90};
 
     // Robot start position.
-    public static final int startPos[] = {210, 210, -90}; //start position
-    // public static final int startPos[] = {960, 1100, -90}; //For open house /
+    // public static final int startPos[] = {210, 210, -90}; //start position
+    public static final int startPos[] = {960, 1100, -90}; //For open house /
 
     private int walls[][];
     private int obs[][];

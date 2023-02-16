@@ -40,7 +40,7 @@ public class Globals
 
     public static boolean useTF;
     
-
+    public static double AdjustFactor = 0.9 ;  // Adjust
     public static int imH = 600;
     public static int imW = 800;
     public static int totalItems;

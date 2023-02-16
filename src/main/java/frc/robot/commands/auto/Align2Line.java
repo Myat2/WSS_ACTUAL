@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Globals;
 import frc.robot.RobotContainer;
+import frc.robot.Astar.Layout;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Sensor;
 import frc.robot.subsystems.Vision;
@@ -17,10 +18,12 @@ public class Align2Line extends SequentialCommandGroup{
 
   public Align2Line(){
     super(
-      new MoveArm(new Translation2d(0.33,0.24), 0.5), // Line detection position
+      new MoveArm(new Translation2d(0.335,0.4), 0.5), // Go up
+      new MoveArm(new Translation2d(0.335,0.24), 0.5), // Line detection position
       new MoveCamera(300),
       new InstantCommand(() -> RobotContainer.m_vision.setCVMode(0)),
       new AlignRobot(),
+      new InstantCommand(()-> RobotContainer.m_omnidrive.UpdatePosition(Layout.Convert_mm_Pose2d(Layout.PickUpBinPos))),
       new InstantCommand(() -> RobotContainer.m_vision.setCVMode(-1)),
       new WaitCommand(2),
       new MoveRobotSense(1, 0.3, 0, 0,0.25, ()-> m_sensor.getFrontIRDistance()<=15)

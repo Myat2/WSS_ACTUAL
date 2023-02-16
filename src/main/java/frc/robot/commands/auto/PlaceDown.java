@@ -35,12 +35,12 @@ public class PlaceDown extends SequentialCommandGroup
       super(
      
    
-      new MoveArm(new Translation2d(0.35,RobotContainer.m_arm.getArmPos().getY()),0.5),
-      new MoveArm(new Translation2d(0.35,0),0.5),
+      new MoveArm(new Translation2d(0.25,RobotContainer.m_arm.getArmPos().getY()),0.5),
+      new MoveArm(new Translation2d(0.25,0.1),0.5),
       
       new Gripper(1,60),
       new WaitCommand(1),
-      new MoveArm(new Translation2d(0.35,0),0.5)
+      new MoveArm(new Translation2d(0.25,0.1),0.5)
       //new Gripper(0,60)
       
       

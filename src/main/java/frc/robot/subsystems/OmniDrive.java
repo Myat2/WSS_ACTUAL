@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //WPI imports
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -392,6 +393,25 @@ public class OmniDrive extends SubsystemBase
     /**
      * Code that runs once every robot loop
      */
+    public void UpdatePosition(Pose2d tgtpos){
+        double x = m_odometry.getPose().getTranslation().getX(),
+               y = m_odometry.getPose().getTranslation().getY(),
+               w = m_odometry.getPose().getRotation().getDegrees();
+        double theta = 0;
+        x += (tgtpos.getTranslation().getX() - x) * Globals.AdjustFactor;
+        y += (tgtpos.getTranslation().getY() - y) * Globals.AdjustFactor;
+        theta = tgtpos.getRotation().getDegrees() - w;
+        if (theta>=180)
+            theta = theta - 360;
+        else if (theta<=-180)
+            theta = theta + 360;
+        
+        w += theta * Globals.AdjustFactor;
+        // SmartDashboard.putNumber("omega", w);
+        w = Math.toRadians(w); // Change
+        Globals.curAngle = w;
+        m_odometry.resetPosition(new Pose2d(x,y,new Rotation2d(w)));
+    }
     @Override
     public void periodic()
     {
@@ -410,10 +430,10 @@ public class OmniDrive extends SubsystemBase
          * Unnecessary display should be removed during contest
          */
 
-        //D_curHeading.setDouble(curHeading);
-        // D_curHeading.setDouble(curHeading*180/Math.PI);
-        // D_tgtHeading.setDouble(targetHeading*180/Math.PI);
-        // D_navYaw.setDouble(-gyro.getYaw());
+        D_curHeading.setDouble(curHeading);
+        D_curHeading.setDouble(curHeading*180/Math.PI);
+        D_tgtHeading.setDouble(targetHeading*180/Math.PI);
+        D_navYaw.setDouble(-gyro.getYaw());
 
         // //Titan encoder
         // D_encoderDisp0.setDouble(encoderSpeeds[0]);//encoderSpeeds[0]);

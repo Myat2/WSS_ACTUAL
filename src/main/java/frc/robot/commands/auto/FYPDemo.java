@@ -1,5 +1,7 @@
 package frc.robot.commands.auto;
 
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Transform2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -20,10 +22,11 @@ public class FYPDemo extends SequentialCommandGroup{
         super(
             new MoveArm(new Translation2d(0.3,0.4), 2),
             new MoveCamera(295),
-            // Sets the python script to perspective transformation with HSV mode
+
+            // Sets the python script to perspective transformation tensorflow
             new InstantCommand(() -> RobotContainer.m_vision.setCVMode(4)),
             // Move out of the way
-            new MoveRobot(0, -0.05, 0, 0, 5),
+            new MoveRobot(0, -0.08, 0, 0, 5),
             new MoveRobot(1, 0.25, 0, 0, 5),
             // Rotate to Map
             new MoveRobot(2,Math.PI/2,0,0, Math.PI/2),
@@ -32,6 +35,8 @@ public class FYPDemo extends SequentialCommandGroup{
             // Mapping Seq
             new LoopFYPMap(),
             new LoopCmd(new LoopFYPMap(), () -> Globals.endConditionDemo()), // Havent Test
+
+            
 
             new InstantCommand(() -> RobotContainer.m_vision.setCVMode(-1)),
             // Read WOB
@@ -43,15 +48,22 @@ public class FYPDemo extends SequentialCommandGroup{
             new CheckRotationPose(RobotContainer.m_points.getPoint("Trolley")),
             new MovetoPoint("Trolley"),
             new Align2Trolley(),
+            // new MoveRobot(1, 0.05, 0, 0, 2),
             new TrolleyHolder(1),
+
 
            // Go to Green Target
            new CheckRotationPose(RobotContainer.m_points.getPoint("GreenTarget")),
            new MovetoPoint("GreenTarget"),
            new TrolleyHolder(0),
+           new MoveRobot(1, -0.10, 0, 0, 2),
+          
+           // Update Obstacles
+           new InstantCommand(() -> RobotContainer.m_points.AddObsGrid()),
+            //Update Green Target to offset
+            new InstantCommand(() -> RobotContainer.m_points.pointMap.put("GreenTarget", RobotContainer.m_points.getPoint("GreenTarget").plus(new Transform2d(new Translation2d(0.00, -0.02),new Rotation2d())))),
 
-           // Update Grid
- 
+
         //    Go to Pickup Bin
             
             new MovetoB(Layout.Convert_mm_Pose2d(Layout.PickUpBinPos)),
