@@ -63,6 +63,7 @@ public class Points{
     //   obstacleMap.put(pointname, newpose.plus(new Transform2d(new Translation2d(0,0.255),new Rotation2d())));
     // }
     if(pointname != "Trolley"){
+      
       pointMap.put(pointname, newpose.plus(new Transform2d(new Translation2d(0.05, 0.30),new Rotation2d())));
       obstacleMap.put(pointname, newpose.plus(new Transform2d(new Translation2d(0.0, 0.95),new Rotation2d())));
     }

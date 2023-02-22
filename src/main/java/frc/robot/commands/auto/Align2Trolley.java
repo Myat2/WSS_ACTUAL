@@ -15,6 +15,7 @@ public class Align2Trolley extends SequentialCommandGroup{
     super(
       new MoveArm(new Translation2d(0.335,0.24), 2),
       new InstantCommand(() -> RobotContainer.m_vision.setCVMode(0)),
+      new InstantCommand(()-> RobotContainer.m_vision.setColor("Black")),
       new WaitCommand(3),
       new AlignRobot("trolley"),
       new InstantCommand(() -> RobotContainer.m_vision.setCVMode(-1))

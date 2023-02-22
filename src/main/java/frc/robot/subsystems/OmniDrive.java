@@ -69,6 +69,7 @@ public class OmniDrive extends SubsystemBase
     private final NetworkTableEntry D_odometry1 = tab.add("odo y", 0).getEntry();
     private final NetworkTableEntry D_odometry2 = tab.add("odo A", 0).getEntry();
 
+    private double[] ffws;
     //Subsystem for omnidrive
     public OmniDrive() {
 
@@ -107,7 +108,7 @@ public class OmniDrive extends SubsystemBase
 
 
         pidControllers[2].enableContinuousInput(-Math.PI, Math.PI);
-
+        ffws = new double[Constants.PID_NUM];
         //Inputs and Outputs for wheel controller
         pidInputs = new double[Constants.PID_NUM];
         pidOutputs = new double[Constants.PID_NUM];
@@ -226,6 +227,7 @@ public class OmniDrive extends SubsystemBase
 
     public double getYawRad() {
         return -gyro.getYaw()*Math.PI/180;
+        // return -gyro.getFusedHeading()*Math.PI/180;
     }
 
     /**
@@ -358,14 +360,15 @@ public class OmniDrive extends SubsystemBase
         /////////////////////////////////////////////////////////////////////////////////////////
         curHeading = getYawRad();
         
-        targetHeading += pidInputs[2]*pid_dT;   
+        targetHeading += pidInputs[2]*pid_dT * 0.996;   // add ratio to compensate
 
         //Limit targetHeading to -Pi to +Pi
         if (targetHeading>Math.PI) targetHeading -= Math.PI*2;
         if (targetHeading<-Math.PI) targetHeading += Math.PI*2;
 
-        pidOutputs[2] = pidControllers[2].calculate(curHeading, targetHeading);
+        ffws[2] = pidInputs[2]*0.43;
 
+        pidOutputs[2] = pidControllers[2].calculate(curHeading, targetHeading) + ffws[2];
         //Limit output to -1.0 to 1.0 as PID outputs may be greater then 1.0
         double max=1.0;
         for (int i=0; i<Constants.MOTOR_NUM; i++) {

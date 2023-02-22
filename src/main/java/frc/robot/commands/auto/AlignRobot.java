@@ -34,7 +34,18 @@ public class AlignRobot extends CommandBase{
         useW = object == "trolley"? false:true;
         centerX = 105;
 
-        centerY = 105;
+        centerY = 113;
+        double[] line = m_vision.getLine();
+        // targetW = -m_vision.getLine(2);
+        targetX = (line[0] - centerX);
+        targetY = -(line[1] - centerY);
+        
+    }
+    public AlignRobot(double x, double y){
+        useW = false;
+        centerX = x;
+
+        centerY = y;
         double[] line = m_vision.getLine();
         // targetW = -m_vision.getLine(2);
         targetX = (line[0] - centerX);
@@ -47,8 +58,8 @@ public class AlignRobot extends CommandBase{
         // centerX = 105; 
         // centerY= 110; 
 
-        centerX = 100; 
-        centerY= 90; 
+        centerX = 90; 
+        centerY= 100; 
         useW = true;
         double[] line = m_vision.getLine();
         targetW = -line[2];
@@ -103,23 +114,16 @@ public class AlignRobot extends CommandBase{
         
         m_drive.setRobotSpeedXYW(speedX, speedY, speedW);
         if (useW){
-            if (Math.abs(line[0] - centerX) < 3 &&  Math.abs(line[1] - centerY) < 3 && Math.abs(line[2]) < 0.02){
+            if (Math.abs(line[0] - centerX) < 2 &&  Math.abs(line[1] - centerY) < 2 && Math.abs(line[2]) < 0.02){
                 m_endFlag = true;
                 m_drive.setRobotSpeedXYW(0, 0, 0);
 
-                // m_drive.setRobotSpeedType(0, 0);
-                // m_drive.setRobotSpeedType(1, 0); 
-                // m_drive.setRobotSpeedType(2, 0);
             }
         }
         else{
-            if (Math.abs(line[0] - centerX) <3 &&  Math.abs(line[1] - centerY) < 3){
+            if (Math.abs(line[0] - centerX) <2 &&  Math.abs(line[1] - centerY) < 2){
                 m_endFlag = true;
                 m_drive.setRobotSpeedXYW(0, 0, 0);
-
-                // m_drive.setRobotSpeedType(0, 0);
-                // m_drive.setRobotSpeedType(1, 0); 
-                // m_drive.setRobotSpeedType(2, 0);
             }
         }
         

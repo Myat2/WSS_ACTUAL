@@ -19,7 +19,11 @@ public class CP1 extends SequentialCommandGroup{
   public CP1(){
     super(
       // set arm to vertical position
-      new MoveArm(new Translation2d(0.33,0.24), 0.5), // Line detection position
+      // Change
+      new MovetoB(Layout.Convert_mm_Pose2d(Layout.PickUpBinPos)),
+      new CheckRotationPose(Layout.Convert_mm_Pose2d(Layout.PickUpBinPos)),
+      new Align2Line(),
+      // new MoveArm(new Translation2d(0.33,0.24), 0.5), // Line detection position
       new ViewPickUpBin(),
       new LoopCommands(new ProcessSeq())
      

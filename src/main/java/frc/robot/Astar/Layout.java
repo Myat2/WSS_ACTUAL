@@ -11,10 +11,10 @@ import edu.wpi.first.wpilibj.geometry.Transform2d;
 
 public class Layout {
     // Dimension of layout in real unit
-    // public static final int x_size_mm = 2250;
-    // public static final int y_size_mm = 4500;
-    public static final int x_size_mm = 1830;
-    public static final int y_size_mm = 2200;
+    public static final int x_size_mm = 2250;
+    public static final int y_size_mm = 4500;
+    // public static final int x_size_mm = 1830;
+    // public static final int y_size_mm = 2200;
     public static final int tile_size_mm = 25;
     public static final float tile_size_meter = tile_size_mm/1000.0f;
     public static final int X_SIZE = Math.round((float)x_size_mm/tile_size_mm)+1; //??
@@ -53,7 +53,7 @@ public class Layout {
     public static final int RedPos[] = {1900,3469, 0};
   
     //These are coordinates of the green colored target area
-    public static final int GreenPos[] = {175,2660, 0};
+    public static final int GreenPos[] = {500,2660, 90};
 
     //These are coordinates of the blue colored target area
     public static final int BluePos[] = {1400,1800, 0};
@@ -72,8 +72,8 @@ public class Layout {
     public static final int demoWorkOrderPos[] = {900, 300, -90};
 
     // Robot start position.
-    // public static final int startPos[] = {210, 210, -90}; //start position
-    public static final int startPos[] = {960, 1100, -90}; //For open house /
+    public static final int startPos[] = {210, 210, -90}; //start position
+    // public static final int startPos[] = {960, 1100, -90}; //For open house /
 
     private int walls[][];
     private int obs[][];

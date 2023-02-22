@@ -55,26 +55,27 @@ public class FYPDemo extends SequentialCommandGroup{
            // Go to Green Target
            new CheckRotationPose(RobotContainer.m_points.getPoint("GreenTarget")),
            new MovetoPoint("GreenTarget"),
-           new TrolleyHolder(0),
-           new MoveRobot(1, -0.10, 0, 0, 2),
+           new Align2TargetArea(),
+           new TrolleyHolder(0)
+           
           
-           // Update Obstacles
-           new InstantCommand(() -> RobotContainer.m_points.AddObsGrid()),
-            //Update Green Target to offset
-            new InstantCommand(() -> RobotContainer.m_points.pointMap.put("GreenTarget", RobotContainer.m_points.getPoint("GreenTarget").plus(new Transform2d(new Translation2d(0.00, -0.02),new Rotation2d())))),
+        //    // Update Obstacles
+        //    new InstantCommand(() -> RobotContainer.m_points.AddObsGrid()),
+        //     //Update Green Target to offset
+        //     new InstantCommand(() -> RobotContainer.m_points.pointMap.put("GreenTarget", RobotContainer.m_points.getPoint("GreenTarget").plus(new Transform2d(new Translation2d(0.00, -0.02),new Rotation2d())))),
 
 
-        //    Go to Pickup Bin
+        // //    Go to Pickup Bin
             
-            new MovetoB(Layout.Convert_mm_Pose2d(Layout.PickUpBinPos)),
-            new CheckRotationPose(Layout.Convert_mm_Pose2d(Layout.PickUpBinPos)),
-            new Align2Line(),
+        //     new MovetoB(Layout.Convert_mm_Pose2d(Layout.PickUpBinPos)),
+        //     new CheckRotationPose(Layout.Convert_mm_Pose2d(Layout.PickUpBinPos)),
+        //     new Align2Line(),
 
-           // Pick and place at target area
-           new WaitCommand(2),
-           new ViewPickUpBin(),
-           new InstantCommand(()-> Globals.curTarget = 1), // curTarget = Green
-           new LoopCmd(new SortItems(), ()->Globals.DemoWOBLoopCondition())
+        //    // Pick and place at target area
+        //    new WaitCommand(2),
+        //    new ViewPickUpBin(),
+        //    new InstantCommand(()-> Globals.curTarget = 1), // curTarget = Green
+        //    new LoopCmd(new SortItems(), ()->Globals.DemoWOBLoopCondition())
 
 
 

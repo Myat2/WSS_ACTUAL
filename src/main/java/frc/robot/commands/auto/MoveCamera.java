@@ -28,7 +28,7 @@ public class MoveCamera extends CommandBase
 
     private final double tgt_pos;
     private final Arm m_arm = RobotContainer.m_arm;
-    private final double maxSpeed = 50;
+    private final double maxSpeed = 75;
     /**
      * This command moves the camera
      * <p>

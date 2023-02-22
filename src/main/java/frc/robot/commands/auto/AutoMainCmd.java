@@ -76,11 +76,33 @@ public class AutoMainCmd extends SequentialCommandGroup {
 
 
             // new FYPDemo()
-            new CP1()
-
-            //  new Align2Trolley()
-            // new CP5("RedTarget")
-            //new CP1()
+            // new MovetoB(Layout.Convert_mm_Pose2d(Layout.PickUpBinPos))
+            // new MovetoB(Layout.Convert_mm_Pose2d(Layout.PickUpBinPos)),
+            // new CheckRotationPose(Layout.Convert_mm_Pose2d(Layout.PickUpBinPos)),
+            // new Align2Line()
+            // new CP1()
+            // new MovetoB(Layout.Convert_mm_Pose2d(Layout.GreenPos)), // Added
+            // new CheckRotationPose(Layout.Convert_mm_Pose2d(Layout.GreenPos))
+            // new MovetoB(new Pose2d(new Translation2d(0.6, 1.66), new Rotation2d()))
+            // new CheckRotationPose(Layout.Convert_mm_Pose2d(Layout.GreenPos))
+            // new FYPDemo()
+            // Aligning to Trolley using TF (mode 5) 
+            
+            // new MoveArm(new Translation2d(0.335,0.4), 0.5), // Go up
+            // new MoveArm(new Translation2d(0.335,0.24), 0.5), // Line detection position
+            // new MoveCamera(300),
+            // new InstantCommand(() -> RobotContainer.m_vision.setCVMode(5)),
+            // new WaitCommand(2),
+            // new AlignTrolley(0),
+            // new AlignTrolley(1),
+            
+            // new MoveRobotSense(1, 1, 0, 0, 0.5, () -> m_sensor.getFrontIRDistance() <= 9),
+            // new TrolleyHolder(1),
+            // new Align2TargetArea(),
+            // new TrolleyHolder(0)
+            new TrolleyHolder(0),
+            new WaitCommand(3),
+            new TrolleyHolder(1)
             
         );
 

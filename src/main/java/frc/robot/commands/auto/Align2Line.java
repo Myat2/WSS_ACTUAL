@@ -22,6 +22,7 @@ public class Align2Line extends SequentialCommandGroup{
       new MoveArm(new Translation2d(0.335,0.24), 0.5), // Line detection position
       new MoveCamera(300),
       new InstantCommand(() -> RobotContainer.m_vision.setCVMode(0)),
+      new InstantCommand(()-> RobotContainer.m_vision.setColor("Black")),
       new AlignRobot(),
       new InstantCommand(()-> RobotContainer.m_omnidrive.UpdatePosition(Layout.Convert_mm_Pose2d(Layout.PickUpBinPos))),
       new InstantCommand(() -> RobotContainer.m_vision.setCVMode(-1)),
