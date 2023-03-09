@@ -171,15 +171,12 @@ public void updateAllObs(){
           RobotContainer.m_Grid.AddObstacle(Math.round((float)cx_mm/tile_size_mm), Math.round((float)cy_mm/tile_size_mm), Math.round((float)300/tile_size_mm), Math.round((float)300/tile_size_mm), obstacleEntry.getValue().getRotation().getRadians());  
     }
         
-    RobotContainer.m_Grid.ExpandObstacles(210);
+    RobotContainer.m_Grid.ExpandObstacles(200);
   }
-  public void RemoveTrolleyObsGrid(){
-    int tile_size_mm = RobotContainer.m_layout.tile_size_mm;
-   
-    Pose2d obs = obstacleMap.get("trolley");
-    int cx_mm = (int)(obs.getTranslation().getX()*1000);
-    int cy_mm= (int)(obs.getTranslation().getY()*1000);
-    RobotContainer.m_Grid.RemoveObstacle(Math.round((float)cx_mm/tile_size_mm), Math.round((float)cy_mm/tile_size_mm), Math.round((float)300/tile_size_mm), Math.round((float)300/tile_size_mm), obs.getRotation().getRadians());  
-    RobotContainer.m_Grid.ExpandObstacles(210);
+  public void RemoveObsGrid1(String key){
+    RobotContainer.m_Grid = new Grid(RobotContainer.m_layout);
+    RobotContainer.m
+    obstacleMap.remove(key);
+    AddObsGrid();
   }
 }

@@ -1,12 +1,12 @@
 package frc.robot.Astar;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
+//import java.beans.PropertyChangeListener;
+//import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
 public class AStarAlgorithm {
 
-    private Network network;
+    public Network network;
     private ArrayList<Node> m_path;          //List of connecting cells that form the path
     private ArrayList<Node> m_pathWayPoints; //Waypoints are position where path change direction
 
@@ -15,20 +15,20 @@ public class AStarAlgorithm {
 
     private ArrayList<Node> openList;
     private ArrayList<Node> closedList;
-    private PropertyChangeSupport support;
+    //private PropertyChangeSupport support;
 
     public AStarAlgorithm(Network network) {
         this.network = network;
-        support = new PropertyChangeSupport(this);
+        //support = new PropertyChangeSupport(this);
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener pcl) {
-        support.addPropertyChangeListener(pcl);
-    }
+    // public void addPropertyChangeListener(PropertyChangeListener pcl) {
+    //     //support.addPropertyChangeListener(pcl);
+    // }
 
-    public void removePropertyChangeListener(PropertyChangeListener pcl) {
-        support.removePropertyChangeListener(pcl);
-    }
+    // public void removePropertyChangeListener(PropertyChangeListener pcl) {
+    //     //support.removePropertyChangeListener(pcl);
+    // }
 
     public void solve() {
 
@@ -58,8 +58,14 @@ public class AStarAlgorithm {
 
             openList.remove(current);
             closedList.add(current);
+            // System.out.println("333");
+            // System.out.println(current);
+            // System.out.println(current.getNeighbours());
 
+            ArrayList<Node> nodes = current.getNeighbours();
+            if (nodes != null)
             for (Node n : current.getNeighbours()) {
+
 
                 if (closedList.contains(n) || n.getObsValue() == Node.maxObsValue) {
                     continue;
@@ -70,7 +76,7 @@ public class AStarAlgorithm {
                 dir = current.dirTo(n);
                 if (dir != current.getDir())
                     extraCost = 2;
-                double tempScore = current.getCost() + current.distanceTo(n) * extraCost + n.getObsValue();
+                double tempScore = current.getCost() + current.distanceTo(n) * (extraCost + n.getObsValue());
 
                 if (openList.contains(n)) {
                     if (tempScore == n.getCost()) {
@@ -103,7 +109,7 @@ public class AStarAlgorithm {
 
         }
 
-        updateUI();
+        //updateUI();
     }
 
     public void reset() {
@@ -171,10 +177,10 @@ public class AStarAlgorithm {
         return lowest;
     }
 
-    public void updateUI() {
-        support.firePropertyChange("news", 0, this);
+    // public void updateUI() {
+    //     //support.firePropertyChange("news", 0, this);
 
-    }
+    // }
 
     public Network getNetwork() {
         return network;
