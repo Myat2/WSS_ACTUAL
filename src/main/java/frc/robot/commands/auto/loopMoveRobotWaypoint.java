@@ -11,7 +11,7 @@ public class loopMoveRobotWaypoint extends SequentialCommandGroup {
         super(
             new MoveRobotWayPoint(),
             new WaitCommand(4),
-            new InstantCommand(() -> RobotContainer.m_vision.updateAllPoints())
+            new InstantCommand(() -> RobotContainer.m_points.updateAllPoints())
         );
     }
 }

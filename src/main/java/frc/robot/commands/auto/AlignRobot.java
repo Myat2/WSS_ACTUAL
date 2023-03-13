@@ -1,7 +1,8 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Globals;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants;
 //RobotContainer import
 import frc.robot.RobotContainer;
 
@@ -15,57 +16,37 @@ public class AlignRobot extends CommandBase{
     private final static Vision m_vision = RobotContainer.m_vision;
     private double targetW, targetX, targetY;
     private double speedX, speedY, speedW;
+    private double x2, y2, w2;
+    private double ax, ay, aw;
     private double centerX;
     private double centerY; 
+    private int count;
    
     private boolean m_endFlag = false;
     private boolean useW = false;
     
     /**
-     * This command aligns the robot to desired black objects (T Junction or Trolley)
+     * This command aligns the robot to desired black/color objects (T Junction or color)
      * <p>
      * 
      * @param x - target X position
      * @param y - target Y position
+     * @param w - true or false for using rotation(true for line, false for color)
+     * <p>
+     * Line-> x = 195, y = 175 | Color-> x = 195, y = 200 (Default values, to be adjusted)
      */
-    
+    public AlignRobot(int x, int y, boolean w){
 
-    public AlignRobot(String object){
-        useW = object == "trolley"? false:true;
-        centerX = 105;
-
-        centerY = 113;
+        centerX = x;//100;
+        centerY= y;//100; // wanted to change to 120
+        useW = w;
         double[] line = m_vision.getLine();
-        // targetW = -m_vision.getLine(2);
         targetX = (line[0] - centerX);
         targetY = -(line[1] - centerY);
-        
-    }
-    public AlignRobot(double x, double y){
-        useW = false;
-        centerX = x;
-
-        centerY = y;
-        double[] line = m_vision.getLine();
-        // targetW = -m_vision.getLine(2);
-        targetX = (line[0] - centerX);
-        targetY = -(line[1] - centerY);
-        
-    }
-    
-    public AlignRobot(){
-        // Width = 200
-        // centerX = 105; 
-        // centerY= 110; 
-
-        centerX = 90; 
-        centerY= 100; 
-        useW = true;
-        double[] line = m_vision.getLine();
         targetW = -line[2];
-        targetX = (line[0] - centerX);
-        targetY = -(line[1] - centerY);
-        
+        ax = 0.5*Constants.PID_DT;
+        ay = 0.5*Constants.PID_DT;
+        aw = 1*Constants.PID_DT;
     }
     /**
      * Runs before execute
@@ -73,15 +54,13 @@ public class AlignRobot extends CommandBase{
     @Override
     public void initialize()
     {   
+        count = 0;
         double[] line = m_vision.getLine();
-        targetW = -line[2];
         targetX = (line[0] - centerX);
         targetY = -(line[1] - centerY);
+        targetW = -line[2];
         m_endFlag = false;
-        Globals.useTF = false;
-        m_drive.setRobotSpeedType(0, 0);
-        m_drive.setRobotSpeedType(1, 0); 
-        m_drive.setRobotSpeedType(2, 0);
+
     }
     /**
      * Condition to end speed profile
@@ -97,37 +76,59 @@ public class AlignRobot extends CommandBase{
     @Override
     public void execute()
     {
-        double[] line = m_vision.getLine();
-        targetW = -line[2];
+        if(m_vision.getLine()[0] != 0 && m_vision.getLine()[0] != 1 )
+        {
+            double[] line = m_vision.getLine();
         targetX = (line[0] - centerX);
         targetY = -(line[1] - centerY);
-
-        // When width = 200
-        // speedX = 0.002 * targetX;
-        // speedY = 0.002 * targetY;
+        targetW = -line[2];
         speedX = 0.0015 * targetX;
         speedY = 0.0015 * targetY;
-        speedW = useW? 0.5 * targetW: 0;
-        // m_drive.setRobotSpeedType(0, speedX);
-        // m_drive.setRobotSpeedType(1, speedY); 
-        // m_drive.setRobotSpeedType(2, speedW);
+        speedW = useW? targetW: 0;        
+        if (speedX>0) 
+            if (speedX> (x2+ax)) speedX = x2 + ax;
+        else
+            if (speedX< (x2-ax)) speedX = x2 - ax;
+        if (speedY>0) 
+            if (speedY> (y2+ay)) speedY = y2 + ay;
+        else
+            if (speedY< (y2-ay)) speedY = y2 - ay;
+        if (speedW>0) 
+            if (speedW> (w2+aw)) speedW = w2 + aw;
+        else
+            if (speedW< (w2-aw)) speedX = w2 - aw;
+        x2 = speedX;
+        y2 = speedY;
+        w2 = speedW;       
+        m_drive.setRobotSpeedType(0, speedX);
+        m_drive.setRobotSpeedType(1, speedY); // Y is working well
+        m_drive.setRobotSpeedType(2, speedW);
         
-        m_drive.setRobotSpeedXYW(speedX, speedY, speedW);
+        
         if (useW){
-            if (Math.abs(line[0] - centerX) < 2 &&  Math.abs(line[1] - centerY) < 2 && Math.abs(line[2]) < 0.02){
+            if ( (Math.abs(line[0] - centerX) <2) &&  (Math.abs(line[1] - centerY) < 2) && (Math.abs(line[2]-Math.toRadians(0)) < 0.05) && count>= 5){
                 m_endFlag = true;
-                m_drive.setRobotSpeedXYW(0, 0, 0);
-
+                m_drive.setRobotSpeedType(0, 0);
+                m_drive.setRobotSpeedType(1, 0); 
+                m_drive.setRobotSpeedType(2, 0);
             }
         }
         else{
-            if (Math.abs(line[0] - centerX) <2 &&  Math.abs(line[1] - centerY) < 2){
+            if (Math.abs(line[0] - centerX) <2 &&  Math.abs(line[1] - centerY) < 2 && count >= 200){
                 m_endFlag = true;
-                m_drive.setRobotSpeedXYW(0, 0, 0);
+                m_drive.setRobotSpeedType(0, 0);
+                m_drive.setRobotSpeedType(1, 0); 
+                m_drive.setRobotSpeedType(2, 0);
             }
         }
+          count ++;
+        }
+        else{
+            m_drive.setRobotSpeedXYW(0, 0, 0);
+            m_endFlag = true;
+        }
         
- 
+        
     }
      /**
      * Called when the command is told to end or is interrupted

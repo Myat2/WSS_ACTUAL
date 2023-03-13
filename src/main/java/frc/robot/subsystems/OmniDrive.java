@@ -1,5 +1,8 @@
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
+import java.util.List;
+
 //Vendor imports
 import com.kauailabs.navx.frc.AHRS;
 import com.studica.frc.TitanQuad;
@@ -15,7 +18,6 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //WPI imports
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -36,6 +38,7 @@ public class OmniDrive extends SubsystemBase
     private PIDController[] pidControllers;
     private double[] pidInputs;
     private double[] pidOutputs;
+    private double[] ffws;
 
     private double[] encoderDists;
     private double[] encoderDists_2;
@@ -44,6 +47,7 @@ public class OmniDrive extends SubsystemBase
     private double curHeading, targetHeading;
     private double[] motorOuts;
     private int initCnt;
+    private double m_angle = 0;
     // Odometry class for tracking robot pose
     private final OmniDriveOdometry m_odometry;
     
@@ -52,8 +56,8 @@ public class OmniDrive extends SubsystemBase
 
     // Sensors
     private final DigitalOutput outDebug8;
-
-    private final AHRS gyro;
+    
+    public final AHRS gyro;
 
     // Shuffleboard
     private final ShuffleboardTab tab = Shuffleboard.getTab("OmniDrive");
@@ -68,8 +72,14 @@ public class OmniDrive extends SubsystemBase
     private final NetworkTableEntry D_odometry0 = tab.add("odo x", 0).getEntry();
     private final NetworkTableEntry D_odometry1 = tab.add("odo y", 0).getEntry();
     private final NetworkTableEntry D_odometry2 = tab.add("odo A", 0).getEntry();
-
-    private double[] ffws;
+    private final NetworkTableEntry D_angle = tab.add("angle", 0).getEntry();
+    private final NetworkTableEntry D_Global = tab.add(" dir", 0).getEntry();
+    private final NetworkTableEntry D_motorout = tab.add("motorout", 0).getEntry();
+    private final NetworkTableEntry D_motor0 = tab.add("motor0", 0).getEntry();
+    private final NetworkTableEntry D_motor1 = tab.add("motor1", 0).getEntry();
+    private final NetworkTableEntry D_motorout1 = tab.add("motorout1", 0).getEntry();
+    private final NetworkTableEntry D_motorout2 = tab.add("motorout2", 0).getEntry();
+    private final NetworkTableEntry D_motor2 = tab.add("motor2", 0).getEntry();
     //Subsystem for omnidrive
     public OmniDrive() {
 
@@ -99,20 +109,15 @@ public class OmniDrive extends SubsystemBase
         // x, y and w speed controler
         pidControllers = new PIDController[Constants.PID_NUM];
         //Speed control
-        // pidControllers[0] = new PIDController(1.2,12.0,0.00, pid_dT);  //x
-        // pidControllers[1] = new PIDController(1.2,12.0,0.00, pid_dT);  //y 2.0,32.0,0.02
-        // pidControllers[2] = new PIDController(2.0,0.0,0.1, pid_dT);    //w
         pidControllers[0] = new PIDController(0.4,12.0,0.00, pid_dT);  //x
         pidControllers[1] = new PIDController(0.4,12.0,0.00, pid_dT);  //y 2.0,32.0,0.02
-        pidControllers[2] = new PIDController(4.0,0.0,0.1, pid_dT);    //w
-
-
+        pidControllers[2] = new PIDController(4.0,0.0,0.01, pid_dT);    //w
         pidControllers[2].enableContinuousInput(-Math.PI, Math.PI);
-        ffws = new double[Constants.PID_NUM];
+
         //Inputs and Outputs for wheel controller
         pidInputs = new double[Constants.PID_NUM];
         pidOutputs = new double[Constants.PID_NUM];
-
+        ffws = new double[Constants.PID_NUM];
         // gyro for rotational heading control
         gyro = new AHRS(SPI.Port.kMXP);
         gyro.zeroYaw();
@@ -125,102 +130,227 @@ public class OmniDrive extends SubsystemBase
         Globals.curDir = m_odometry.getPose().getRotation().getDegrees();
         return m_odometry.getPose().getRotation().getDegrees();
     }
-    public double getDirRad(){
-       
-        return m_odometry.getPose().getRotation().getRadians();
-    }
-    /**
+     /**
      * This method calculates the coordinates of the robot offset from the trolley/color paper
      * @param XY - x and y coordinates of trolley/color paper
-     * @param num - 0 for trolley, 1 for target area
+     * @param type - "trolley", "color" for target area
      * @return - offset coordinates
      */
-    public double[] getCoord(Translation2d XY){
-        double[] coord = new double[2];
+    public Translation2d getCoord(Translation2d XY,String type){
+      
         double x = XY.getX(),
                y = XY.getY();
-        //double offset = (num==0)?0.4:0.39;
+        double offset = (type=="trolley")?0.50:0.60;
 
-        if (y > 4.29 && x > 0.21 && x < 2.04){ // Left
+        if (y >= 4.15 && x >= 0.35 && x <= 1.9){ // Left
             x += 0;
-            y -= 0.4;
+            y -= offset;
          }
-        else if (y < 0.21 && x > 0.21 && x < 2.04){ //Right
+        else if (y <= 0.35 && x >= 0.35 && x <= 1.9){ //Right
             x += 0;
-            y += 0.4;
+            y += offset;
         }
 
-        else if (x < 0.75 && y > 0.21 && y < 4.29){ // Bottom
-            x += 0.4;
+        else if (x <= 1.0 && y >= 0.35 && y <= 4.15){ // Bottom
+            x += offset;
             y += 0;
         }
 
-        else if (x > 2.04 && y > 4.29){ // Top Left
-            x -= 0.3;
-            y -= 0.3;
+        else if (x >= 1.9 && y >= 4.15){ // Top Left
+            if(type == "trolley"){
+                x -= 0.35;
+                y -= 0.35; 
+            }
+            else{
+                x -= 0.4;
+                y -= 0.4;
+            }
         }
 
-        else if (x > 2.04 && y < 0.21){ // Top Right
-            x -= 0.3;
-            y += 0.3;
+        else if (x >= 1.9 && y <= 0.35){ // Top Right
+            if(type == "trolley"){
+                x -= 0.35;
+                y += 0.35;
+            }
+            else{
+                x -= 0.4;
+                y += 0.4;
+            }
         }
 
-        else if (x < 0.21 && y > 4.29){ // Bottom Left
-            x += 0.3;
-            y -= 0.3;
+        else if (x <= 0.35 && y >= 4.15){ // Bottom Left
+            if(type == "trolley"){
+                x += 0.35;
+                y -= 0.35;
+            }
+            else{
+                x += 0.4;
+                y -= 0.4;
+            }
         }
 
         else { // Top or anywhere else
-            x -= 0.4;
+            x -= offset;
             y += 0;
         }
-        coord[0] = x;
-        coord[1] = y;
 
+        Translation2d coord = new Translation2d(x,y);
         return coord;
     }
-    // public double[] getColorCoord(Translation2d XY){
-    //     double[] coord = new double[2];
-    //     double x = XY.getX(),
-    //            y = XY.getY();
+    public void FindNearestTrolley(){
+        Translation2d robotXY = getPose().getTranslation();
+        Pose2d[] list = new Pose2d[] {};
+        double first, second, third;
+        // finds distance from robot to trolleys
+        double d1 = robotXY.getDistance(Layout.Convert_mm_Pose2d(Layout.T1Pos).getTranslation()),
+               d2 = robotXY.getDistance(Layout.Convert_mm_Pose2d(Layout.T2Pos).getTranslation()),
+               d3 = robotXY.getDistance(Layout.Convert_mm_Pose2d(Layout.T3Pos).getTranslation());
+        
+        // Find smallest distance
+        first = Math.min(d1, Math.min(d2, d3));
+        // Find largest distance
+        third = Math.max(d1, Math.max(d2, d3));
+        // Find middle distance
+        second = d1 + d2 + d3 - first - third;
 
-    //     if (y > 4.29 && x > 0.21 && x < 2.04){
-    //         x += 0;
-    //         y -= 0.39;
-    //      }
-    //     else if (y < 0.21 && x > 0.21 && x < 2.04){
-    //         x += 0;
-    //         y += 0.39;
-    //     }
+        if (first==d1)
+            list[0] = Layout.Convert_mm_Pose2d(Layout.T1Pos);
+        else if (first==d2)
+            list[0] = Layout.Convert_mm_Pose2d(Layout.T2Pos); 
+        else if (first == d3)   
+            list[0] = Layout.Convert_mm_Pose2d(Layout.T3Pos);
+        if (second==d1)
+            list[1] = Layout.Convert_mm_Pose2d(Layout.T1Pos);
+        else if (second==d2)
+            list[1] = Layout.Convert_mm_Pose2d(Layout.T2Pos); 
+        else if (second == d3)   
+            list[1] = Layout.Convert_mm_Pose2d(Layout.T3Pos);
+        if (third==d1)
+            list[2] = Layout.Convert_mm_Pose2d(Layout.T1Pos);
+        else if (third==d2)
+            list[2] = Layout.Convert_mm_Pose2d(Layout.T2Pos); 
+        else if (third == d3)   
+            list[2] = Layout.Convert_mm_Pose2d(Layout.T3Pos);
+        // if (Math.min(d1, d2) == d1 && Math.min(d1, d3) == d1){
+        //     list[0] = Layout.Convert_mm_Pose2d(Layout.RedPos);
+        //     if (Math.min(d2, d3)==d2){
+        //         list[1] = Layout.Convert_mm_Pose2d(Layout.GreenPos);
+        //         list[2] = Layout.Convert_mm_Pose2d(Layout.BluePos);
+        //     }
+        //     else
+        //         list[1] = Layout.Convert_mm_Pose2d(Layout.BluePos);
+        //         list[2] = Layout.Convert_mm_Pose2d(Layout.GreenPos);
+        // }
+        // else if (Math.min(d1, d2) == d2 && Math.min(d2, d3) == d2){
+        //     list[0] = Layout.Convert_mm_Pose2d(Layout.GreenPos);
+        //     if (Math.min(d1, d3)==d1){
+        //         list[1] = Layout.Convert_mm_Pose2d(Layout.RedPos);
+        //         list[2] = Layout.Convert_mm_Pose2d(Layout.BluePos);
+        //     }
+        //     else
+        //         list[1] = Layout.Convert_mm_Pose2d(Layout.BluePos);
+        //         list[2] = Layout.Convert_mm_Pose2d(Layout.RedPos);
+        // }
+        // else if (Math.min(d1, d3) == d3 && Math.min(d2, d3) == d3){
+        //     list[0] = Layout.Convert_mm_Pose2d(Layout.BluePos);
+        //     if (Math.min(d1, d2)==d1){
+        //         list[1] = Layout.Convert_mm_Pose2d(Layout.RedPos);
+        //         list[2] = Layout.Convert_mm_Pose2d(Layout.GreenPos);
+        //     }
+        //     else
+        //         list[1] = Layout.Convert_mm_Pose2d(Layout.GreenPos);
+        //         list[2] = Layout.Convert_mm_Pose2d(Layout.RedPos);
+        // }
+        
+       
+    }
+    public void FindNearestTarget(){
+        Translation2d robotXY = getPose().getTranslation();
+        Pose2d[] trolleylist = new Pose2d[] {};
+        Pose2d[] targetlist = new Pose2d[] {};
+        double first, second, third;
+        // finds distance from trolleys to target areas
+        double d1 = Layout.Convert_mm_Pose2d(Layout.T1Pos).getTranslation().getDistance(Layout.Convert_mm_Pose2d(Layout.RedPos).getTranslation()),
+               d2 = Layout.Convert_mm_Pose2d(Layout.T2Pos).getTranslation().getDistance(Layout.Convert_mm_Pose2d(Layout.GreenPos).getTranslation()),
+               d3 = Layout.Convert_mm_Pose2d(Layout.T3Pos).getTranslation().getDistance(Layout.Convert_mm_Pose2d(Layout.BluePos).getTranslation());
+        d1 += robotXY.getDistance(Layout.Convert_mm_Pose2d(Layout.T1Pos).getTranslation());
+        d2 += robotXY.getDistance(Layout.Convert_mm_Pose2d(Layout.T2Pos).getTranslation());
+        d3 += robotXY.getDistance(Layout.Convert_mm_Pose2d(Layout.T3Pos).getTranslation());
+        // Find smallest distance
+        first = Math.min(d1, Math.min(d2, d3));
+        // Find largest distance
+        third = Math.max(d1, Math.max(d2, d3));
+        // Find middle distance
+        second = d1 + d2 + d3 - first - third;
 
-    //     else if (x < 0.75 && y > 0.21 && y < 4.29){
-    //         x += 0.39;
-    //         y += 0;
-    //     }
-
-    //     else if (x > 2.04 && y > 4.29){
-    //         x -= 0.35;
-    //         y -= 0.35;
-    //     }
-
-    //     else if (x > 2.04 && y < 0.21){
-    //         x -= 0.35;
-    //         y += 0.35;
-    //     }
-
-    //     else if (x < 0.21 && y > 4.29){
-    //         x += 0.35;
-    //         y -= 0.35;
-    //     }
-
-    //     else {
-    //         x -= 0.39;
-    //         y += 0;
-    //     }
-    //     coord[0] = x;
-    //     coord[1] = y;
-    //     return coord;
-    // }
+        if (first==d1){
+            targetlist[0] = Layout.Convert_mm_Pose2d(Layout.RedPos);
+            trolleylist[0] = Layout.Convert_mm_Pose2d(Layout.T1Pos);
+            
+        }
+        else if (first==d2){
+            targetlist[0] = Layout.Convert_mm_Pose2d(Layout.GreenPos); 
+            trolleylist[0] = Layout.Convert_mm_Pose2d(Layout.T2Pos);
+       
+        }
+        else if (first == d3){
+            targetlist[0] = Layout.Convert_mm_Pose2d(Layout.BluePos);
+            trolleylist[0] = Layout.Convert_mm_Pose2d(Layout.T3Pos);
+        
+        }
+        if (second==d1){
+            targetlist[1] = Layout.Convert_mm_Pose2d(Layout.RedPos);
+            trolleylist[1] = Layout.Convert_mm_Pose2d(Layout.T1Pos);
+    
+        }
+        else if (second==d2){
+            targetlist[1] = Layout.Convert_mm_Pose2d(Layout.GreenPos);
+            trolleylist[1] = Layout.Convert_mm_Pose2d(Layout.T2Pos); 
+       
+        }
+        else if (second == d3){
+            targetlist[1] = Layout.Convert_mm_Pose2d(Layout.BluePos);
+            trolleylist[1] = Layout.Convert_mm_Pose2d(Layout.T3Pos);
+   
+        }
+        if (third==d1){
+            targetlist[2] = Layout.Convert_mm_Pose2d(Layout.RedPos);
+            trolleylist[2] = Layout.Convert_mm_Pose2d(Layout.T1Pos);
+     
+        }
+        else if (third==d2){
+            targetlist[2] = Layout.Convert_mm_Pose2d(Layout.GreenPos); 
+            trolleylist[2] = Layout.Convert_mm_Pose2d(Layout.T2Pos);
+        
+        }
+        else if (third == d3){
+            targetlist[2] = Layout.Convert_mm_Pose2d(Layout.BluePos);
+            trolleylist[2] = Layout.Convert_mm_Pose2d(Layout.T3Pos);
+  
+        }
+        
+        
+    }
+    public void UpdatePosition(Pose2d tgtpos){
+        double x = m_odometry.getPose().getTranslation().getX(),
+               y = m_odometry.getPose().getTranslation().getY(),
+               w = m_odometry.getPose().getRotation().getDegrees();
+        double theta = 0;
+        x += (tgtpos.getTranslation().getX() - x)*Globals.AdjustFactor;
+        y += (tgtpos.getTranslation().getY() - y)*Globals.AdjustFactor;
+        theta = tgtpos.getRotation().getDegrees() - w;
+        if (theta>=180)
+            theta = theta - 360;
+        else if (theta<=-180)
+            theta = theta + 360;
+        
+        w += theta * Globals.AdjustFactor;
+        w = Math.toRadians(w);
+        Globals.curAngle = w;
+        // m_odometry.update(x,y,theta);
+        m_odometry.resetPosition(new Pose2d(x,y,new Rotation2d(w)));
+    }
+    
     public Pose2d getPose() {
         return m_odometry.getPose();
     }
@@ -320,8 +450,8 @@ public class OmniDrive extends SubsystemBase
             encoderDists[i] = encoders[i].getEncoderDistance();
             wheelSpeeds[i] = encoderSpeeds[i] = (encoderDists[i]-encoderDists_2[i])/pid_dT;
             encoderDists_2[i] = encoderDists[i];
-            //encoders[i].getSpeed() in rpm
-            //wheelSpeeds[i] = encoderSpeeds[i] = -encoders[i].getSpeed()*Math.PI*0.1/60;
+            // encoders[i].getSpeed() in rpm
+            // wheelSpeeds[i] = encoderSpeeds[i] = -encoders[i].getSpeed()*Math.PI*0.1/60;
             dcValue += wheelSpeeds[i];
         }
 
@@ -360,15 +490,18 @@ public class OmniDrive extends SubsystemBase
         /////////////////////////////////////////////////////////////////////////////////////////
         curHeading = getYawRad();
         
-        targetHeading += pidInputs[2]*pid_dT * 0.996;   // add ratio to compensate
+        targetHeading += pidInputs[2]*pid_dT*0.996; // add ratio to compensate 
+
+        
 
         //Limit targetHeading to -Pi to +Pi
         if (targetHeading>Math.PI) targetHeading -= Math.PI*2;
         if (targetHeading<-Math.PI) targetHeading += Math.PI*2;
 
-        ffws[2] = pidInputs[2]*0.43;
+        ffws[2] = pidInputs[2]*0.1;
 
         pidOutputs[2] = pidControllers[2].calculate(curHeading, targetHeading) + ffws[2];
+
         //Limit output to -1.0 to 1.0 as PID outputs may be greater then 1.0
         double max=1.0;
         for (int i=0; i<Constants.MOTOR_NUM; i++) {
@@ -387,34 +520,16 @@ public class OmniDrive extends SubsystemBase
    public void initialise(){
         setRobotSpeedXYW(0,0,0);
         m_odometry.resetPosition(Layout.Convert_mm_Pose2d(Layout.startPos));
+        Globals.startYaw = getYawRad();
         gyro.zeroYaw();
         curHeading = targetHeading = getYawRad();
-        for(int i = 0; i< Constants.PID_NUM; i++){
+        for (int i=0; i<Constants.PID_NUM; i++){
             pidControllers[i].reset();
         }
    }
     /**
      * Code that runs once every robot loop
      */
-    public void UpdatePosition(Pose2d tgtpos){
-        double x = m_odometry.getPose().getTranslation().getX(),
-               y = m_odometry.getPose().getTranslation().getY(),
-               w = m_odometry.getPose().getRotation().getDegrees();
-        double theta = 0;
-        x += (tgtpos.getTranslation().getX() - x) * Globals.AdjustFactor;
-        y += (tgtpos.getTranslation().getY() - y) * Globals.AdjustFactor;
-        theta = tgtpos.getRotation().getDegrees() - w;
-        if (theta>=180)
-            theta = theta - 360;
-        else if (theta<=-180)
-            theta = theta + 360;
-        
-        w += theta * Globals.AdjustFactor;
-        // SmartDashboard.putNumber("omega", w);
-        w = Math.toRadians(w); // Change
-        Globals.curAngle = w;
-        m_odometry.resetPosition(new Pose2d(x,y,new Rotation2d(w)));
-    }
     @Override
     public void periodic()
     {
@@ -433,16 +548,16 @@ public class OmniDrive extends SubsystemBase
          * Unnecessary display should be removed during contest
          */
 
-        D_curHeading.setDouble(curHeading);
+        // D_curHeading.setDouble(curHeading);
         D_curHeading.setDouble(curHeading*180/Math.PI);
         D_tgtHeading.setDouble(targetHeading*180/Math.PI);
         D_navYaw.setDouble(-gyro.getYaw());
 
         // //Titan encoder
-        // D_encoderDisp0.setDouble(encoderSpeeds[0]);//encoderSpeeds[0]);
-        // D_encoderDisp1.setDouble(encoderSpeeds[1]);//encoders[1].getEncoderDistance());//encoderSpeeds[1]);
-        // D_encoderDisp2.setDouble(encoderSpeeds[2]);//encoderSpeeds[2]);
-        // D_inputW.setDouble(pidInputs[2]);
+        D_encoderDisp0.setDouble(encoderSpeeds[0]);//encoderSpeeds[0]);
+        D_encoderDisp1.setDouble(encoderSpeeds[1]);//encoders[1].getEncoderDistance());//encoderSpeeds[1]);
+        D_encoderDisp2.setDouble(encoderSpeeds[2]);//encoderSpeeds[2]);
+        D_inputW.setDouble(pidInputs[2]);
         double [] value;
         value = new double[3];
         value[0] = m_odometry.getPose().getTranslation().getX();
@@ -452,7 +567,15 @@ public class OmniDrive extends SubsystemBase
         D_odometry0.setDouble(value[0]);
         D_odometry1.setDouble(value[1]);
         D_odometry2.setDouble(value[2]);
-        Globals.curPose = getPose();
-        
+        // getDir();
+        Globals.curDir = m_odometry.getPose().getRotation().getDegrees();
+        // D_motorout.setDouble(motorOuts[0]);
+        // D_motorout1.setDouble(motorOuts[1]);
+        // D_motorout2.setDouble(motorOuts[2]);
+        // D_motor0.setDouble(motors[0].get());
+        // D_motor1.setDouble(motors[1].get());
+        // D_motor2.setDouble(motors[2].get());
+        D_angle.setDouble(Globals.curAngle);
+        // D_Global.setDouble(Globals.curDir);
     }
 }

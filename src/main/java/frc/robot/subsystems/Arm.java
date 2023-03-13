@@ -64,8 +64,8 @@ public class Arm extends SubsystemBase {
 
     public void initialize() {
         m_pos = new Translation2d(0.335,0.34);
-        setGripperAngle(150);
-        setCameraAngle(Globals.defaultCameraAngle);
+        setGripper(150);
+        setCameraAngle(300);
         setTrolleyAngle(0);
         setArmPos(m_pos);
     }
@@ -96,7 +96,7 @@ public class Arm extends SubsystemBase {
      * 
      * @param degrees degree to set the servo to, range 0° - 300°
      */
-    public void setGripperAngle(final double degrees) {
+    public void setGripper(final double degrees) {
         gripperServo.setAngle(degrees);
     }
 
@@ -184,7 +184,7 @@ public class Arm extends SubsystemBase {
      * Returns the gripperServo angle (Gripper)
      * <p>
      */
-    public double getServoAngle2() {
+    public double getGripper() {
         return gripperServo.getAngle();
     }
 

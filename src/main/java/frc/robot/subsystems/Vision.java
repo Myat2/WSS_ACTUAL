@@ -36,14 +36,14 @@ public class Vision extends SubsystemBase{
     private final NetworkTableEntry D_CokeRatio = tab.addPersistent("CokeRatio", 0.85).withWidget(BuiltInWidgets.kNumberSlider)
             .withProperties(Map.of("min", 0, "max", 1)).getEntry();
 
-    private double[] defaultValue = new double[12];
+    private double[] defaultValue = new double[13];
 
     private final static Arm m_arm = RobotContainer.m_arm;
 
 
     public Vision(){
 
-        m_arm.setCameraAngle(Globals.defaultCameraAngle); // Look down
+        m_arm.setCameraAngle(300); // Look down
     }
     public double[] getLine(){
 
@@ -66,19 +66,6 @@ public class Vision extends SubsystemBase{
         Globals.Targets = Targets;
       }
     
-    
-    public void setCVMode(int mode){
-        /*
-         * Video : -1
-         * Color Detection : 0
-         * Object Detection: 1
-         * WOB Detection : 2
-         * Perspective Transformation : 3
-         * Trolley Detection with Transformation: 4
-         */
-        D_cvMode.setNumber(mode);
-      
-    }
 
     public double[] getObjects(){
         // CokeU, Coke, Dettol, Jagabee
@@ -118,28 +105,28 @@ public class Vision extends SubsystemBase{
         
     }
     
-    public void updatePoint(String targetName){
-        double x, y;
-        int w = (int)Globals.curPose.getRotation().getDegrees();
-        if (w != -90){
-            y = Globals.curPose.getTranslation().getY() + getDistanceTarget(targetName)[1] + RobotContainer.m_points.camOffset.getTranslation().getY();
-            x = Globals.curPose.getTranslation().getX() + getDistanceTarget(targetName)[0] + RobotContainer.m_points.camOffset.getTranslation().getX();
-        }
-        else{
-            x = Globals.curPose.getTranslation().getX() + getDistanceTarget(targetName)[1] + RobotContainer.m_points.camOffset.getTranslation().getY();
-            y = Globals.curPose.getTranslation().getY() - getDistanceTarget(targetName)[0] + RobotContainer.m_points.camOffset.getTranslation().getX(); 
-        }
-        RobotContainer.m_points.updatePoint(targetName, new Pose2d(new Translation2d(x, y), Globals.curPose.getRotation()));  
-    }
+    // public void updatePoint(String targetName){
+    //     double x, y;
+    //     int w = (int)Globals.curPose.getRotation().getDegrees();
+    //     if (w != -90){
+    //         y = Globals.curPose.getTranslation().getY() + getDistanceTarget(targetName)[1] + RobotContainer.m_points.camOffset.getTranslation().getY();
+    //         x = Globals.curPose.getTranslation().getX() + getDistanceTarget(targetName)[0] + RobotContainer.m_points.camOffset.getTranslation().getX();
+    //     }
+    //     else{
+    //         x = Globals.curPose.getTranslation().getX() + getDistanceTarget(targetName)[1] + RobotContainer.m_points.camOffset.getTranslation().getY();
+    //         y = Globals.curPose.getTranslation().getY() - getDistanceTarget(targetName)[0] + RobotContainer.m_points.camOffset.getTranslation().getX(); 
+    //     }
+    //     RobotContainer.m_points.updatePoint(targetName, new Pose2d(new Translation2d(x, y), Globals.curPose.getRotation()));  
+    // }
     
-    public void updateAllPoints(){
-        String[] targetAreas = {"RedTarget", "GreenTarget", "BlueTarget", "Trolley"};
-        for (String targetName: targetAreas){
-            if(getDistanceTarget(targetName)[0] != 0 && getDistanceTarget(targetName)[1] != 0 ){
-                updatePoint(targetName);
-            }
-        }
-    }
+    // public void updateAllPoints(){
+    //     String[] targetAreas = {"RedTarget", "GreenTarget", "BlueTarget", "Trolley"};
+    //     for (String targetName: targetAreas){
+    //         if(getDistanceTarget(targetName)[0] != 0 && getDistanceTarget(targetName)[1] != 0 ){
+    //             updatePoint(targetName);
+    //         }
+    //     }
+    // }
 
     @Override
     public void periodic()
@@ -152,6 +139,16 @@ public class Vision extends SubsystemBase{
         D_currentItem.setNumber(Globals.curItemType);
         D_currentItemX.setNumber(Globals.curItemX);
         D_currentItemY.setNumber(Globals.curItemY);
+        /*
+         * Video : -1
+         * Color Detection : 0
+         * Object Detection: 1
+         * WOB Detection : 2
+         * Perspective Transformation : 3
+         * Trolley Detection with Transformation: 4
+         * Trolley Alignment: 5
+         */
+        D_cvMode.setNumber(Globals.cvMode);
         // SmartDashboard.putString("TrolleyPose", RobotContainer.m_points.pointMap.get("Trolley").toString());
         // SmartDashboard.putString("GreenTargetPose", RobotContainer.m_points.pointMap.get("GreenTarget").toString());
         // SmartDashboard.putString("TrolleyObs", RobotContainer.m_points.obstacleMap.get("Trolley").toString());

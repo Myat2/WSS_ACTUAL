@@ -22,7 +22,7 @@ public class CP5 extends SequentialCommandGroup {
         new MoveArm(new Translation2d(0.3,0.4), 2),
         new MoveCamera(295),
         // Sets the python script to perspective transformation with HSV mode
-        new InstantCommand(() -> RobotContainer.m_vision.setCVMode(3)),
+        new InstantCommand(() -> Globals.cvMode = 3),
         // Move out of the way
         new MoveRobot(0, -0.05, 0, 0, 5),
         new MoveRobot(1, 0.25, 0, 0, 5),

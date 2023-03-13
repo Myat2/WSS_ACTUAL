@@ -24,8 +24,8 @@ public class CP1 extends SequentialCommandGroup{
       new CheckRotationPose(Layout.Convert_mm_Pose2d(Layout.PickUpBinPos)),
       new Align2Line(),
       // new MoveArm(new Translation2d(0.33,0.24), 0.5), // Line detection position
-      new ViewPickUpBin(),
-      new LoopCommands(new ProcessSeq())
+      new ViewItem(),
+      new OpenHseLoopCommand(new OpenHse())
      
     );
   }

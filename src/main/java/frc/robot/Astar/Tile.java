@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Tile extends Node {
 
     private int x, y;
-    public static int TILE_SIZE = 5;
+    public static int TILE_SIZE = 4;
 
     public Tile(int x, int y) {
         this.x = x;

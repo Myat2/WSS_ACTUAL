@@ -67,12 +67,12 @@ public class TeleCmd extends CommandBase
         // m_arm.setArmPos(new Translation2d(0.33,-0.07));
         
         if(open){
-            m_arm.setGripperAngle(300);
+            m_arm.setGripper(300);
         }
         else{
-            m_arm.setGripperAngle(0);
+            m_arm.setGripper(0);
         }
-        m_arm.setGripperAngle(0);
+        m_arm.setGripper(0);
         // m_arm.setCameraAngle(90);
         //Get other buttons?
 
@@ -85,7 +85,7 @@ public class TeleCmd extends CommandBase
         Translation2d pos = new Translation2d(m_arm.getSliderX(), m_arm.getSliderY());
         m_arm.setArmPos(pos);
         m_arm.setCameraAngle(m_arm.getSliderCamera());
-        m_arm.setGripperAngle(m_arm.getSliderGripper());
+        m_arm.setGripper(m_arm.getSliderGripper());
 
     }
 

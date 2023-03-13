@@ -7,20 +7,26 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Globals;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Vision;
-
+// This command is used to align to the trolley
 public class Align2Trolley extends SequentialCommandGroup{
+  private final static Arm m_arm = RobotContainer.m_arm;
   private final static Vision m_vision = RobotContainer.m_vision;
   public Align2Trolley(){
     super(
-      new MoveArm(new Translation2d(0.335,0.24), 2),
-      new InstantCommand(() -> RobotContainer.m_vision.setCVMode(0)),
-      new InstantCommand(()-> RobotContainer.m_vision.setColor("Black")),
+      // Lifts arm
+      new DetectionPosition(),
+      // sets cvMode to trolley alignment
+      new InstantCommand(()-> Globals.cvMode = 5),
       new WaitCommand(3),
-      new AlignRobot("trolley"),
-      new InstantCommand(() -> RobotContainer.m_vision.setCVMode(-1))
-      // new MoveRobot(1, 0.07, 0, 0, 0.1)
-      
+      // resets cvMode to idle
+      new InstantCommand(()-> Globals.cvMode=-1),
+      // Align trolley X
+      new TrolleyAlignment(0),
+      // Align trolley Y
+      new MoveRobotSense(1, 0.3, 0, 0,0.1, ()-> RobotContainer.m_sensor.getFrontIRDistance()<=15),
+      new MoveRobot(1, 0.07, 0, 0, 0.1)
     );
   }
 }

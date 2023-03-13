@@ -24,24 +24,24 @@ public class FYPDemo extends SequentialCommandGroup{
             new MoveCamera(295),
 
             // Sets the python script to perspective transformation tensorflow
-            new InstantCommand(() -> RobotContainer.m_vision.setCVMode(4)),
+            new InstantCommand(() -> Globals.cvMode = 4),
             // Move out of the way
             new MoveRobot(0, -0.08, 0, 0, 5),
             new MoveRobot(1, 0.25, 0, 0, 5),
             // Rotate to Map
             new MoveRobot(2,Math.PI/2,0,0, Math.PI/2),
             new WaitCommand(4),
-            new InstantCommand(()->RobotContainer.m_points.updateAllTarget()),
+            new InstantCommand(()->RobotContainer.m_points.updateAllPoints()),
             // Mapping Seq
             new LoopFYPMap(),
-            new LoopCmd(new LoopFYPMap(), () -> Globals.endConditionDemo()), // Havent Test
-
+            // new LoopCmd(new LoopFYPMap(), () -> Globals.endConditionDemo()), // Havent Test
+            
             
 
-            new InstantCommand(() -> RobotContainer.m_vision.setCVMode(-1)),
+            new InstantCommand(() -> Globals.cvMode = -1),
             // Read WOB
-            new MovetoB(Layout.Convert_mm_Pose2d(Layout.demoWorkOrderPos)),
-            new CheckRotationPose(Layout.Convert_mm_Pose2d(Layout.demoWorkOrderPos)),
+            // new MovetoB(Layout.Convert_mm_Pose2d(Layout.demoWorkOrderPos)),
+            // new CheckRotationPose(Layout.Convert_mm_Pose2d(Layout.demoWorkOrderPos)),
             new ReadWOB(), 
 
             // Go to Trolley
@@ -55,7 +55,7 @@ public class FYPDemo extends SequentialCommandGroup{
            // Go to Green Target
            new CheckRotationPose(RobotContainer.m_points.getPoint("GreenTarget")),
            new MovetoPoint("GreenTarget"),
-           new Align2TargetArea(),
+           new Align2Color(),
            new TrolleyHolder(0)
            
           

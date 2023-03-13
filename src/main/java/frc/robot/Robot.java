@@ -36,7 +36,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer. 
     m_robotContainer = new RobotContainer();
     m_omnidrive = RobotContainer.m_omnidrive;
-
+    
     //Run PID in different thread at higher rate
     if (Constants.PID_THREAD ) {
       m_follower = new Notifier(() -> { m_omnidrive.doPID(); });

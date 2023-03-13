@@ -1,6 +1,7 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import frc.robot.Globals;
 //RobotContainer import
@@ -15,31 +16,45 @@ public class Rotate2Orientation extends MoveRobot {
     private final static OmniDrive m_drive = RobotContainer.m_omnidrive;
     private final static Vision m_vision = RobotContainer.m_vision;
     // private static double convertPxToMM = 0.1/50;
-    private final double _startSpeed;
-    private double m_angle = 0;
+    // private final double _startSpeed;
+    private double m_angle =0;
+    private double s_angle = 0;
     /**
      * This command is used to align the robot to the object that is to be picked
+     * @param angle - The orientation to rotate to
      */
     public Rotate2Orientation(double angle){
-        super(2, 0, 0, 0, 0.3);
-        _startSpeed = 0;  
-        m_angle = angle;
+        super(2, 0, 0, 0, Math.PI/3);
+        
+        s_angle = angle;
     }
+    /**
+     * This command is used to align the robot to the object that is to be picked
+     * @param pose - The pose of the target coordinates
+     */
+    public Rotate2Orientation(Pose2d pose){
+        super(2, 0, 0, 0, Math.PI/3);
+        
+        s_angle = pose.getRotation().getDegrees();
+    }
+    
      /**
      * Runs before execute
      */
     @Override
     public void initialize()
     {   
-        m_angle = m_angle - m_drive.getDir();
+        m_angle = s_angle;
+        m_angle = m_angle - Globals.curDir;
+        // Globals.curAngle = m_angle;
         if (m_angle>180)
             m_angle  = m_angle - 360;
         else if (m_angle<-180)
-            m_angle = m_angle- 360;
+            m_angle = m_angle + 360;
         else 
             m_angle = m_angle + 0;
         m_angle = m_angle * (Math.PI/180);
-        //Globals.curAngle = m_angle;
+           
         super.m_dist = m_angle;
         super.initialize();
     }

@@ -12,10 +12,10 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.Arm;
 
-public class ProcessSeq extends SequentialCommandGroup {
+public class OpenHse extends SequentialCommandGroup {
 
   private final static Arm m_arm = RobotContainer.m_arm;
-  public ProcessSeq(){
+  public OpenHse(){
     super(  
       
         new PickItem(),
@@ -31,7 +31,7 @@ public class ProcessSeq extends SequentialCommandGroup {
         new MovetoB(Layout.Convert_mm_Pose2d(Layout.PickUpBinPos)),
         new CheckRotationPose(Layout.Convert_mm_Pose2d(Layout.PickUpBinPos)),
         new Align2Line(),
-        new ViewPickUpBin()
+        new ViewItem()
     );
   }
 }

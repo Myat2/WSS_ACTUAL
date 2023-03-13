@@ -22,28 +22,31 @@ import frc.robot.subsystems.Vision;
 import frc.robot.commands.auto.MoveRobotSense;
 import frc.robot.commands.auto.LoopCmd;
 
-
-
 /**
  * DriveMotor class
  * <p>
  * This class creates the inline auto command to drive the motor
  */
-public class ViewPickUpBin extends SequentialCommandGroup
+// NOT USED IN COMPETITION
+public class PickItemfromBin extends SequentialCommandGroup
 {   
-
+    
+    double temp;
     private final static Sensor m_sensor = RobotContainer.m_sensor;
     private final static Vision m_vision = RobotContainer.m_vision;
     private final static Arm m_arm = RobotContainer.m_arm;
-	public ViewPickUpBin() 
+
+	public PickItemfromBin() 
     {
-        super(
-            new MoveArm(new Translation2d(0.33,0.24), 0.5), // Line detection position
-            new MoveArm(new Translation2d(0.24,0.1), 0.5),
-            new InstantCommand(() -> m_arm.setCameraAngle(277)),
-            new InstantCommand(() -> m_vision.setCVMode(1)),
-            new WaitCommand(3),
-            new InstantCommand(() -> m_vision.setCVMode(-1))
+        super(   
+        // aligns gripper to item
+        new AlignGripper(),
+        // picks item
+        new PickUp().alongWith(new MoveCamera(240)),
+        // Lifts arm 
+        new MoveArm(new Translation2d(0.2,0.25), 0.3)
+        
         );
     }
+    
 }

@@ -1,17 +1,18 @@
 package frc.robot.subsystems;
 
+import java.io.IOException;
 import java.util.Map;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SelectCommand;
 //WPI imports
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Globals;
+import frc.robot.commands.auto.Align2Color;
+import frc.robot.commands.auto.Align2Line;
 import frc.robot.commands.auto.CP1;
 import frc.robot.commands.auto.CP2;
 import frc.robot.commands.auto.CP3;
@@ -24,6 +25,11 @@ import frc.robot.commands.auto.MoveCurve;
 import frc.robot.commands.auto.MoveLeft;
 import frc.robot.commands.auto.MoveRight;
 import frc.robot.commands.auto.MoveTest;
+
+import frc.robot.commands.auto.TestMotionRot;
+import frc.robot.commands.auto.TestMotionX;
+import frc.robot.commands.auto.TestMotionY;
+import frc.robot.commands.auto.TestPicking;
 import frc.robot.commands.tele.OI;
 
 public class Menu extends SubsystemBase
@@ -36,12 +42,13 @@ public class Menu extends SubsystemBase
     private final NetworkTableEntry D_button = tab.add("button", -1).getEntry();
     private final NetworkTableEntry D_menu = tab.add("menu", "?").getEntry();
     private NetworkTableEntry D_debug[] = new NetworkTableEntry[Globals.DNUM];
-    
+    //tab.add("Motion", TestMotion);
+
    
     int menuNum=0;
     private final String[] menuName;
 
-    public Menu(final OI oi) {
+    public Menu(final OI oi){
 
         for (int i=0; i<Globals.DNUM; i++) {
             D_debug[i] = tab.add(Globals.debugNames[i], -1).getEntry();
@@ -56,7 +63,7 @@ public class Menu extends SubsystemBase
                     Map.entry(menuNum++, new CP4()),                    
                     Map.entry(menuNum++, new CP5("RedTarget")),
                     Map.entry(menuNum++, new CP5("GreenTarget")),  
-                    Map.entry(menuNum++, new CP5("BlueTarget")),                            
+                    Map.entry(menuNum++, new CP5("BlueTarget")),                
                     Map.entry(menuNum++, new CP6()),
                     Map.entry(menuNum++, new CP7())
                 ), ()->Globals.menuItem
@@ -67,13 +74,18 @@ public class Menu extends SubsystemBase
             "core2",
             "core3",
             "core4",
-            "core5Red",
-            "core5Green",
-            "core5Blue",
+            "core5",
             "core6",
             "core7"
         };
-
+        
+        tab.add("TestMotionX", new TestMotionX());
+        tab.add("TestMotionY", new TestMotionY());
+        tab.add("TestMotionRot", new TestMotionRot());
+        tab.add("TestPicking", new TestPicking());
+        tab.add("TestAlign2Line", new Align2Line());
+        tab.add("TestAlign2Color", new Align2Color());
+        
         //A-up button, Y-down button
         m_oi.buttonA.whenPressed( ()->{Globals.menuItem--;Globals.menuItem=(Globals.menuItem+menuNum)%menuNum;});
         m_oi.buttonY.whenPressed( ()->{Globals.menuItem++;Globals.menuItem%=menuNum;});

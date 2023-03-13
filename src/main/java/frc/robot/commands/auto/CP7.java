@@ -17,7 +17,7 @@ public class CP7 extends SequentialCommandGroup {
             new MoveArm(new Translation2d(0.3,0.4), 2),
             new MoveCamera(290),
             // Put to finding trolley and transform point 
-            new InstantCommand(() -> RobotContainer.m_vision.setCVMode(4)),
+            new InstantCommand(() -> Globals.cvMode = 4),
             // Move out of the way
             new MoveRobot(0, -0.05, 0, 0, 5),
             new MoveRobot(1, 0.25, 0, 0, 5),
