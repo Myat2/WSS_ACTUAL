@@ -2,6 +2,7 @@ package frc.robot.commands.auto;
 
 import java.util.Map;
 import frc.robot.Globals;
+import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SelectCommand;
@@ -93,9 +94,9 @@ public class SortItems extends SequentialCommandGroup{
         new MoveCamera(286),
         new SelectCommand(
             Map.ofEntries(
-                Map.entry(CommandSelector.ONE, new GotoTrolley(pointMap.get("T2"))),
-                Map.entry(CommandSelector.TWO, new GotoTrolley(pointMap.get("T3"))),
-                Map.entry(CommandSelector.THREE, new GotoTrolley(pointMap.get("T1")))
+                Map.entry(CommandSelector.ONE, new GotoTrolley(Globals.pairedTrolleyTarget.get(RobotContainer.m_points.getPoint("GreenTarget")))),
+                Map.entry(CommandSelector.TWO, new GotoTrolley(Globals.pairedTrolleyTarget.get(RobotContainer.m_points.getPoint("GreenTarget")))),
+                Map.entry(CommandSelector.THREE, new GotoTrolley(Globals.pairedTrolleyTarget.get(RobotContainer.m_points.getPoint("BlueTarget"))))
                 ), 
             SortItems::selectTarget
             ),

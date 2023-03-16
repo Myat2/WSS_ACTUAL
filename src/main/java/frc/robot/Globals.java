@@ -1,12 +1,17 @@
 package frc.robot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.lang.model.util.ElementScanner6;
 
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import frc.robot.Astar.Layout;
+import java.util.HashMap;
+import java.util.Map;
 
 //Put all global variables here
 public class Globals
@@ -188,4 +193,34 @@ public class Globals
         return true;
     }
   } 
+  public static Map<Pose2d,Pose2d> pairedTrolleyTarget = new HashMap<>();
+  public static ArrayList<Pose2d> targetAreas = new ArrayList<Pose2d>(); // Add when putting a point
+  
+  public static ArrayList<Pose2d> trolleys = new ArrayList<Pose2d>();
+  // <Pose2d,Pose2d]> pairedTrolleyTarget = new ArrayList<(Pose2d,Pose2d)>();
+  public static void pairTargetNTrolley() {
+    ArrayList<Double> distances = new ArrayList<Double>();
+   
+    int[][] combinations = new int[][]{
+      {0,1,2},
+      {1,2,0},
+      {2,0,1},
+      {1,0,2},
+      {2,1,0},
+      {0,2,1}
+    };
+    for(int i = 0; i < combinations.length; i++){
+      double redTDist = targetAreas.get(0).getTranslation().getDistance(trolleys.get(combinations[i][0]).getTranslation());
+      double greenTDist = targetAreas.get(1).getTranslation().getDistance(trolleys.get(combinations[i][1]).getTranslation());
+      double blueTDist = targetAreas.get(2).getTranslation().getDistance(trolleys.get(combinations[i][2]).getTranslation());
+      distances.add(redTDist + greenTDist + blueTDist);
+    }
+    int minIndex = distances.indexOf(Collections.min(distances));
+    pairedTrolleyTarget.put(targetAreas.get(0), trolleys.get(combinations[minIndex][0]));
+    for(int j = 0; j<combinations[minIndex].length; j++){
+      pairedTrolleyTarget.put(targetAreas.get(j), trolleys.get(combinations[minIndex][j]));
+    }
+
+  }
+  
 }
