@@ -1,6 +1,5 @@
 package frc.robot.commands.auto;
 
-import edu.wpi.first.wpilibj2.command.ProxyScheduleCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Globals;
@@ -33,17 +32,16 @@ public class PlaceDown extends SequentialCommandGroup
     {
       
       super(
-     
-   
-      new MoveArm(new Translation2d(0.25,RobotContainer.m_arm.getArmPos().getY()),0.5),
-      new MoveArm(new Translation2d(0.25,0.1),0.5),
-      
-      new Gripper(1,60),
+      // Moves arm down
+      // new MoveArm(new Translation2d(0.25,0.12),0.5),
+      new ArmPick(3),
+      // opens gripper
+      new Gripper(1,80),
+      // wait 1 sec
       new WaitCommand(1),
-      new MoveArm(new Translation2d(0.25,0.1),0.5)
-      //new Gripper(0,60)
+      // Moves arm up
       
-      
+      new MoveArm(new Translation2d(0.25,0.25), 0.5).alongWith(new Gripper(0,80))
       );
       
     }

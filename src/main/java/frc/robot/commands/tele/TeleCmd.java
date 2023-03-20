@@ -2,6 +2,7 @@ package frc.robot.commands.tele;
 
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Globals;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.OmniDrive;
@@ -17,7 +18,8 @@ public class TeleCmd extends CommandBase
     private final Sensor m_sensor;
     private final Arm m_arm;
     private final OI m_oi;
-
+    private final int[] cvModes = {-1,0,1,2,3,4,5};
+    private int cvSelector = 0;
     /**
      * Constructor
      */
@@ -55,16 +57,18 @@ public class TeleCmd extends CommandBase
         double y = -m_oi.getRightDriveY();//Down is positive. Need to negate
         double w = -m_oi.getLeftDriveX(); //X-positive is CW. Need to negate
         boolean open = m_oi.getDriveAButton();
+        boolean cvModeSW = m_oi.getDriveBButton();
         boolean lower = m_oi.getDriveRightBumper();
+        if(cvModeSW){
+            cvSelector++;
+        }
         if (lower){
             m_arm.setArmPos(new Translation2d(0.33,-0.07));
         }
         else{
             m_arm.setArmPos(new Translation2d(0.33,0.24));
         }
-
-        
-        // m_arm.setArmPos(new Translation2d(0.33,-0.07));
+        Globals.cvMode = cvModes[cvSelector%7];
         
         if(open){
             m_arm.setGripper(300);

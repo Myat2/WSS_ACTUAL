@@ -19,13 +19,13 @@ public class Align2Trolley extends SequentialCommandGroup{
       new DetectionPosition(),
       // sets cvMode to trolley alignment
       new InstantCommand(()-> Globals.cvMode = 5),
-      new WaitCommand(3),
+      new WaitCommand(4),
       // resets cvMode to idle
       new InstantCommand(()-> Globals.cvMode=-1),
       // Align trolley X
       new TrolleyAlignment(0),
       // Align trolley Y
-      new MoveRobotSense(1, 0.3, 0, 0,0.1, ()-> RobotContainer.m_sensor.getFrontIRDistance()<=15),
+      new MoveRobotSense(1, 0.26, 0, 0,0.1, ()-> RobotContainer.m_sensor.getFrontIRDistance()<=15),
       new MoveRobot(1, 0.07, 0, 0, 0.1)
     );
   }

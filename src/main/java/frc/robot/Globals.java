@@ -1,17 +1,16 @@
 package frc.robot;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.lang.model.util.ElementScanner6;
 
 import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import frc.robot.Astar.Layout;
-import java.util.HashMap;
-import java.util.Map;
 
 //Put all global variables here
 public class Globals
@@ -34,6 +33,8 @@ public class Globals
     public static double AdjustFactor = 1;
     public static int imH = 600;
     public static int imW = 800;
+    public static int PerspTfCamAngle = 274;
+    public static int PickingCameraAngle = 286;
     /**
      *  CokeU = 0
      *  Coke  = 1
@@ -59,6 +60,9 @@ public class Globals
      *  Line detection = 0 <p>
      *  Object Detection = 1 <p>
      *  Work Order Board = 2
+     *  Perspective Transform with HSV = 3
+     *  Perspective Transform with TF Model = 4
+     *  Trolley Alignment = 5
      */
     public static int cvMode = -1;
     public static Pose2d[] TargetList = new Pose2d[] {};
@@ -79,16 +83,37 @@ public class Globals
     public static double startYaw;
     public static int curTrolley = 0;
 // Extra //
+    public static Pose2d g_posB = new Pose2d(); 
     public static int LoopCnt = 0; // use as counter for loops
     public static int loopCount = 0;
     public static Pose2d curPose;
     public static double[][] moveCommands = {
       {2,Math.PI/2,0,0, Math.PI/2},
       {2,-Math.PI/2,0,0, Math.PI/2},
-      {0, -0.43, 0, 0, 0.2},
-      {0, -0.43, 0, 0, 0.2}
+      {0, -0.43, 0, 0, 0.4},
+      {0, -0.43, 0, 0, 0.4}
     };
-// End Conditions //
+    public static Pose2d[] pose2dMoveCommands = {
+      new Pose2d(new Translation2d(0,0), new Rotation2d(0)),
+      new Pose2d(new Translation2d(0,0), new Rotation2d(-Math.PI/2)),
+      new Pose2d(new Translation2d(0,0.43), new Rotation2d(-Math.PI/2)),
+      new Pose2d(new Translation2d(0,0.43), new Rotation2d(-Math.PI/2)),
+    };
+    public static Pose2d[] placeholderTrolleyPos = {
+      new Pose2d(new Translation2d(0.3 + 0.25,0.6),  new Rotation2d(Math.PI/2)),
+      new Pose2d(new Translation2d(0.3 + 0.25,1.2 ), new Rotation2d(Math.PI/2)),
+      new Pose2d(new Translation2d(0.3 + 0.25,1.8), new Rotation2d(Math.PI/2)),
+    };
+    // public static Pose2d[] placeholderTrolleyPos = {
+    //   new Pose2d(new Translation2d(0.15,0.15), new Rotation2d(Math.toRadians(135))),
+    //   new Pose2d(new Translation2d(0.15,0.45), new Rotation2d((Math.toRadians(135)))),
+    //   new Pose2d(new Translation2d(0.15,0.75), new Rotation2d((Math.toRadians(135)))),
+    // };
+    public static int placeholderCount = 0;
+
+
+    public static double robotRadius_m = 0.24;
+    // End Conditions //
 
     // End condition for pick and place
     // NOTE: 2d array has 3 columns but there are 4 objects
@@ -160,67 +185,40 @@ public class Globals
 }
 
   public static boolean endConditionCP5(String targetArea){
-    loopCount++;
-    if(loopCount<19 && RobotContainer.m_vision.getDistanceTarget(targetArea)[0] == 0){
+    
+    if(curPose.getTranslation().getY() < 3.7 && RobotContainer.m_points.pointMap.get(targetArea) != null){
         return false;
     }
     else{
-        loopCount = 0;
         return true;
     }
-  } 
-
+  }  
   public static boolean endConditionCP7(){
-    loopCount++;
-    // Count 19
-    if(loopCount<19 && (RobotContainer.m_vision.getDistanceTarget("Trolley")[0] == 0)){
+    if(curPose.getTranslation().getY() < 3.7 && RobotContainer.m_points.pointMap.get("T1") != null){
         return false;
     }
     else{
-        loopCount = 0;
         return true;
     }
   } 
-
+  public static Pose2d waypoint = new Pose2d();
   public static boolean endConditionTaskBMapping(){
-    loopCount++;
-    // Count 19
-    if(loopCount<12){
+    if(curPose.getTranslation().getY() < 3.7){
         return false;
     }
     else{
-        loopCount = 0;
         return true;
     }
   } 
-  public static Map<Pose2d,Pose2d> pairedTrolleyTarget = new HashMap<>();
-  public static ArrayList<Pose2d> targetAreas = new ArrayList<Pose2d>(); // Add when putting a point
+  // public static ArrayList<Pose2d> targetAreas = new ArrayList<Pose2d>();
+  // public static ArrayList<Pose2d> trolleys = new ArrayList<Pose2d>();
+  // public static Map<Pose2d, Pose2d> pairedTrolleyTarget = new HashMap<>();
   
-  public static ArrayList<Pose2d> trolleys = new ArrayList<Pose2d>();
-  // <Pose2d,Pose2d]> pairedTrolleyTarget = new ArrayList<(Pose2d,Pose2d)>();
-  public static void pairTargetNTrolley() {
-    ArrayList<Double> distances = new ArrayList<Double>();
-   
-    int[][] combinations = new int[][]{
-      {0,1,2},
-      {1,2,0},
-      {2,0,1},
-      {1,0,2},
-      {2,1,0},
-      {0,2,1}
-    };
-    for(int i = 0; i < combinations.length; i++){
-      double redTDist = targetAreas.get(0).getTranslation().getDistance(trolleys.get(combinations[i][0]).getTranslation());
-      double greenTDist = targetAreas.get(1).getTranslation().getDistance(trolleys.get(combinations[i][1]).getTranslation());
-      double blueTDist = targetAreas.get(2).getTranslation().getDistance(trolleys.get(combinations[i][2]).getTranslation());
-      distances.add(redTDist + greenTDist + blueTDist);
-    }
-    int minIndex = distances.indexOf(Collections.min(distances));
-    pairedTrolleyTarget.put(targetAreas.get(0), trolleys.get(combinations[minIndex][0]));
-    for(int j = 0; j<combinations[minIndex].length; j++){
-      pairedTrolleyTarget.put(targetAreas.get(j), trolleys.get(combinations[minIndex][j]));
-    }
+  // public static void pairTargetNTrolley() {
+  //   ArrayList<Double> distances = new ArrayList<Double>();
 
-  }
-  
+  //   int[][] combinations = new int[][]{
+  //     {}
+  //   }
+  // }
 }

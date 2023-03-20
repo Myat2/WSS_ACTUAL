@@ -8,19 +8,18 @@ import frc.robot.RobotContainer;
 // import the commands
 import frc.robot.commands.auto.MoveRobotSense;
 
-import frc.robot.commands.auto.MoveRobot;
-
 /**
  * DriveMotor class
  * <p>
  * This class creates the inline auto command to drive the motor
  */
+// NOT USED IN COMPETITION
 public class MoveTest extends SequentialCommandGroup
 {
     private enum CommandSelector {
         ONE, TWO, THREE
     }
-/* 
+
     static public CommandSelector selectCmd123() {
         if (RobotContainer.m_sensor.getFrontIRDistance()<20)
             return CommandSelector.ONE;
@@ -29,15 +28,15 @@ public class MoveTest extends SequentialCommandGroup
         else
             return CommandSelector.THREE;
     }
-*/
-/*static public Command selectCmd123_B() {
+
+    static public Command selectCmd123_B() {
         if (RobotContainer.m_sensor.getFrontIRDistance()<20)
         return new MoveLeft();
     else if (RobotContainer.m_sensor.getFrontIRDistance()<40)
         return new MoveBack();
     else
         return new MoveRight();
-    }*/
+    }
 
     // Use limit switch to select
     static public boolean selectCmd12_SW() {
@@ -47,28 +46,11 @@ public class MoveTest extends SequentialCommandGroup
     static public boolean selectCmd12_IR() {
         return RobotContainer.m_sensor.getFrontIRDistance()>30?true:false;
     }
-    static public CommandSelector selectCmd123() {
-        if (RobotContainer.m_sensor.getFrontIRDistance() < 20)
-            return CommandSelector.ONE;
-        else if (RobotContainer.m_sensor.getFrontIRDistance() > 40)
-            return CommandSelector.TWO;
-        else
-            return CommandSelector.THREE;
-    }
-     
-    static public CommandSelector selectCmd12() {
-        if (RobotContainer.m_sensor.getFrontIRDistance()<=20)
-            return CommandSelector.ONE;
-        else 
-            return CommandSelector.TWO;
-      
-    }
-    
 	public MoveTest()
     {
 
         super(
-            //new MoveRobotSense(1, 0.5, 0, 0.0, 0.5, ()->RobotContainer.m_sensor.getFrontIRDistance()<60),
+            new MoveRobotSense(1, 0.5, 0, 0.0, 0.5, ()->RobotContainer.m_sensor.getFrontIRDistance()<60),
 
 
             //selectCmd123_B() // Didn't work
@@ -78,34 +60,13 @@ public class MoveTest extends SequentialCommandGroup
             
             //Select one of many commands
             //Selection command in selectCmd123
-            /*new SelectCommand(
+            new SelectCommand(
                 Map.ofEntries(
                     Map.entry(CommandSelector.ONE, new MoveSq()),
                     Map.entry(CommandSelector.TWO, new MoveSq()),
                     Map.entry(CommandSelector.THREE, new MoveSq()) ),
                 MoveTest::selectCmd123
-            )*/
-            
-            /* 
-            new SelectCommand(
-                Map.ofEntries(
-                    Map.entry(CommandSelector.ONE, new MoveRight()),
-                    Map.entry(CommandSelector.TWO, new MoveLeft())
-                    //Map.entry(CommandSelector.THREE, new MoveRobot(1, 0.5, 0, 0.0, 0.5)) 
-                    ),
-                MoveTest::selectCmd12
-            )
-            */
-            new SelectCommand(
-                        Map.ofEntries(
-                                Map.entry(CommandSelector.ONE, new MoveRobot(0, -0.5, 0, 0.01, 0.5)),
-                                Map.entry(CommandSelector.TWO, new MoveRobot(0, 0.5, 0, 0.0, 0.5))
-                                
-                                ),
-                        MoveTest::selectCmd12),
-            new MoveRobot(1, 0, 0, 0.0, 0)  
-
+            ) 
         );
-        
     }
 }

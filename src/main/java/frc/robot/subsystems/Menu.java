@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import java.io.IOException;
 import java.util.Map;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -11,8 +10,6 @@ import edu.wpi.first.wpilibj2.command.SelectCommand;
 //WPI imports
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Globals;
-import frc.robot.commands.auto.Align2Color;
-import frc.robot.commands.auto.Align2Line;
 import frc.robot.commands.auto.CP1;
 import frc.robot.commands.auto.CP2;
 import frc.robot.commands.auto.CP3;
@@ -25,7 +22,8 @@ import frc.robot.commands.auto.MoveCurve;
 import frc.robot.commands.auto.MoveLeft;
 import frc.robot.commands.auto.MoveRight;
 import frc.robot.commands.auto.MoveTest;
-
+import frc.robot.commands.auto.TestColor;
+import frc.robot.commands.auto.TestLine;
 import frc.robot.commands.auto.TestMotionRot;
 import frc.robot.commands.auto.TestMotionX;
 import frc.robot.commands.auto.TestMotionY;
@@ -46,9 +44,9 @@ public class Menu extends SubsystemBase
 
    
     int menuNum=0;
-    private final String[] menuName;
+   private final String[] menuName;
 
-    public Menu(final OI oi){
+    public Menu(final OI oi) {
 
         for (int i=0; i<Globals.DNUM; i++) {
             D_debug[i] = tab.add(Globals.debugNames[i], -1).getEntry();
@@ -83,8 +81,9 @@ public class Menu extends SubsystemBase
         tab.add("TestMotionY", new TestMotionY());
         tab.add("TestMotionRot", new TestMotionRot());
         tab.add("TestPicking", new TestPicking());
-        tab.add("TestAlign2Line", new Align2Line());
-        tab.add("TestAlign2Color", new Align2Color());
+        tab.add("TestLine", new TestLine());
+        tab.add("TestColor", new TestColor());
+        // tab.add("CP6", new CP6());
         
         //A-up button, Y-down button
         m_oi.buttonA.whenPressed( ()->{Globals.menuItem--;Globals.menuItem=(Globals.menuItem+menuNum)%menuNum;});
@@ -96,8 +95,8 @@ public class Menu extends SubsystemBase
     public void periodic()
     {
       
-        D_menu.setString( menuName[Globals.menuItem]);
-        D_button.setNumber(m_oi.getDriveButtons());
+       D_menu.setString( menuName[Globals.menuItem]);
+       D_button.setNumber(m_oi.getDriveButtons());
         for (int i=0; i<Globals.DNUM; i++) {
             D_debug[i].setNumber(Globals.debug[i]);
         }

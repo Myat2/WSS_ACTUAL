@@ -18,6 +18,7 @@ public class Align2Line extends SequentialCommandGroup{
   private final static Sensor m_sensor = RobotContainer.m_sensor;
   private final static Vision m_vision = RobotContainer.m_vision;
   private final static OmniDrive m_omnidrive = RobotContainer.m_omnidrive;
+  // aligns to line
   public Align2Line(){
     super(
       // Lifts arm up and close gripper
@@ -25,9 +26,9 @@ public class Align2Line extends SequentialCommandGroup{
       // sets cv mode to line detection
       new InstantCommand(()-> RobotContainer.m_vision.setColor("Black")),
       new InstantCommand(()-> Globals.cvMode = 0),
-      new WaitCommand(0.5),
+      new WaitCommand(1), // Org 0.5
       // aligns to line
-      new AlignRobot(205,195,true),
+      new AlignRobot(194,175,true),
       // resets cv mode to idle mode
       new InstantCommand(()-> Globals.cvMode=-1),
       // wait 2 secs

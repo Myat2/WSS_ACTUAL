@@ -24,18 +24,31 @@ private final static OmniDrive m_omnidrive = RobotContainer.m_omnidrive;
   /**
    * This command moves the robot in front of the target and rotates to face it
    * @param pose - Coordinates of target area in Pose2d(Use Layout.Convert_mm_Pose2d(int[] from Layout)) <p>
-   * Aligns to color
+   * Aligns to color <p>
+   * RMBR IMPORTANT!!!!! call new InstantCommand(()-> RobotContainer.m_vision.setColor("NAME OF COLOR")) before this command
    */
   public GotoColor(Pose2d pose) {
       super(
-  
-      // new MovetoB(new Pose2d(m_omnidrive.getCoord(pose.getTranslation(),"color")[0], m_omnidrive.getCoord(pose.getTranslation(),"color")[1], new Rotation2d(0))),
-      new MovetoB(new Pose2d(m_omnidrive.getCoord(pose.getTranslation(),"color"), new Rotation2d(0))),
-      new Rotate2Orientation(pose.getRotation().getDegrees()),
-      // new InstantCommand(()-> RobotContainer.m_vision.setColor("Green")),
+      // Gets offsetted coordinates from getCoord() which takes in the color coordinates as parameter
+      // new MovetoB(new Pose2d(m_omnidrive.getCoord(pose.getTranslation(),"color"), new Rotation2d(0))),
+      new MovetoB(RobotContainer.m_Grid.findGotoPos(pose.getTranslation(), 0.6)),
+      // // Rotates the robot to the orientation of the target area
+      new Rotate2Orientation(RobotContainer.m_Grid.findGotoPos(pose.getTranslation(), 0.6).getRotation().getDegrees()),
+      // Aligns to the color (RMBR IMPORTANT!!!!! setColormode before calling Align2Color)
       new Align2Color(),
       new WaitCommand(1)
       
     );
   }
+  
+  public GotoColor(String target) {
+    super(
+    // Gets offsetted coordinates from getCoord() which takes in the color coordinates as parameter
+    new CheckAndMoveTarget(target, 0.7),
+    // Aligns to the color (RMBR IMPORTANT!!!!! setColormode before calling Align2Color)
+    new Align2Color(),
+    new WaitCommand(1)
+    
+  );
+}
 }

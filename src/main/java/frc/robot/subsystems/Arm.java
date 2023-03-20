@@ -51,6 +51,12 @@ public class Arm extends SubsystemBase {
     private final NetworkTableEntry D_camera = tab.add("Camera", 300).withWidget(BuiltInWidgets.kNumberSlider)
     .withProperties(Map.of("min", 0, "max", 300)).getEntry();
 
+    private final NetworkTableEntry D_PickingCameraAngle = tab.addPersistent("PickingCameraAngle", Globals.PickingCameraAngle).withWidget(BuiltInWidgets.kNumberSlider)
+            .withProperties(Map.of("min", 0, "max", 300)).getEntry();
+    private final NetworkTableEntry D_PerspViewingAngle = tab.addPersistent("PerspectiveTransformAngle", Globals.PerspTfCamAngle).withWidget(BuiltInWidgets.kNumberSlider)
+            .withProperties(Map.of("min", 0, "max", 300)).getEntry();
+       
+
     public Arm() {
         shoulderServo = new Servo(0); // shoulder
         elbowServo = new Servo(1); // elbow
@@ -255,7 +261,8 @@ public class Arm extends SubsystemBase {
     public void periodic() {
         offset0 = D_offset0.getDouble(120);
         offset1 = D_offset1.getDouble(-60);
-
+        Globals.PerspTfCamAngle = (int)D_PerspViewingAngle.getDouble(300); // Added
+        Globals.PickingCameraAngle = (int)D_PickingCameraAngle.getDouble(300); // Added
         D_shoulderServo.setDouble(shoulderServo.getAngle());
         D_elbowServo.setDouble(elbowServo.getAngle());
         D_gripperServo.setDouble(gripperServo.getAngle());

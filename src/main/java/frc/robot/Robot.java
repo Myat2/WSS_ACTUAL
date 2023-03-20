@@ -22,7 +22,6 @@ import frc.robot.subsystems.OmniDrive;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private Command m_teleopCommand;
-  private Command m_testCommand;
   private RobotContainer m_robotContainer;
   private OmniDrive m_omnidrive;
   private Notifier m_follower;
@@ -36,7 +35,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer. 
     m_robotContainer = new RobotContainer();
     m_omnidrive = RobotContainer.m_omnidrive;
-    
+    m_omnidrive.gyro.zeroYaw();
     //Run PID in different thread at higher rate
     if (Constants.PID_THREAD ) {
       m_follower = new Notifier(() -> { m_omnidrive.doPID(); });
@@ -79,8 +78,15 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    RobotContainer.m_arm.initialize();
     RobotContainer.m_omnidrive.initialise();
+    RobotContainer.m_arm.initialize();
+    RobotContainer.m_vision.initialize();
+    RobotContainer.m_points.resetObsMap();
+    RobotContainer.m_points.resetMap();
+    RobotContainer.m_Grid.AddFixedObstacles(RobotContainer.m_layout);
+    RobotContainer.m_Grid.ExpandObstacles(Globals.robotRadius_m);
+    Globals.loopCount = 0;
+    //RobotContainer.InitMap();
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -97,8 +103,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     m_teleopCommand = m_robotContainer.getTeleopCommand();
+    RobotContainer.m_omnidrive.initialise(); 
     RobotContainer.m_arm.initialize();
-    RobotContainer.m_omnidrive.initialise();
+    RobotContainer.m_vision.initialize();
     // schedule the autonomous command (example)
     if (m_teleopCommand != null) {
       m_teleopCommand.schedule();
@@ -115,13 +122,10 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
+    RobotContainer.m_omnidrive.initialise();
+    RobotContainer.m_arm.initialize();
+    RobotContainer.m_vision.initialize();
     CommandScheduler.getInstance().cancelAll();
-    m_testCommand = m_robotContainer.getTestCommand();
-
-    // schedule the autonomous command (example)
-    if (m_testCommand != null) {
-      m_testCommand.schedule();
-    }
   }
 
   /**

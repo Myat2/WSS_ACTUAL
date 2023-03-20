@@ -2,6 +2,7 @@ package frc.robot.commands.auto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
@@ -39,11 +40,14 @@ public class MovetoB extends SequentialCommandGroup
 
 //   );
     private Trajectory m_Trajectory ;
+    
     private List<Translation2d> m_pathWayPoints;
     //Set max velocity, acceleration and centripedal acceleration (turn speed)
     static private final CentripetalAccelerationConstraint m_CurveConstraint = new CentripetalAccelerationConstraint(0.5);
     static private final TrajectoryConfig m_Config = new TrajectoryConfig(0.4, 0.4).addConstraint(m_CurveConstraint).setReversed(false);
-
+    private boolean m_fn_flag;
+    static protected Pose2d m_posB2;    
+    private Supplier<Pose2d> m_posB_fn;
     protected Pose2d m_posB;
     private double m_dist;
     static private boolean m_trajFlag = false;
@@ -53,10 +57,12 @@ public class MovetoB extends SequentialCommandGroup
 
     @Override
     public void initialize() {
+        
         super.initialize();
         //Astar works in cells (tiles)
         //Need to convert from real unit (x,y) position into nearest tile
         //
+        System.out.println("m_posb: " + m_posB);
         Pose2d curPose = RobotContainer.m_omnidrive.getPose();
         int start_x = Layout.Convert_m_cell(curPose.getTranslation().getX());
         int start_y = Layout.Convert_m_cell(curPose.getTranslation().getY());
@@ -64,8 +70,14 @@ public class MovetoB extends SequentialCommandGroup
         //calculate error between real position and the tile center it is mapped to 
         //
         double dx, dy;
-        dx = m_posB.getTranslation().getX() - curPose.getTranslation().getX();
-        dy = m_posB.getTranslation().getY() - curPose.getTranslation().getY();
+        if (m_fn_flag){
+            dx = m_posB_fn.get().getTranslation().getX() - curPose.getTranslation().getX();
+            dy = m_posB_fn.get().getTranslation().getY() - curPose.getTranslation().getY();
+        }
+        else{
+            dx = m_posB.getTranslation().getX() - curPose.getTranslation().getX();
+            dy = m_posB.getTranslation().getY() - curPose.getTranslation().getY();
+        }
         m_dist = Math.sqrt(dx*dx + dy*dy);
 
         Tile nodeStart, nodeEnd;
@@ -128,7 +140,7 @@ public class MovetoB extends SequentialCommandGroup
             // There's problem with generating trajectory and path is a short straight line
             m_Trajectory =
             // myGenerateTrajectory.generateTrajectoryClampedCubic(m_pathWayPoints, m_Config, 0.1);
-            myGenerateTrajectory.generateTrajectoryQuinticHermite(m_pathWayPoints, m_Config, 0.04);
+            myGenerateTrajectory.generateTrajectoryQuinticHermite(m_pathWayPoints, m_Config, 0.075);
         }
 
 
@@ -141,11 +153,20 @@ public class MovetoB extends SequentialCommandGroup
     public static boolean TrajCondition() {
         return m_trajFlag;
     }
+    public static Pose2d Get_posB2() {
+        return m_posB2;
+    }
     public Trajectory getTrajectory() {
         return m_Trajectory;
     }
-
-	public MovetoB(Pose2d posB)
+    public MovetoB(Supplier<Pose2d> posB){
+        this(posB.get(), true);
+        m_posB_fn = posB;
+    }
+    public MovetoB(Pose2d poseB){
+        this(poseB, false);
+    }
+	public MovetoB(Pose2d pose2d, boolean flag)
     {
         
         super (
@@ -160,12 +181,15 @@ public class MovetoB extends SequentialCommandGroup
                     new PIDController(0.25, 0, 0),
                     new PIDController(0.25, 0, 0),
                     new ProfiledPIDController(1, 0, 0, new Constraints(Math.PI/2, Math.PI/2) ) ), 
-                new MoveRobotStr(posB), MovetoB::TrajCondition)
+                new MoveRobotStr(MovetoB::Get_posB2), MovetoB::TrajCondition)
             
             //End with rotation to the target heading???
         );
-        m_posB = posB;
+        m_posB = pose2d;
         MovetoB.m_initFlag = false;
+        m_fn_flag = flag;
 
     }
+
+    
 }

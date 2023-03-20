@@ -30,7 +30,7 @@ public class Gripper extends CommandBase{
  
     /** This class is used to control an end effector
      * 
-     * @param pos - 0 for close or 1 for open
+     * @param pos - 1 for open or 0 for close
      * @param maxSpeed - Maximum speed
      */
     public Gripper(int pos, double maxSpeed)

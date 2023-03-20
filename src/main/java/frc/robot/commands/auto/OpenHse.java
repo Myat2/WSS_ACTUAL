@@ -17,20 +17,14 @@ public class OpenHse extends SequentialCommandGroup {
   private final static Arm m_arm = RobotContainer.m_arm;
   public OpenHse(){
     super(  
-      
-        new PickItem(),
-        new MoveCamera(240),   
-        new MoveRobot(1, -0.10, 0, 0, 5),     
-        new CheckRotationPose(Layout.Convert_mm_Pose2d(Layout.GreenPos)),
-        new MovetoB(Layout.Convert_mm_Pose2d(Layout.GreenPos)), // Added
-        // new MovetoB(new Pose2d(0.96, 1.5, new Rotation2d(0))),
         
+        new PickItemfromBin(),
+        new MoveCamera(286),
+        new MovetoB(new Pose2d(0.96, 1.5, new Rotation2d(0))),
         new PlaceDown(),
-        new MoveArm(new Translation2d(0.33,0.24), 0.5),
-        // new MovetoB(new Pose2d(0.96, 1.1, new Rotation2d(0))),
-        new MovetoB(Layout.Convert_mm_Pose2d(Layout.PickUpBinPos)),
-        new CheckRotationPose(Layout.Convert_mm_Pose2d(Layout.PickUpBinPos)),
-        new Align2Line(),
+        new MoveArm(new Translation2d(0.33,0.3), 0.5), // Line detection position
+        new MoveArm(new Translation2d(0.33,0.24), 0.5), // Line detection position
+        new MovetoB(new Pose2d(0.96, 1.1, new Rotation2d(0))),
         new ViewItem()
     );
   }

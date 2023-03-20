@@ -19,6 +19,7 @@ public class OpenHseLoopCommand extends LoopCmd
                 Globals.curItemType = id;
                 Globals.curItemY = m_vision.getObjects()[Globals.curItemType*3+2];
                 Globals.curItemX = m_vision.getObjects()[Globals.curItemType*3+1];
+        
                 return false;
             }
         }

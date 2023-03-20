@@ -13,9 +13,10 @@ public class CP3 extends SequentialCommandGroup{
   // Place item into trolley
   public CP3(){
     super(
-      new Gripper(1, 90),
+      new Gripper(1, 80),
       new WaitCommand(5),
-      new Gripper(0, 90),
+      new Gripper(0),
+      new Align2Trolley(),
       new PlaceDown()
     );
   }
