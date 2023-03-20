@@ -1,6 +1,7 @@
 package frc.robot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +35,8 @@ public class Globals
     public static int imH = 600;
     public static int imW = 800;
     public static int PerspTfCamAngle = 274;
-    public static int PickingCameraAngle = 286;
+    public static int PickingCameraAngle = 267;
+    public static int NormalCameraAngle = 286;
     /**
      *  CokeU = 0
      *  Coke  = 1
@@ -186,7 +188,7 @@ public class Globals
 
   public static boolean endConditionCP5(String targetArea){
     
-    if(curPose.getTranslation().getY() < 3.7 && RobotContainer.m_points.pointMap.get(targetArea) != null){
+    if(curPose.getTranslation().getY() < 3.7 && RobotContainer.m_points.pointMap.get(targetArea) == null){
         return false;
     }
     else{
@@ -194,7 +196,7 @@ public class Globals
     }
   }  
   public static boolean endConditionCP7(){
-    if(curPose.getTranslation().getY() < 3.7 && RobotContainer.m_points.pointMap.get("T1") != null){
+    if(curPose.getTranslation().getY() < 3.7 && RobotContainer.m_points.pointMap.get("T1") == null){
         return false;
     }
     else{
@@ -210,15 +212,35 @@ public class Globals
         return true;
     }
   } 
-  // public static ArrayList<Pose2d> targetAreas = new ArrayList<Pose2d>();
-  // public static ArrayList<Pose2d> trolleys = new ArrayList<Pose2d>();
-  // public static Map<Pose2d, Pose2d> pairedTrolleyTarget = new HashMap<>();
-  
-  // public static void pairTargetNTrolley() {
-  //   ArrayList<Double> distances = new ArrayList<Double>();
+  public static Map<Pose2d,Pose2d> pairedTrolleyTarget = new HashMap<>();
+  public static ArrayList<Pose2d> targetAreas = new ArrayList<Pose2d>(); // Add when putting a point
 
-  //   int[][] combinations = new int[][]{
-  //     {}
-  //   }
-  // }
+  public static ArrayList<Pose2d> trolleys = new ArrayList<Pose2d>();
+  // <Pose2d,Pose2d]> pairedTrolleyTarget = new ArrayList<(Pose2d,Pose2d)>();
+  public static void pairTargetNTrolley() {
+    ArrayList<Double> distances = new ArrayList<Double>();
+
+    int[][] combinations = new int[][]{
+      {0,1,2},
+      {1,2,0},
+      {2,0,1},
+      {1,0,2},
+      {2,1,0},
+      {0,2,1}
+    };
+    for(int i = 0; i < combinations.length; i++){
+      double redTDist = targetAreas.get(0).getTranslation().getDistance(trolleys.get(combinations[i][0]).getTranslation());
+      double greenTDist = targetAreas.get(1).getTranslation().getDistance(trolleys.get(combinations[i][1]).getTranslation());
+      double blueTDist = targetAreas.get(2).getTranslation().getDistance(trolleys.get(combinations[i][2]).getTranslation());
+      distances.add(redTDist + greenTDist + blueTDist);
+    }
+    int minIndex = distances.indexOf(Collections.min(distances));
+    pairedTrolleyTarget.put(targetAreas.get(0), trolleys.get(combinations[minIndex][0]));
+    for(int j = 0; j<combinations[minIndex].length; j++){
+      pairedTrolleyTarget.put(targetAreas.get(j), trolleys.get(combinations[minIndex][j]));
+    }
+
+  }
+
+
 }

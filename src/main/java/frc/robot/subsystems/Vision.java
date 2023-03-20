@@ -141,7 +141,7 @@ public class Vision extends SubsystemBase{
      Globals.curTarget = 0;
      Globals.curItemType = 0;
      Globals.curAngle = 0;
-     m_arm.setCameraAngle(286);
+     m_arm.setCameraAngle(Globals.NormalCameraAngle);
       
     }
    
