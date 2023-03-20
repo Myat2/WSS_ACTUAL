@@ -1,5 +1,6 @@
 package frc.robot.commands.auto;
 
+import frc.robot.Globals;
 import frc.robot.RobotContainer;
 import frc.robot.Astar.Layout;
 // import the commands
@@ -19,7 +20,7 @@ public class OpenHse extends SequentialCommandGroup {
     super(  
         
         new PickItemfromBin(),
-        new MoveCamera(286),
+        new MoveCamera(Globals.NormalCameraAngle),
         new MovetoB(new Pose2d(0.96, 1.5, new Rotation2d(0))),
         new PlaceDown(),
         new MoveArm(new Translation2d(0.33,0.3), 0.5), // Line detection position

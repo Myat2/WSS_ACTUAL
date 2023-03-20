@@ -91,7 +91,7 @@ public class SortItems extends SequentialCommandGroup{
     {
         super(   
         new PickItemfromBin(),
-        new MoveCamera(286),
+        new MoveCamera(Globals.NormalCameraAngle),
         new SelectCommand(
             Map.ofEntries(
                 Map.entry(CommandSelector.ONE, new CheckAndMoveTarget("T3", 0.5)),
