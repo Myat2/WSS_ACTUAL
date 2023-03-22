@@ -261,8 +261,8 @@ public class Arm extends SubsystemBase {
     public void periodic() {
         offset0 = D_offset0.getDouble(120);
         offset1 = D_offset1.getDouble(-60);
-        Globals.PerspTfCamAngle = (int)D_PerspViewingAngle.getDouble(300); // Added
-        Globals.PickingCameraAngle = (int)D_PickingCameraAngle.getDouble(300); // Added
+        // Globals.PerspTfCamAngle = (int)D_PerspViewingAngle.getDouble(300); // Added
+        // Globals.PickingCameraAngle = (int)D_PickingCameraAngle.getDouble(300); // Added
         D_shoulderServo.setDouble(shoulderServo.getAngle());
         D_elbowServo.setDouble(elbowServo.getAngle());
         D_gripperServo.setDouble(gripperServo.getAngle());

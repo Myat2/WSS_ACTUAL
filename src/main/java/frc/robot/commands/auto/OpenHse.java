@@ -21,11 +21,11 @@ public class OpenHse extends SequentialCommandGroup {
         
         new PickItemfromBin(),
         new MoveCamera(Globals.NormalCameraAngle),
-        new MovetoB(new Pose2d(0.96, 1.5, new Rotation2d(0))),
+        new MovetoB(new Pose2d(0.96, 1.5, new Rotation2d(-Math.PI/2))),
         new PlaceDown(),
         new MoveArm(new Translation2d(0.33,0.3), 0.5), // Line detection position
         new MoveArm(new Translation2d(0.33,0.24), 0.5), // Line detection position
-        new MovetoB(new Pose2d(0.96, 1.1, new Rotation2d(0))),
+        new MovetoB(new Pose2d(0.96, 1.1, new Rotation2d(-Math.PI/2))),
         new ViewItem()
     );
   }

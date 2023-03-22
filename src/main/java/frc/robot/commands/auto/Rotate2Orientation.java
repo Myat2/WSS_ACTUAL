@@ -24,7 +24,7 @@ public class Rotate2Orientation extends MoveRobot {
     // private static double convertPxToMM = 0.1/50;
     // private final double _startSpeed;
     private double m_angle =0;
-    private double s_angle = 0;
+    protected double s_angle = 0;
     private boolean updateMap = false;
     private boolean updateLoopPoint = false;
     private double m_dist;

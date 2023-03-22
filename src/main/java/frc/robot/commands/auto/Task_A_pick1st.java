@@ -15,7 +15,8 @@ public class Task_A_pick1st extends SequentialCommandGroup{
     public Task_A_pick1st(){
       super(
           // Start Orientation Correction
-          // new StartOrientation(),
+          new StartOrientation(),
+          new InstantCommand(() -> RobotContainer.m_omnidrive.UpdatePosition(Layout.startPos)),
           new InstantCommand(()->RobotContainer.m_points.SetTrolleysAsObstacles()),
           //## Calibrate Robot Position ##//
           new InitialCalibration(),

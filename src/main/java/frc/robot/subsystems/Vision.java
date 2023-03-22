@@ -54,17 +54,22 @@ public class Vision extends SubsystemBase{
     // private final NetworkTableEntry D_WOBArray = tab.add("WOB array", 0).withWidget(BuiltInWidgets.kTextView).getEntry();      
     private double[] defaultValue = new double[13];
     
-    public Vision(){
-
-  
-    }
+    public Vision(){}
     
+    /**
+     * Retrieves the 1D "line" array passed from NetworkTables
+     * @return line [x,y,w]
+    **/
     public double [] getLine(){
 
       double[] line = (table.getEntry("line").getDoubleArray(defaultValue));
       return line;
     }
-    
+    /**
+     * Retrieves the 1D "line" array passed from NetworkTables
+     * @param wh width 0, height 1
+     * @return dimension
+    **/
     public double getResolution(int wh){
       double[] dimension = new double[2];
       dimension[0] = 800;//(SmartDashboard.getNumber("imW",0));
@@ -72,7 +77,9 @@ public class Vision extends SubsystemBase{
       return dimension[wh];
     }
 
-    // gets the 1d array passed from networktables and stores it in a 2d array
+    /**
+     * Retrieves the 1D array passed from NetworkTables and stores it in a 2D array
+    **/
     public void getWOBItems(){
       // reads the array passed to the networktable
       double[] WOB = table.getEntry("WOB").getDoubleArray(defaultValue);

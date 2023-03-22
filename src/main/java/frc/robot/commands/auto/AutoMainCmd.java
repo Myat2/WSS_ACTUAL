@@ -47,12 +47,16 @@ public class AutoMainCmd extends SequentialCommandGroup
         
         
         super(
+            new Task_A_pick1st()
+            // new ViewingPosition()
+            // new StartOrientation()
+            // new MoveGripper(new Translation2d(0.4, 0), 0.5)
             // new MovetoB(new Pose2d(new Translation2d(0.46, 0.26), new Rotation2d())),
             // new Rotate2Orientation(0),
             // new LoopMovetoB(),
             // new LoopCmd(new LoopMovetoB(), ()-> Globals.endConditionTaskBMapping())  
             // new InitialCalibration()
-            new Task_B()
+            // new Task_B()
             // Move out of starting position
             // new MovetoB(RobotContainer.m_Grid.findGotoPos(Layout.Convert_mm_Pose2d(Layout.T1Pos).getTranslation(), 0.5)),
             // new Rotate2Orientation(RobotContainer.m_Grid.findGotoPos(Layout.Convert_mm_Pose2d(Layout.T1Pos).getTranslation(), 0.5)),

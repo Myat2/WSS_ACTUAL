@@ -19,7 +19,7 @@ public class ReadWOB extends SequentialCommandGroup{
       new InstantCommand(()-> Globals.cvMode = 2),
       // Moves arm to work order board position
       new WOBPosition(),
-      new WaitCommand(4),
+      new WaitCommand(5),
       // resets cvMode to idle
       new InstantCommand(()-> Globals.cvMode=-1),
       // gets the array from networktables and saves it

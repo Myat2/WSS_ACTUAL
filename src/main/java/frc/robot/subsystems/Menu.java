@@ -28,10 +28,10 @@ import frc.robot.commands.auto.TestMotionRot;
 import frc.robot.commands.auto.TestMotionX;
 import frc.robot.commands.auto.TestMotionY;
 import frc.robot.commands.auto.TestPicking;
-import frc.robot.commands.tele.OI;
+import frc.robot.commands.auto.TrolleyHolder;
+import frc.robot.commands.tele.*;
 
-public class Menu extends SubsystemBase
-{
+public class Menu extends SubsystemBase {
 
     private final OI m_oi;
 
@@ -40,66 +40,71 @@ public class Menu extends SubsystemBase
     private final NetworkTableEntry D_button = tab.add("button", -1).getEntry();
     private final NetworkTableEntry D_menu = tab.add("menu", "?").getEntry();
     private NetworkTableEntry D_debug[] = new NetworkTableEntry[Globals.DNUM];
-    //tab.add("Motion", TestMotion);
+    // tab.add("Motion", TestMotion);
 
-   
-    int menuNum=0;
-   private final String[] menuName;
+    int menuNum = 0;
+    private final String[] menuName;
 
     public Menu(final OI oi) {
 
-        for (int i=0; i<Globals.DNUM; i++) {
+        for (int i = 0; i < Globals.DNUM; i++) {
             D_debug[i] = tab.add(Globals.debugNames[i], -1).getEntry();
         }
         m_oi = oi;
-        m_oi.buttonStart.whenPressed(             
-            new SelectCommand(
-                Map.ofEntries(
-                    Map.entry(menuNum++, new CP1()),
-                    Map.entry(menuNum++, new CP2()),
-                    Map.entry(menuNum++, new CP3()),
-                    Map.entry(menuNum++, new CP4()),                    
-                    Map.entry(menuNum++, new CP5("RedTarget")),
-                    Map.entry(menuNum++, new CP5("GreenTarget")),  
-                    Map.entry(menuNum++, new CP5("BlueTarget")),                
-                    Map.entry(menuNum++, new CP6()),
-                    Map.entry(menuNum++, new CP7())
-                ), ()->Globals.menuItem
-            ) 
-        );
+        m_oi.buttonStart.whenPressed(
+                new SelectCommand(
+                        Map.ofEntries(
+                                Map.entry(menuNum++, new CP1()),
+                                Map.entry(menuNum++, new CP2()),
+                                Map.entry(menuNum++, new CP3()),
+                                Map.entry(menuNum++, new CP4()),
+                                Map.entry(menuNum++, new CP5("RedTarget")),
+                                Map.entry(menuNum++, new CP5("GreenTarget")),
+                                Map.entry(menuNum++, new CP5("BlueTarget")),
+                                Map.entry(menuNum++, new CP6()),
+                                Map.entry(menuNum++, new CP7())),
+                        () -> Globals.menuItem));
         menuName = new String[] {
-            "core1",
-            "core2",
-            "core3",
-            "core4",
-            "core5",
-            "core6",
-            "core7"
+                "core1",
+                "core2",
+                "core3",
+                "core4",
+                "core5RedTarget",
+                "core5GreenTarget",
+                "core5BlueTarget",
+                "core6",
+                "core7"
         };
-        
+
         tab.add("TestMotionX", new TestMotionX());
         tab.add("TestMotionY", new TestMotionY());
         tab.add("TestMotionRot", new TestMotionRot());
         tab.add("TestPicking", new TestPicking());
         tab.add("TestLine", new TestLine());
         tab.add("TestColor", new TestColor());
+        tab.add("ReleaseTrolley", new TrolleyHolder(0));
+        tab.add("HoldTrolley", new TrolleyHolder(1));
         // tab.add("CP6", new CP6());
-        
-        //A-up button, Y-down button
-        m_oi.buttonA.whenPressed( ()->{Globals.menuItem--;Globals.menuItem=(Globals.menuItem+menuNum)%menuNum;});
-        m_oi.buttonY.whenPressed( ()->{Globals.menuItem++;Globals.menuItem%=menuNum;});
+
+        // A-up button, Y-down button
+        m_oi.buttonA.whenPressed(() -> {
+            Globals.menuItem--;
+            Globals.menuItem = (Globals.menuItem + menuNum) % menuNum;
+        });
+        m_oi.buttonY.whenPressed(() -> {
+            Globals.menuItem++;
+            Globals.menuItem %= menuNum;
+        });
     }
-    
-   
+
     @Override
-    public void periodic()
-    {
-      
-       D_menu.setString( menuName[Globals.menuItem]);
-       D_button.setNumber(m_oi.getDriveButtons());
-        for (int i=0; i<Globals.DNUM; i++) {
+    public void periodic() {
+
+        D_menu.setString(menuName[Globals.menuItem]);
+        D_button.setNumber(m_oi.getDriveButtons());
+        for (int i = 0; i < Globals.DNUM; i++) {
             D_debug[i].setNumber(Globals.debug[i]);
         }
-       
+
     }
 }

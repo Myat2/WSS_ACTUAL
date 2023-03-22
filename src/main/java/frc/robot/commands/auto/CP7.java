@@ -10,22 +10,23 @@ import frc.robot.subsystems.Arm;
 
 public class CP7 extends SequentialCommandGroup {
     private final static Arm m_arm = RobotContainer.m_arm;
-    public CP7(){
+
+    public CP7() {
 
         super(
-            // Puts camera in viewing position
-            new PerspTfCamPos(),
-            // Put to finding trolley and transform point 
-            new InstantCommand(() -> Globals.cvMode = 4),
-            // Move out of the way
-            new MoveRobot(0, -0.05, 0, 0, 5),
-            new MoveRobot(1, 0.25, 0, 0, 5),
-            // Loop MoveRobot Commands until target area is found
-            new loopMoveRobotWaypoint(),
-            new LoopCmd(new loopMoveRobotWaypoint(), () -> Globals.endConditionCP7()),
-            new CheckAndMoveTarget("T1", 0.5),
-            new Align2Trolley(),
-            new TrolleyHolder(1)
-            );
+                // Puts camera in viewing position
+                // Puts camera in viewing position
+                new PerspTfCamPos(),
+                // Puts camera in viewing position
+                new InstantCommand(() -> Globals.cvMode = -1),
+                // Move out of starting position
+                new MoveRobot(0, -0.05, 0, 0, 5),
+                new MoveRobot(1, 0.35, 0, 0, 5),
+                new LoopMovetoB(),
+                new LoopCmd(new LoopMovetoB(), () -> Globals.endConditionCP7()),
+                // Loop MoveRobot Commands until target area is found
+                new CheckAndMoveTarget("T1", 0.5),
+                new Align2Trolley(),
+                new TrolleyHolder(1));
     }
 }

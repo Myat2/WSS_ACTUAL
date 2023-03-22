@@ -4,11 +4,12 @@ import frc.robot.Globals;
 
 public class StartOrientation extends MoveRobot{
   public StartOrientation(){
-    super(2,0,0,0,Math.PI/3);
+    super(2,0,0,0,Math.PI/2);
   }
   @Override
   public void initialize(){
-    super.m_dist = Globals.startYaw;
+    // super.s_angle = Math.toDegrees(-Globals.startYaw);
+    super.m_dist = -Globals.startYaw;
     super.initialize();
   }
 }

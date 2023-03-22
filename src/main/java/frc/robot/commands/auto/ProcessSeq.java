@@ -20,11 +20,6 @@ public class ProcessSeq extends SequentialCommandGroup {
         
         new PickItemfromBin(),
         new ViewItem()
-
-        // new MoveArm(new Translation2d(0.33,0.24), 0.5),
-        // new WaitCommand(2),
-        // new MoveArm(new Translation2d(0.33,0.05), 0.5),
-        // new WaitCommand(2)
     );
   }
 }

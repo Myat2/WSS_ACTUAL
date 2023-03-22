@@ -12,19 +12,22 @@ import frc.robot.Astar.Layout;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Vision;
 
-public class CP1 extends SequentialCommandGroup{
+public class CP1 extends SequentialCommandGroup {
   private final static Arm m_arm = RobotContainer.m_arm;
   private final static Vision m_vision = RobotContainer.m_vision;
+
   // Pick item from bin
-  public CP1(){
+  public CP1() {
     super(
-      // set arm to vertical position
-      new MoveArm(new Translation2d(0.33,0.24), 0.5), // Line detection position
-     
-      new ViewItem(),
-      new OpenHseLoopCommand(new ProcessSeq())
-     
+        // set arm to vertical position
+        new DetectionPosition(), // Line detection position
+        new MoveRobotSense(1, 0.3, 0, 0, 0.25, () -> RobotContainer.m_sensor.getFrontIRDistance() <= 15),
+        new ViewItem().alongWith(new Gripper(0)),
+        /* To Test Out */
+        new InstantCommand(()-> Globals.CP1()),
+        new PickItemfromBin()
+
     );
   }
-  
+
 }
