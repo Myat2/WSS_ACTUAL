@@ -112,13 +112,13 @@ public class Points {
               + camOffset.getTranslation().getY();
           x = RobotContainer.m_omnidrive.getPose().getTranslation().getX() + getDistanceTarget(targetName)[i * 2 + 0]
               + camOffset.getTranslation().getX();
-          System.out.printf("!!!!!!!!!!!!!!0 xy=%f,%f", x, y);
+          // System.out.printf("!!!!!!!!!!!!!!0 xy=%f,%f", x, y);
         } else {
           x = RobotContainer.m_omnidrive.getPose().getTranslation().getX() + getDistanceTarget(targetName)[i * 2 + 1]
               + camOffset.getTranslation().getY();
           y = RobotContainer.m_omnidrive.getPose().getTranslation().getY() - getDistanceTarget(targetName)[i * 2 + 0]
               + camOffset.getTranslation().getX();
-          System.out.printf("!!!!!!!!!!!!!!-90 xy=%f,%f", x, y);
+          // System.out.printf("!!!!!!!!!!!!!!-90 xy=%f,%f", x, y);
         }
 
         upperbound = new Pose2d(new Translation2d(x + tolerance, y + tolerance), new Rotation2d());

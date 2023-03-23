@@ -34,27 +34,27 @@ public class CheckTrolleyinWaypoint extends SequentialCommandGroup{
     super(
       new ConditionalCommand(
         new SequentialCommandGroup(
-          new InstantCommand(()->System.out.println("onTrue!!!!!!!!!!!!!!!" )),
+          // new InstantCommand(()->System.out.println("onTrue!!!!!!!!!!!!!!!" )),
   
 
           new InstantCommand(()-> previousPose = RobotContainer.m_omnidrive.getPose()),
-          new InstantCommand(()->System.out.println("Stored current pose as previous pose: " + previousPose)),
-          new InstantCommand(()->System.out.println("Point " + RobotContainer.m_points.getPoint(m_trolley))),
+          // new InstantCommand(()->System.out.println("Stored current pose as previous pose: " + previousPose)),
+          // new InstantCommand(()->System.out.println("Point " + RobotContainer.m_points.getPoint(m_trolley))),
           new CheckAndMoveTarget(CheckTrolleyinWaypoint::trolleyID, 0.5),
           new Align2Trolley(),
           new TrolleyHolder(1),
           new InstantCommand(()-> RobotContainer.m_points.removeObs(m_trolley)),
-          new InstantCommand(()->System.out.println("Removed Obstacle " + m_trolley)),
-          new InstantCommand(()->System.out.println("Placeholder Pos: " + RobotContainer.m_Grid.findGotoPos(Globals.placeholderTrolleyPos[Globals.placeholderCount].getTranslation(), 0.6))),
+          // new InstantCommand(()->System.out.println("Removed Obstacle " + m_trolley)),
+          // new InstantCommand(()->System.out.println("Placeholder Pos: " + RobotContainer.m_Grid.findGotoPos(Globals.placeholderTrolleyPos[Globals.placeholderCount].getTranslation(), 0.6))),
           // Move to Place holder position
           new MovetoB(CheckTrolleyinWaypoint::placeholderTrolleyPos),
           // Rotate to place
           new Rotate2Orientation(Globals.placeholderTrolleyPos[Globals.placeholderCount].getRotation().getDegrees()),
           // Add Obstacle
           new InstantCommand(()-> RobotContainer.m_points.AddSingleRoundObs(Globals.placeholderTrolleyPos[Globals.placeholderCount].getTranslation().minus(new Translation2d(0.21,0)))),
-          new InstantCommand(()->System.out.println("Added Obstacle in Grid " + Globals.placeholderTrolleyPos[Globals.placeholderCount].getTranslation().minus(new Translation2d(0.38,0)))),
+          // new InstantCommand(()->System.out.println("Added Obstacle in Grid " + Globals.placeholderTrolleyPos[Globals.placeholderCount].getTranslation().minus(new Translation2d(0.38,0)))),
   
-          new InstantCommand(()->System.out.println("placeholderCount " + Globals.placeholderCount)),
+          // new InstantCommand(()->System.out.println("placeholderCount " + Globals.placeholderCount)),
           new InstantCommand(()-> RobotContainer.m_points.addPoint(m_trolley, Globals.placeholderTrolleyPos[Globals.placeholderCount])), 
           // Place Trolley
           new TrolleyHolder(0),
@@ -67,7 +67,8 @@ public class CheckTrolleyinWaypoint extends SequentialCommandGroup{
           new InstantCommand(()-> Globals.placeholderCount++)
 
         ),  new SequentialCommandGroup(
-          new InstantCommand(()->System.out.print("onFalse!!!!!!!!!!!!!!!" ))),
+          // new InstantCommand(()->System.out.print("onFalse!!!!!!!!!!!!!!!" ))
+          ),
         
         CheckTrolleyinWaypoint::MoveTrolleyCondition
       )
@@ -82,7 +83,7 @@ public class CheckTrolleyinWaypoint extends SequentialCommandGroup{
         break;
       }
     }
-    System.out.println("Trolley Found: " + m_trolley);
+    // System.out.println("Trolley Found: " + m_trolley);
     super.initialize();
   }
   

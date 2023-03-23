@@ -23,7 +23,7 @@ public class InitialCalibration extends SequentialCommandGroup{
       new MovetoB(Layout::getCalibrationPos),
       new Rotate2Orientation(Layout::getCalibrationPos),
       // Lifts arm up and close gripper
-      new DetectionPosition().alongWith(new Gripper(0,80)),
+      new DetectionPosition().alongWith(new Gripper(1,80)),
       // sets cv mode to line detection
       new InstantCommand(()-> m_vision.setColor("Black")),
       new InstantCommand(()-> Globals.cvMode = 0),
@@ -34,6 +34,7 @@ public class InitialCalibration extends SequentialCommandGroup{
       new InstantCommand(()-> Globals.cvMode=-1),
       // wait 2 secs
       new WaitCommand(2),
+      new Gripper(0,80),
       // resets robot's position
       new ResetPosition()
     );

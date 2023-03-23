@@ -19,16 +19,15 @@ public class MovetoBWaypoint extends MovetoB{
   }
   @Override
     public void initialize(){
-      System.out.println("***************************");
+      // System.out.println("***************************");
       curPose = Globals.curPose.getTranslation();
       curRot = Globals.curPose.getRotation();
       addDist = Globals.pose2dMoveCommands[Globals.loopCount%4].getTranslation();
       addRotation = Globals.pose2dMoveCommands[Globals.loopCount%4].getRotation();
-      waypoint = new Pose2d(new Translation2d(curPose.getX() + addDist.getX(), curPose.getY() + addDist.getY()), new Rotation2d());
+      waypoint = new Pose2d(new Translation2d(curPose.getX() + addDist.getX(), curPose.getY() + addDist.getY()), addRotation);
       // // waypoint = new Pose2d(new Translation2d(curPose.getX() + addDist.getX(), curPose.getY() + addDist.getY()), new Rotation2d(curRot.getRadians() + addRotation.getRadians()));
       // waypoint = Globals.waypoint;
-      System.out.println("Waypoint: " + waypoint);
-      System.out.println("Curpose: " + curPose);
+   
       super.m_posB = waypoint;
       MovetoB.m_posB2 = waypoint;
       super.initialize();

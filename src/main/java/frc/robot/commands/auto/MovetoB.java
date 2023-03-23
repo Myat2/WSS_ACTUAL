@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.trajectory.constraint.CentripetalAccelerationConstraint;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
@@ -73,9 +74,11 @@ public class MovetoB extends SequentialCommandGroup
         //
         double dx, dy;
         if (m_fn_flag==true) {
-            dx = m_posB_fn.get().getTranslation().getX() - curPose.getTranslation().getX();
-            dy = m_posB_fn.get().getTranslation().getY() - curPose.getTranslation().getY();
-            m_rot = m_posB_fn.get().getRotation().minus(curPose.getRotation());
+            Pose2d p = m_posB_fn.get(); 
+            dx = p.getTranslation().getX() - curPose.getTranslation().getX();
+            dy = p.getTranslation().getY() - curPose.getTranslation().getY();
+            m_rot = p.getRotation().minus(curPose.getRotation());
+            m_posB = p;
         }
         else {
             dx = m_posB.getTranslation().getX() - curPose.getTranslation().getX();
@@ -103,18 +106,18 @@ public class MovetoB extends SequentialCommandGroup
         RobotContainer.m_Astar.setStart(nodeEnd);
         RobotContainer.m_Astar.setEnd(nodeStart);
 
-        System.out.printf("start=%d,%d, end=%d,%d dxy=%d,%d dxy=%f,%f\n\n", 
-            start_x, start_y, end_x, end_y, Layout.Convert_m_cell(dx), Layout.Convert_m_cell(dy), dx,dy);
+        // System.out.printf("start=%d,%d, end=%d,%d dxy=%d,%d dxy=%f,%f\n\n", 
+            // start_x, start_y, end_x, end_y, Layout.Convert_m_cell(dx), Layout.Convert_m_cell(dy), dx,dy);
         
         long startTime = System.nanoTime();
         RobotContainer.m_Astar.solve();
         long elapsedTime = System.nanoTime() - startTime;
-            System.out.println("***Solve time : "
-                    + elapsedTime/1000000);
+            // System.out.println("***Solve time : "
+                    // + elapsedTime/1000000);
                     
         // Get the path waypoints
         ArrayList<Node> AstarPathWayPoints = RobotContainer.m_Astar.getPathWayPoints();
-        System.out.println(AstarPathWayPoints);
+        // System.out.println(AstarPathWayPoints);
 
         //Convert from Astar cell waypoints into real unit (meter)
         if (AstarPathWayPoints != null) {
@@ -123,11 +126,11 @@ public class MovetoB extends SequentialCommandGroup
 
                 if (n instanceof Tile) {
                     Tile t = (Tile) n;
-                    System.out.println(t);
+                    // System.out.println(t);
                     //Convert from cell unit to metre
                     Translation2d pt = new Translation2d(t.getX(), t.getY());
                     m_pathWayPoints.add(Layout.Convert_cell_m(pt));
-                    System.out.printf("x,y=%d,%d, end=%f,%f\n", t.getX(), t.getY(), Layout.Convert_cell_m(pt).getX(), Layout.Convert_cell_m(pt).getY());
+                    // System.out.printf("x,y=%d,%d, end=%f,%f\n", t.getX(), t.getY(), Layout.Convert_cell_m(pt).getX(), Layout.Convert_cell_m(pt).getY());
                 }
             }
         }
@@ -184,6 +187,7 @@ public class MovetoB extends SequentialCommandGroup
         
         super (
             //Start with trajectory following
+            new InstantCommand(()-> MovetoB.m_initFlag = false),
             new WaitUntilCommand(MovetoB::InitDone), 
             new WaitCommand(0.5),
             new ConditionalCommand(
@@ -199,8 +203,9 @@ public class MovetoB extends SequentialCommandGroup
             //End with rotation to the target heading???
             new MoveRobot(MovetoB::Get_rot, 0, 0, Math.PI/2)
         );
+        
         m_posB = posB;
-        MovetoB.m_initFlag = false;
+        
         m_fn_flag = flag;
 
     }

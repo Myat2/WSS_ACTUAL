@@ -12,9 +12,8 @@ public class LoopMovetoB extends SequentialCommandGroup{
     super(
       
       new MovetoBWaypoint(),
-      new Rotate2Orientation(),
       new InstantCommand(() -> Globals.cvMode = 4), 
-      new WaitCommand(8),
+      new WaitCommand(6),
       // CP5 might be affected 
       new InstantCommand(() -> RobotContainer.m_points.updateAllPoints()),
       new InstantCommand(() -> Globals.cvMode = -1),

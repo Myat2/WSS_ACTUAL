@@ -24,15 +24,15 @@ public class MovetoPoint extends MovetoB{
     }
     @Override
     public void initialize() {
-        System.out.println("_-_-_-_-_-_-_-_-_-_-_-MovetoPoint-_-_-_-_-_-_-_-_-_-_-_-_");
+        // System.out.println("_-_-_-_-_-_-_-_-_-_-_-MovetoPoint-_-_-_-_-_-_-_-_-_-_-_-_");
         if(m_pointNameSupplier != null){
             m_pointName = m_pointNameSupplier.get();
         }
-        System.out.println("Point name given: " + m_pointName);
+        // System.out.println("Point name given: " + m_pointName);
         super.m_posB = RobotContainer.m_Grid.findGotoPos(RobotContainer.m_points.getPoint(m_pointName).getTranslation(), m_dist);
-        System.out.println("Point Received " + RobotContainer.m_points.getPoint(m_pointName));
-        System.out.println(RobotContainer.m_Grid.findGotoPos(RobotContainer.m_points.getPoint(m_pointName).getTranslation(), m_dist));
-        System.out.println(super.m_posB.toString());
+        // System.out.println("Point Received " + RobotContainer.m_points.getPoint(m_pointName));
+        // System.out.println(RobotContainer.m_Grid.findGotoPos(RobotContainer.m_points.getPoint(m_pointName).getTranslation(), m_dist));
+        // System.out.println(super.m_posB.toString());
         super.initialize();
     }
     

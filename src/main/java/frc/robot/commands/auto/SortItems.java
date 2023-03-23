@@ -52,9 +52,9 @@ public class SortItems extends SequentialCommandGroup {
                 new MoveCamera(286),
                 new SelectCommand(
                         Map.ofEntries(
-                                Map.entry(CommandSelector.ONE, new GotoTrolley(Layout.T1Pos)),
+                                Map.entry(CommandSelector.ONE, new GotoTrolley(Layout.T2Pos)), // Go to Red
                                 Map.entry(CommandSelector.TWO, new GotoTrolley(Layout.T3Pos)),
-                                Map.entry(CommandSelector.THREE, new GotoTrolley(Layout.T2Pos))),
+                                Map.entry(CommandSelector.THREE, new GotoTrolley(Layout.T1Pos))),
                         SortItems::selectTarget),
                 // Lifts arm
                 new DetectionPosition(),

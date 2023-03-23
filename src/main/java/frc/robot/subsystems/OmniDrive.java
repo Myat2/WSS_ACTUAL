@@ -462,9 +462,9 @@ public class OmniDrive extends SubsystemBase
         D_navYaw.setDouble(-gyro.getYaw());
 
         // //Titan encoder
-        D_encoderDisp0.setDouble(encoderSpeeds[0]);//encoderSpeeds[0]);
-        D_encoderDisp1.setDouble(encoderSpeeds[1]);//encoders[1].getEncoderDistance());//encoderSpeeds[1]);
-        D_encoderDisp2.setDouble(encoderSpeeds[2]);//encoderSpeeds[2]);
+        // D_encoderDisp0.setDouble(encoderSpeeds[0]);//encoderSpeeds[0]);
+        // D_encoderDisp1.setDouble(encoderSpeeds[1]);//encoders[1].getEncoderDistance());//encoderSpeeds[1]);
+        // D_encoderDisp2.setDouble(encoderSpeeds[2]);//encoderSpeeds[2]);
         D_inputW.setDouble(pidInputs[2]);
         double [] value;
         value = new double[3];

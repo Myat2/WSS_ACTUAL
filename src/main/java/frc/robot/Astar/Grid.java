@@ -24,9 +24,9 @@ public class Grid extends Network{
                 tiles.add(t);
             }
         }
-        System.out.println(xSize);
-        System.out.println(ySize);
-        System.out.println(tiles.size());
+        // System.out.println(xSize);
+        // System.out.println(ySize);
+        // System.out.println(tiles.size());
         
         //Pre assign neighbours
         for (Tile t : getTiles()) {
@@ -194,7 +194,7 @@ public class Grid extends Network{
     public void AddObsRound(int x0, int y0, int diameter) {
         double radius = diameter/2;
         int numOfCells = diameter/2;  
-        System.out.printf("cell = %d\n", numOfCells);
+        // System.out.printf("cell = %d\n", numOfCells);
         for (int x=-diameter/2; x<diameter/2; x++) {
             for (int y=-diameter/2; y<diameter/2; y++) {
                 int dist = Math.round((float)Math.sqrt(x*x + y*y));
@@ -325,7 +325,7 @@ public class Grid extends Network{
                 cost[i] = t.getObsValue();
                 if (i==0)
                     cost[i] -= 10;
-                 System.out.printf("i=%d x,y=%d,%d a=%f cost=%f\n", i, grid_x, grid_y, aa, cost[i]);
+                //  System.out.printf("i=%d x,y=%d,%d a=%f cost=%f\n", i, grid_x, grid_y, aa, cost[i]);
             }
             else {
                 cost[i] = Node.maxObsValue;

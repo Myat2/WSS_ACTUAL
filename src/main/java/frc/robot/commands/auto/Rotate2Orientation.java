@@ -115,7 +115,7 @@ public class Rotate2Orientation extends MoveRobot {
         else 
             m_angle = m_angle + 0;
         m_angle = m_angle * (Math.PI/180);
-        System.out.println("Rotate2Orientation: " + m_angle);   
+        // System.out.println("Rotate2Orientation: " + m_angle);   
         super.m_dist = m_angle;
         super.initialize();
     }

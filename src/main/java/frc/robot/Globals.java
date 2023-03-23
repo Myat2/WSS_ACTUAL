@@ -30,7 +30,7 @@ public class Globals {
   public static double arm_offset_z = 0.25;
   public static double gripper_offset = 0.19; // actual is 0.19
   /** (height of cam - (height of coke - 3cm))/(height of cam) */
-  public static double CokeRatio = 0.77; // actual is 0.805
+  public static double CokeRatio = 0.73; // actual is 0.805
   public static double AdjustFactor = 1;
   public static int imH = 600;
   public static int imW = 800;

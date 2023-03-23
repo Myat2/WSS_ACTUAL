@@ -29,7 +29,9 @@ public class GotoTrolley extends SequentialCommandGroup {
    */
   public GotoTrolley(Pose2d pose) {
     super(
-      new MovetoB(()->RobotContainer.m_Grid.findGotoPos(pose.getTranslation(), 0.5))
+      // new InstantCommand(()-> System.out.printf("-------------")),
+      new MovetoB(()->RobotContainer.m_Grid.findGotoPos(pose.getTranslation(), 0.55)),
+      new MoveRobot(1, 0.05, 0, 0, 0.4)
 
     );
   }

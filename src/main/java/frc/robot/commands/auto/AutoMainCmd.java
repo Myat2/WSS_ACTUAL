@@ -46,7 +46,9 @@ public class AutoMainCmd extends SequentialCommandGroup
     {
         
         
-        super(
+        super
+        (
+            // Lifts arm up and close gripper
             new Task_A_pick1st()
             // new ViewingPosition()
             // new StartOrientation()

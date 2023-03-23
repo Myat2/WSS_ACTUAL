@@ -21,8 +21,8 @@ public class Align2Line extends SequentialCommandGroup{
   // aligns to line
   public Align2Line(){
     super(
-      // Lifts arm up and close gripper
-      new DetectionPosition().alongWith(new Gripper(0,80)),
+      // Lifts arm up and open gripper
+      new DetectionPosition().alongWith(new Gripper(1,80)),
       // sets cv mode to line detection
       new InstantCommand(()-> RobotContainer.m_vision.setColor("Black")),
       new InstantCommand(()-> Globals.cvMode = 0),
@@ -35,7 +35,8 @@ public class Align2Line extends SequentialCommandGroup{
       new WaitCommand(2),
       // resets robot's position
       new ResetPosition(),
-      // moves forward until robot is 15 cm away
+      new Gripper(0,80),
+      // moves forward until robot is 15 cm away and close gripper
       new MoveRobotSense(1, 0.3, 0, 0,0.25, ()-> m_sensor.getFrontIRDistance()<=15)
     );
   }

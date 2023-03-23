@@ -25,18 +25,18 @@ public class Layout {
 
     // List all fixed rectangular obstacles in layout here
     public static final double obs_m[][] = {
-            // x0 y0 xSize ySize Angle
+            // x0 y0 xSize ySize Angle()
             { 1.400, 1.100, 0.300, 0.420, 0 }, // pickup bin
-            { 1.1, 4.35, 0.300, 0.420, 0 }, // pickup bin2
+            { 0.2, 4.27, 0.300, 0.420, -Math.PI/4}, // pickup bin2
     };
     public static final double obsRound_m[][] = {
             // x, y, diameter
-            // {2.100, 4.310, 0.300}, //red
-            // {0.200, 4.370 , 0.300}, //green
-            // {1.100, 4.330, 0.300} //blue
-            // {0.980, 3.910, 0.300} //red
-            // {0.290, 4.370, 0.300}, //green
-            // {1.860, 3.830, 0.300} //blue
+            // {1.33, 2.02, 0.300}, //red
+            // {1.84, 2.02 , 0.300}, //green
+            // {0.79, 2.02, 0.300}, //blue
+            // {1.02,4.34, 0.300}, //T1
+            // {1.52, 4.34, 0.300}, //T2
+            // {2.02, 4.34, 0.300} //T3
 
     };
 
@@ -46,24 +46,24 @@ public class Layout {
 
     public static final Pose2d TestPickUpBinPos = new Pose2d(0.63, 1.05, new Rotation2d(-Math.PI / 2));
     public static final Pose2d PickUpBinPos = new Pose2d(1.4 - 0.72, 1.1, new Rotation2d(-Math.PI / 2));
-    public static final Pose2d PickUpBin2Pos = new Pose2d(1.1, 4.35 - 0.72, new Rotation2d(0));
+    public static final Pose2d PickUpBin2Pos = new Pose2d(0.2 + 0.509, 4.35 - 0.509, new Rotation2d(Math.toRadians(45)));
     // These are coordinates of the red colored target area (NOTE: indicate the
     // angle of orientation)
-    public static final Pose2d RedPos = new Pose2d(2, 2.9, new Rotation2d(Math.toRadians(-45)));
+    public static final Pose2d RedPos = new Pose2d(1.33, 2.02, new Rotation2d(0));
 
     // These are coordinates of the green colored target area
-    public static final Pose2d GreenPos = new Pose2d(2, 4.33, new Rotation2d(Math.toRadians(90)));
+    public static final Pose2d GreenPos = new Pose2d(1.84, 2.02, new Rotation2d(0));
 
     // These are coordinates of the blue colored target area
-    public static final Pose2d BluePos = new Pose2d(2, 3.6, new Rotation2d(Math.toRadians(90)));
+    public static final Pose2d BluePos = new Pose2d(0.79, 2.02, new Rotation2d(0));
 
     // These are coordinates of the trolleys (NOTE: indicate the angle of
     // orientation)
-    public static final Pose2d T1Pos = new Pose2d(0.44, 2.17, new Rotation2d(Math.toRadians(90)));
+    public static final Pose2d T1Pos = new Pose2d(1.02, 4.34, new Rotation2d(0));
 
-    public static final Pose2d T2Pos = new Pose2d(0.44, 2.67, new Rotation2d(Math.toRadians(-90)));
+    public static final Pose2d T2Pos = new Pose2d(1.52, 4.34, new Rotation2d(0));
 
-    public static final Pose2d T3Pos = new Pose2d(0.44, 3.17, new Rotation2d(Math.toRadians(45)));
+    public static final Pose2d T3Pos = new Pose2d(2.02, 4.34, new Rotation2d(0));
 
     // Position for robot to go to for reading work order
     public static final Pose2d workOrderPos = new Pose2d(1.15, 0.250, new Rotation2d(Math.toRadians(-90))); // Changed x
@@ -72,9 +72,8 @@ public class Layout {
                                                                                                             // 1.15
 
     // Robot start position.
-    // public static final Pose2d startPos = new Pose2d(0.3, 0.3, new
-    // Rotation2d(-Math.PI / 4)); // For TaskA and TaskB
-    public static final Pose2d startPos = new Pose2d(0.21, 0.21, new Rotation2d(-Math.PI / 2)); // For CPT
+    public static final Pose2d startPos = new Pose2d(0.3, 0.3, new Rotation2d(-Math.PI / 4)); // For TaskA and TaskB
+    // public static final Pose2d startPos = new Pose2d(0.21, 0.21, new Rotation2d(-Math.PI / 2)); // For CPT
     // public static final Pose2d startPos = new Pose2d(0.96, 1.1, new
     // Rotation2d(-Math.PI / 2)); // For open house/testing
 
