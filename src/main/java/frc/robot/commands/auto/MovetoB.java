@@ -41,8 +41,8 @@ public class MovetoB extends SequentialCommandGroup
 //       new Translation2d(0.0, 0.1)
 
 //   );
-    private Trajectory m_Trajectory ;
-    private List<Translation2d> m_pathWayPoints;
+    static private Trajectory m_Trajectory ;
+    static private List<Translation2d> m_pathWayPoints;
     //Set max velocity, acceleration and centripedal acceleration (turn speed)
     static private final CentripetalAccelerationConstraint m_CurveConstraint = new CentripetalAccelerationConstraint(0.5);
     static private final TrajectoryConfig m_Config = new TrajectoryConfig(0.4, 0.4).addConstraint(m_CurveConstraint).setReversed(false);
@@ -74,18 +74,16 @@ public class MovetoB extends SequentialCommandGroup
         //
         double dx, dy;
         if (m_fn_flag==true) {
-            Pose2d p = m_posB_fn.get(); 
-            dx = p.getTranslation().getX() - curPose.getTranslation().getX();
-            dy = p.getTranslation().getY() - curPose.getTranslation().getY();
-            m_rot = p.getRotation().minus(curPose.getRotation());
-            m_posB = p;
+            m_posB = m_posB_fn.get();
         }
-        else {
-            dx = m_posB.getTranslation().getX() - curPose.getTranslation().getX();
-            dy = m_posB.getTranslation().getY() - curPose.getTranslation().getY();
-            m_rot = m_posB.getRotation().minus(curPose.getRotation());
-        }
+        m_posB2 = m_posB;
+
+        dx = m_posB.getTranslation().getX() - curPose.getTranslation().getX();
+        dy = m_posB.getTranslation().getY() - curPose.getTranslation().getY();
+        m_rot = m_posB.getRotation().minus(curPose.getRotation());
+ 
         m_dist = Math.sqrt(dx*dx + dy*dy);
+        m_trajFlag = (m_dist>0.2) ? true: false;
 
         Tile nodeStart, nodeEnd;
         nodeStart = RobotContainer.m_Grid.find(start_x, start_y);
@@ -107,14 +105,13 @@ public class MovetoB extends SequentialCommandGroup
         RobotContainer.m_Astar.setEnd(nodeStart);
 
         // System.out.printf("start=%d,%d, end=%d,%d dxy=%d,%d dxy=%f,%f\n\n", 
-            // start_x, start_y, end_x, end_y, Layout.Convert_m_cell(dx), Layout.Convert_m_cell(dy), dx,dy);
+        //     start_x, start_y, end_x, end_y, Layout.Convert_m_cell(dx), Layout.Convert_m_cell(dy), dx,dy);
         
-        long startTime = System.nanoTime();
-        RobotContainer.m_Astar.solve();
-        long elapsedTime = System.nanoTime() - startTime;
-            // System.out.println("***Solve time : "
-                    // + elapsedTime/1000000);
-                    
+        RobotContainer.m_Astar.startSolve();
+
+    }
+
+    public static void doSpline() {
         // Get the path waypoints
         ArrayList<Node> AstarPathWayPoints = RobotContainer.m_Astar.getPathWayPoints();
         // System.out.println(AstarPathWayPoints);
@@ -142,20 +139,15 @@ public class MovetoB extends SequentialCommandGroup
         //generate trajectory based on A* output
         //QuinticHermite works better
 
-        m_trajFlag = (m_dist>0.2) ? true: false;
+       
         if ( TrajCondition() ) {
             // There's problem with generating trajectory and path is a short straight line
             m_Trajectory =
             // myGenerateTrajectory.generateTrajectoryClampedCubic(m_pathWayPoints, m_Config, 0.1);
             myGenerateTrajectory.generateTrajectoryQuinticHermite(m_pathWayPoints, m_Config, 0.075);
         }
-        else {
-            m_posB2 = m_posB;
-        }
-
 
         m_initFlag = true;
-
     }
     
     public static boolean InitDone() {
@@ -187,9 +179,8 @@ public class MovetoB extends SequentialCommandGroup
         
         super (
             //Start with trajectory following
-            new InstantCommand(()-> MovetoB.m_initFlag = false),
-            new WaitUntilCommand(MovetoB::InitDone), 
-            new WaitCommand(0.5),
+            new WaitUntilCommand(()->RobotContainer.m_Astar.solveFinished()), 
+            new InstantCommand(()->doSpline()),
             new ConditionalCommand(
                 new OmniTrackTrajectoryCommand(
                     myGenerateTrajectory::getTrajectory,
@@ -203,9 +194,7 @@ public class MovetoB extends SequentialCommandGroup
             //End with rotation to the target heading???
             new MoveRobot(MovetoB::Get_rot, 0, 0, Math.PI/2)
         );
-        
         m_posB = posB;
-        
         m_fn_flag = flag;
 
     }

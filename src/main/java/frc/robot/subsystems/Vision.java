@@ -155,11 +155,11 @@ public class Vision extends SubsystemBase{
     @Override
     public void periodic()
     {
-      Globals.convertPxToM = D_ConvertPxToM.getDouble(0.0006225);
-      Globals.camera_mount_offset_x = D_CameraMountOffsetX.getDouble(0.015);
-      Globals.arm_offset_z = D_ArmOffsetZ.getDouble(0.25);
-      Globals.gripper_offset = D_GripperOffsetZ.getDouble(0.19);
-      Globals.CokeRatio = D_CokeRatio.getDouble(0.79);
+      // Globals.convertPxToM = D_ConvertPxToM.getDouble(0.0006225);
+      // Globals.camera_mount_offset_x = D_CameraMountOffsetX.getDouble(0.015);
+      // Globals.arm_offset_z = D_ArmOffsetZ.getDouble(0.25);
+      // Globals.gripper_offset = D_GripperOffsetZ.getDouble(0.19);
+      // Globals.CokeRatio = D_CokeRatio.getDouble(0.79);
       SmartDashboard.putString("Points Map", RobotContainer.m_points.pointMap.toString());
       SmartDashboard.putString("Obs Map", RobotContainer.m_points.obstacleMap.toString());
         D_curBin.setNumber(Globals.curBin);

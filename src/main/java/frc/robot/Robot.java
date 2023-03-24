@@ -24,7 +24,7 @@ public class Robot extends TimedRobot {
   private Command m_teleopCommand;
   private RobotContainer m_robotContainer;
   private OmniDrive m_omnidrive;
-  private Notifier m_follower;
+  private Notifier m_follower, m_followerAstar;
 
    /**
    * This function is run when the robot is first started up and should be used for any
@@ -41,6 +41,8 @@ public class Robot extends TimedRobot {
       m_follower = new Notifier(() -> { m_omnidrive.doPID(); });
       m_follower.startPeriodic(Constants.PID_DT);
     }
+    m_followerAstar = new Notifier(() -> { RobotContainer.m_Astar.AstarProcess(); });
+    m_followerAstar.startPeriodic(0.04);
 
   }
 
@@ -86,7 +88,7 @@ public class Robot extends TimedRobot {
     RobotContainer.m_Grid.AddFixedObstacles(RobotContainer.m_layout);
     RobotContainer.m_Grid.ExpandObstacles(Globals.robotRadius_m);
     Globals.loopCount = 0;
-    
+    Globals.runningTaskB = false;
     //RobotContainer.InitMap();
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {

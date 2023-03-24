@@ -1,12 +1,6 @@
 package frc.robot.commands.auto;
 
-import javax.lang.model.util.ElementScanner6;
-import javax.swing.TransferHandler.TransferSupport;
-
 import edu.wpi.first.wpilibj.geometry.Translation2d;
-import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.Globals;
 //RobotContainer import
 import frc.robot.RobotContainer;
@@ -18,9 +12,8 @@ import frc.robot.subsystems.Vision;
 public class ArmPick extends MoveArm {
     private final static Vision m_vision = RobotContainer.m_vision;
     private final static Arm m_arm = RobotContainer.m_arm;
-    private final static Sensor m_sensor = RobotContainer.m_sensor;
     private double TrolleyconvertPxToM = 0.0008625;
-    private double pickUpHeight = 0.02;
+    private double pickUpHeight = 0.01; // 0.02
     private double ratio = 0;
     private int m_type;
 

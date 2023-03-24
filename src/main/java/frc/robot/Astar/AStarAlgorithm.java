@@ -12,6 +12,7 @@ public class AStarAlgorithm {
 
     private Node start;
     private Node end;
+    private boolean startFlag = false;
 
     private ArrayList<Node> openList;
     private ArrayList<Node> closedList;
@@ -210,5 +211,20 @@ public class AStarAlgorithm {
     public void setEnd(Node end) {
         this.end = end;
     }
+    /**
+   * This function starts the Astar solver in another process
+   */
+    public void startSolve( ) {
+        startFlag = true;
+    }
+    public boolean solveFinished() {
+        return startFlag==false;
+    }
+    public void AstarProcess(){
+        if (startFlag == true) {
+            solve();
+            startFlag = false;
+        }
 
+    }
 }

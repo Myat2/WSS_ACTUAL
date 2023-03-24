@@ -1,6 +1,7 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -14,10 +15,11 @@ import frc.robot.subsystems.Sensor;
 import frc.robot.subsystems.Vision;
 // This command is used to align to the black line and move towards the bin
 public class Align2Line extends SequentialCommandGroup{
-  private final static Arm m_arm = RobotContainer.m_arm;
   private final static Sensor m_sensor = RobotContainer.m_sensor;
-  private final static Vision m_vision = RobotContainer.m_vision;
-  private final static OmniDrive m_omnidrive = RobotContainer.m_omnidrive;
+
+  public static boolean runningTaskB() {
+    return Globals.runningTaskB;
+  }
   // aligns to line
   public Align2Line(){
     super(
@@ -34,7 +36,10 @@ public class Align2Line extends SequentialCommandGroup{
       // wait 2 secs
       new WaitCommand(2),
       // resets robot's position
-      new ResetPosition(),
+      new ConditionalCommand(
+        new ResetPosition("TaskB"), 
+        new ResetPosition(), 
+        Align2Line::runningTaskB),
       new Gripper(0,80),
       // moves forward until robot is 15 cm away and close gripper
       new MoveRobotSense(1, 0.3, 0, 0,0.25, ()-> m_sensor.getFrontIRDistance()<=15)

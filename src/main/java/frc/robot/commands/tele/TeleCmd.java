@@ -18,7 +18,7 @@ public class TeleCmd extends CommandBase
     private final Sensor m_sensor;
     private final Arm m_arm;
     private final OI m_oi;
-    private final int[] cvModes = {-1,0,1,2,3,4,5};
+    private final int[] cvModes = {-2,-1,0,1,2,3,4,5};
     private int cvSelector = 0;
     /**
      * Constructor
@@ -39,7 +39,7 @@ public class TeleCmd extends CommandBase
     @Override
     public void initialize()
     {
-
+        cvSelector = 0;
     }
 
     /**
@@ -68,7 +68,7 @@ public class TeleCmd extends CommandBase
         else{
             m_arm.setArmPos(new Translation2d(0.33,0.24));
         }
-        Globals.cvMode = cvModes[cvSelector%7];
+        Globals.cvMode = cvModes[cvSelector%8];
         
         if(open){
             m_arm.setGripper(300);

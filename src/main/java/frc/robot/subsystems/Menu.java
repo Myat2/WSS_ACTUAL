@@ -10,25 +10,7 @@ import edu.wpi.first.wpilibj2.command.SelectCommand;
 //WPI imports
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Globals;
-import frc.robot.commands.auto.CP1;
-import frc.robot.commands.auto.CP2;
-import frc.robot.commands.auto.CP3;
-import frc.robot.commands.auto.CP4;
-import frc.robot.commands.auto.CP5;
-import frc.robot.commands.auto.CP6;
-import frc.robot.commands.auto.CP7;
-import frc.robot.commands.auto.MoveBack;
-import frc.robot.commands.auto.MoveCurve;
-import frc.robot.commands.auto.MoveLeft;
-import frc.robot.commands.auto.MoveRight;
-import frc.robot.commands.auto.MoveTest;
-import frc.robot.commands.auto.TestColor;
-import frc.robot.commands.auto.TestLine;
-import frc.robot.commands.auto.TestMotionRot;
-import frc.robot.commands.auto.TestMotionX;
-import frc.robot.commands.auto.TestMotionY;
-import frc.robot.commands.auto.TestPicking;
-import frc.robot.commands.auto.TrolleyHolder;
+import frc.robot.commands.auto.*;
 import frc.robot.commands.tele.*;
 
 public class Menu extends SubsystemBase {
@@ -84,6 +66,7 @@ public class Menu extends SubsystemBase {
         tab.add("TestColor", new TestColor());
         tab.add("ReleaseTrolley", new TrolleyHolder(0));
         tab.add("HoldTrolley", new TrolleyHolder(1));
+        tab.add("ColorPosition", new ColorPosition());
         // tab.add("CP6", new CP6());
 
         // A-up button, Y-down button

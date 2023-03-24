@@ -36,6 +36,15 @@ public class SortItems extends SequentialCommandGroup {
             return CommandSelector.TWO;
 
     }
+    static public CommandSelector calibration() {
+
+        if (Globals.curBin == 1)
+            return CommandSelector.ONE;
+        else
+            return CommandSelector.TWO;
+
+    }
+
 
     static public CommandSelector selectRotation() {
 
@@ -73,13 +82,13 @@ public class SortItems extends SequentialCommandGroup {
                                 Map.entry(CommandSelector.ONE, new MovetoB(Layout.PickUpBinPos)),
                                 Map.entry(CommandSelector.TWO, new MovetoB(Layout.PickUpBin2Pos))),
                         SortItems::selectBin),
-                new SelectCommand(
-                        Map.ofEntries(
-                                Map.entry(CommandSelector.ONE,
-                                        new Rotate2Orientation(Layout.PickUpBinPos.getRotation().getDegrees())),
-                                Map.entry(CommandSelector.TWO,
-                                        new Rotate2Orientation(Layout.PickUpBin2Pos.getRotation().getDegrees()))),
-                        SortItems::selectRotation),
+                // new SelectCommand(
+                //         Map.ofEntries(
+                //                 Map.entry(CommandSelector.ONE,
+                //                         new Rotate2Orientation(Layout.PickUpBinPos.getRotation().getDegrees())),
+                //                 Map.entry(CommandSelector.TWO,
+                //                         new Rotate2Orientation(Layout.PickUpBin2Pos.getRotation().getDegrees()))),
+                //         SortItems::selectRotation),
 
                 new Align2Line(),
                 new ViewItem());
@@ -91,9 +100,9 @@ public class SortItems extends SequentialCommandGroup {
                 new MoveCamera(286),
                 new SelectCommand(
                         Map.ofEntries(
-                                Map.entry(CommandSelector.ONE, new CheckAndMoveTarget("T3", 0.5)),
-                                Map.entry(CommandSelector.TWO, new CheckAndMoveTarget("T2", 0.5)),
-                                Map.entry(CommandSelector.THREE, new CheckAndMoveTarget("T1", 0.5))),
+                                Map.entry(CommandSelector.ONE, new SequentialCommandGroup(new MovetoPoint("T1", 0.6), new MoveRobot(1, 0.05, 0, 0, 0.4))),
+                                Map.entry(CommandSelector.TWO, new SequentialCommandGroup(new MovetoPoint("T2", 0.6), new MoveRobot(1, 0.05, 0, 0, 0.4))),
+                                Map.entry(CommandSelector.THREE, new SequentialCommandGroup(new MovetoPoint("T3", 0.6), new MoveRobot(1, 0.05, 0, 0, 0.4)))),
                         SortItems::selectTarget),
                 // Lifts arm
                 new DetectionPosition(),
@@ -106,22 +115,36 @@ public class SortItems extends SequentialCommandGroup {
                 new TrolleyAlignment(0),
 
                 new PlaceDown(),
+                new SelectCommand(
+                        Map.ofEntries(
+                                Map.entry(
+                                        CommandSelector.ONE, new SequentialCommandGroup(
+                                                new MovetoB(Layout.PickUpBinPos),
+                                                new InstantCommand(()-> Globals.curBin = 0),
+                                                new Align2Line(),
+                                                new InstantCommand(()-> Globals.curBin = 1)
+                                                )
+                                        ),
+                                Map.entry(CommandSelector.TWO, new InstantCommand()) // blank
+                                ),
+                        SortItems::calibration),
                 // new MoveRobot(1, -0.05, 0, 0, 0.1),
                 new SelectCommand(
                         Map.ofEntries(
                                 Map.entry(CommandSelector.ONE, new MovetoB(Layout.PickUpBinPos)),
-                                Map.entry(CommandSelector.TWO, new MovetoB(Layout.PickUpBin2Pos))),
+                                Map.entry(CommandSelector.TWO, new MovetoPoint("Bin2", 0.75))),
                         SortItems::selectBin),
-                new SelectCommand(
-                        Map.ofEntries(
-                                Map.entry(CommandSelector.ONE,
-                                        new Rotate2Orientation(Layout.PickUpBinPos.getRotation().getDegrees())),
-                                Map.entry(CommandSelector.TWO,
-                                        new Rotate2Orientation(Layout.PickUpBin2Pos.getRotation().getDegrees()))),
-                        SortItems::selectRotation),
+                // new SelectCommand(
+                //         Map.ofEntries(
+                //                 Map.entry(CommandSelector.ONE,
+                //                         new Rotate2Orientation(Layout.PickUpBinPos.getRotation().getDegrees())),
+                //                 Map.entry(CommandSelector.TWO,
+                //                         new SequentialCommandGroup())),
+                //         SortItems::selectRotation),
 
                 new Align2Line(),
-                new ViewItem());
+                new ViewItem()
+                );
     }
 
 }

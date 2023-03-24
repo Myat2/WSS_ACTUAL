@@ -1,30 +1,14 @@
 package frc.robot.commands.auto;
 
-import java.util.Map;
 
-import javax.lang.model.util.ElementScanner6;
 
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ProxyScheduleCommand;
-import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Globals;
 import frc.robot.RobotContainer;
-import frc.robot.Astar.Layout;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.OmniDrive;
 import frc.robot.subsystems.Sensor;
 import frc.robot.subsystems.Vision;
-import frc.robot.commands.auto.MoveRobotSense;
-import frc.robot.commands.auto.LoopCmd;
-
-
 
 
 /**
@@ -48,8 +32,9 @@ public class AutoMainCmd extends SequentialCommandGroup
         
         super
         (
+            new Task_B()
             // Lifts arm up and close gripper
-            new Task_A_pick1st()
+            // new Task_A_pick1st()
             // new ViewingPosition()
             // new StartOrientation()
             // new MoveGripper(new Translation2d(0.4, 0), 0.5)

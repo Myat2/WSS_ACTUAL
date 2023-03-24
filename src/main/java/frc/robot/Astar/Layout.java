@@ -3,7 +3,6 @@ package frc.robot.Astar;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
-import edu.wpi.first.wpilibj.geometry.Transform2d;
 
 public class Layout {
     // Dimension of layout in real unit
@@ -27,7 +26,7 @@ public class Layout {
     public static final double obs_m[][] = {
             // x0 y0 xSize ySize Angle()
             { 1.400, 1.100, 0.300, 0.420, 0 }, // pickup bin
-            { 0.2, 4.27, 0.300, 0.420, -Math.PI/4}, // pickup bin2
+            // { 0.2, 4.27, 0.300, 0.420, -Math.PI/4}, // pickup bin2
     };
     public static final double obsRound_m[][] = {
             // x, y, diameter
@@ -74,8 +73,7 @@ public class Layout {
     // Robot start position.
     public static final Pose2d startPos = new Pose2d(0.3, 0.3, new Rotation2d(-Math.PI / 4)); // For TaskA and TaskB
     // public static final Pose2d startPos = new Pose2d(0.21, 0.21, new Rotation2d(-Math.PI / 2)); // For CPT
-    // public static final Pose2d startPos = new Pose2d(0.96, 1.1, new
-    // Rotation2d(-Math.PI / 2)); // For open house/testing
+    // public static final Pose2d startPos = new Pose2d(0.96, 1.1, new Rotation2d(-Math.PI / 2)); // For open house/testing
 
     public static Pose2d getCalibrationPos() {
         return PickUpBinPos;

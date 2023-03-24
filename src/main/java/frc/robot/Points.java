@@ -102,21 +102,25 @@ public class Points {
     double tolerance = 0.3;
     Pose2d upperbound = new Pose2d();
     Pose2d lowerbound = new Pose2d();
+
     if (targetName == "Trolley") {
-      totalTrolleys += getDistanceTarget(targetName)[2] > 0 ? 1 : 0 + getDistanceTarget(targetName)[4] > 0 ? 1 : 0;
+      double[] distance = getDistanceTarget(targetName);
+      totalTrolleys += distance[2] != 0 ? 1 : 0 + distance[4] != 0 ? 1 : 0;
+      // System.out.println("Total Trolley Count" + totalTrolleys);
       for (int i = 0; i < totalTrolleys; i++) {
+        // System.out.println("Current Trolley Count" + trolleyCount);
         alreadyExist = false;
         if ((w > -45)) { // If robot is in the same axis as the arena
 
-          y = RobotContainer.m_omnidrive.getPose().getTranslation().getY() + getDistanceTarget(targetName)[i * 2 + 1]
+          y = RobotContainer.m_omnidrive.getPose().getTranslation().getY() + distance[i * 2 + 1]
               + camOffset.getTranslation().getY();
-          x = RobotContainer.m_omnidrive.getPose().getTranslation().getX() + getDistanceTarget(targetName)[i * 2 + 0]
+          x = RobotContainer.m_omnidrive.getPose().getTranslation().getX() + distance[i * 2 + 0]
               + camOffset.getTranslation().getX();
           // System.out.printf("!!!!!!!!!!!!!!0 xy=%f,%f", x, y);
         } else {
-          x = RobotContainer.m_omnidrive.getPose().getTranslation().getX() + getDistanceTarget(targetName)[i * 2 + 1]
+          x = RobotContainer.m_omnidrive.getPose().getTranslation().getX() + distance[i * 2 + 1]
               + camOffset.getTranslation().getY();
-          y = RobotContainer.m_omnidrive.getPose().getTranslation().getY() - getDistanceTarget(targetName)[i * 2 + 0]
+          y = RobotContainer.m_omnidrive.getPose().getTranslation().getY() - distance[i * 2 + 0]
               + camOffset.getTranslation().getX();
           // System.out.printf("!!!!!!!!!!!!!!-90 xy=%f,%f", x, y);
         }
@@ -142,58 +146,60 @@ public class Points {
         }
       }
     }
-    // else if(targetName == "Bin"){
-    // totalBins += getDistanceTarget(targetName)[3] > 0? 1 : 0 ;
-    // for(int i = 0; i< totalBins; i++){
-    // alreadyExist = false;
-    // if ((w > -45){ // If robot is in the same axis as the arena
-    // y = RobotContainer.m_omnidrive.getPose().getTranslation().getY() +
-    // getDistanceTarget(targetName)[i * 3 + 1] + camOffset.getTranslation().getY();
-    // x = RobotContainer.m_omnidrive.getPose().getTranslation().getX() +
-    // getDistanceTarget(targetName)[i * 3 + 0] + camOffset.getTranslation().getX();
-    // }
-    // else{
-    // x = RobotContainer.m_omnidrive.getPose().getTranslation().getX() +
-    // getDistanceTarget(targetName)[i * 3 + 1] + camOffset.getTranslation().getY();
-    // y = RobotContainer.m_omnidrive.getPose().getTranslation().getY() -
-    // getDistanceTarget(targetName)[i * 3 + 0] + camOffset.getTranslation().getX();
-    // }
+    else if(targetName == "Bin"){
+      double[] distance = getDistanceTarget(targetName);
+      totalBins += distance[3] > 0? 1 : 0 ;
+      for(int i = 0; i< totalBins; i++){
+        alreadyExist = false;
+        if ((w > -45)){ // If robot is in the same axis as the arena
+        y = RobotContainer.m_omnidrive.getPose().getTranslation().getY() +
+        distance[i * 3 + 1] + camOffset.getTranslation().getY();
+        x = RobotContainer.m_omnidrive.getPose().getTranslation().getX() +
+        distance[i * 3 + 0] + camOffset.getTranslation().getX();
+        }
+        else{
+        x = RobotContainer.m_omnidrive.getPose().getTranslation().getX() +
+        distance[i * 3 + 1] + camOffset.getTranslation().getY();
+        y = RobotContainer.m_omnidrive.getPose().getTranslation().getY() -
+        distance[i * 3 + 0] + camOffset.getTranslation().getX();
+      }
 
-    // upperbound = new Pose2d(new Translation2d(x + tolerance, y + tolerance), new
-    // Rotation2d());
-    // lowerbound = new Pose2d(new Translation2d(x - tolerance, y - tolerance), new
-    // Rotation2d());
+      upperbound = new Pose2d(new Translation2d(x + tolerance, y + tolerance), new
+      Rotation2d());
+      lowerbound = new Pose2d(new Translation2d(x - tolerance, y - tolerance), new
+      Rotation2d());
 
-    // for(Pose2d location : pointMap.values()){
-    // if((location.getTranslation().getX() >= lowerbound.getTranslation().getX() &&
-    // location.getTranslation().getX() <=upperbound.getTranslation().getX()) &&
-    // (location.getTranslation().getY() >= lowerbound.getTranslation().getY() &&
-    // location.getTranslation().getY() <=upperbound.getTranslation().getY())){
-    // alreadyExist = true;
-    // break;
-    // }
-    // }
+      for(Pose2d location : pointMap.values()){
+        if((location.getTranslation().getX() >= lowerbound.getTranslation().getX() &&
+        location.getTranslation().getX() <=upperbound.getTranslation().getX()) &&
+        (location.getTranslation().getY() >= lowerbound.getTranslation().getY() &&
+        location.getTranslation().getY() <=upperbound.getTranslation().getY())){
+        alreadyExist = true;
+        break;
+        }
+    }
 
-    // if(!alreadyExist){
-    // String name = new String();
-    // name = "Bin" + ++binCount;
-    // pointMap.put(name, new Pose2d(new Translation2d(x, y),
-    // Globals.curPose.getRotation()));
-    // obstacleMap.put(name, new Pose2d(new Translation2d(x, y),
-    // Globals.curPose.getRotation()));
-    // }
-    // }
-    // }
+      if(!alreadyExist){
+          String name = new String();
+          name = "Bin" + ++binCount;
+          pointMap.put(name, new Pose2d(new Translation2d(x, y),
+          Globals.curPose.getRotation()));
+          obstacleMap.put(name, new Pose2d(new Translation2d(x, y),
+          Globals.curPose.getRotation()));
+        }
+      }
+    }
     else {
+      double[] distance = getDistanceTarget(targetName);
       if ((w > -45)) {
-        y = RobotContainer.m_omnidrive.getPose().getTranslation().getY() + getDistanceTarget(targetName)[1]
+        y = RobotContainer.m_omnidrive.getPose().getTranslation().getY() + distance[1]
             + camOffset.getTranslation().getY();
-        x = RobotContainer.m_omnidrive.getPose().getTranslation().getX() + getDistanceTarget(targetName)[0]
+        x = RobotContainer.m_omnidrive.getPose().getTranslation().getX() + distance[0]
             + camOffset.getTranslation().getX();
       } else {
-        x = RobotContainer.m_omnidrive.getPose().getTranslation().getX() + getDistanceTarget(targetName)[1]
+        x = RobotContainer.m_omnidrive.getPose().getTranslation().getX() + distance[1]
             + camOffset.getTranslation().getY();
-        y = RobotContainer.m_omnidrive.getPose().getTranslation().getY() - getDistanceTarget(targetName)[0]
+        y = RobotContainer.m_omnidrive.getPose().getTranslation().getY() - distance[0]
             + camOffset.getTranslation().getX();
       }
 
@@ -224,7 +230,8 @@ public class Points {
   public void updateAllPoints() {
     String[] targetAreas = { "RedTarget", "GreenTarget", "BlueTarget", "Trolley", "Bin" };
     for (String targetName : targetAreas) {
-      if (getDistanceTarget(targetName)[0] != 0 && getDistanceTarget(targetName)[1] != 0) {
+      double[] distance = getDistanceTarget(targetName);
+      if (distance[0] != 0 && distance[1] != 0) {
         updatePoint(targetName);
       }
     }

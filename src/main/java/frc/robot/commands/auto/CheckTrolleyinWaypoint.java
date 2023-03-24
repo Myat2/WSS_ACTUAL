@@ -51,7 +51,7 @@ public class CheckTrolleyinWaypoint extends SequentialCommandGroup{
           // Rotate to place
           new Rotate2Orientation(Globals.placeholderTrolleyPos[Globals.placeholderCount].getRotation().getDegrees()),
           // Add Obstacle
-          new InstantCommand(()-> RobotContainer.m_points.AddSingleRoundObs(Globals.placeholderTrolleyPos[Globals.placeholderCount].getTranslation().minus(new Translation2d(0.21,0)))),
+          new InstantCommand(()-> RobotContainer.m_points.AddSingleRoundObs(Globals.placeholderTrolleyPos[Globals.placeholderCount].getTranslation().minus(new Translation2d(0.3 + 0.28- 0.21 - 0.15,0)))),
           // new InstantCommand(()->System.out.println("Added Obstacle in Grid " + Globals.placeholderTrolleyPos[Globals.placeholderCount].getTranslation().minus(new Translation2d(0.38,0)))),
   
           // new InstantCommand(()->System.out.println("placeholderCount " + Globals.placeholderCount)),

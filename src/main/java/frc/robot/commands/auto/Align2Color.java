@@ -1,11 +1,9 @@
 package frc.robot.commands.auto;
 
-import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Globals;
-import frc.robot.RobotContainer;
 //This command aligns the robot to the target area
 public class Align2Color extends SequentialCommandGroup {
   /**

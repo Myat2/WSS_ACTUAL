@@ -36,5 +36,21 @@ public class ResetPosition extends SequentialCommandGroup{
             )
     );
   }
+  /**
+   * Resets the current position of the robot with the pick up bin coordinates
+   * Task B
+   */
+  public ResetPosition(String task){
+    super(
+      new SelectCommand(
+            Map.ofEntries(
+                Map.entry(CommandSelector.ONE, new InstantCommand(()->RobotContainer.m_omnidrive.UpdatePosition(Layout.PickUpBinPos))),
+                Map.entry(CommandSelector.TWO, new InstantCommand()) // Blank
+                // Map.entry(CommandSelector.TWO, new InstantCommand(()->RobotContainer.m_omnidrive.UpdatePosition(Layout.PickUpBin2Pos)))
+                ), 
+            ResetPosition::selectPosition
+            )
+    );
+  }
   
 }
