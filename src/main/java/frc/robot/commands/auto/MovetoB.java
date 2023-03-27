@@ -45,7 +45,7 @@ public class MovetoB extends SequentialCommandGroup
     static private List<Translation2d> m_pathWayPoints;
     //Set max velocity, acceleration and centripedal acceleration (turn speed)
     static private final CentripetalAccelerationConstraint m_CurveConstraint = new CentripetalAccelerationConstraint(0.5);
-    static private final TrajectoryConfig m_Config = new TrajectoryConfig(0.4, 0.4).addConstraint(m_CurveConstraint).setReversed(false);
+    static private final TrajectoryConfig m_Config = new TrajectoryConfig(0.4, 0.4).addConstraint(m_CurveConstraint).setReversed(false).setEndVelocity(0).setStartVelocity(0);
 
     private boolean m_fn_flag;  //true if using function
     protected Pose2d m_posB;
@@ -144,7 +144,7 @@ public class MovetoB extends SequentialCommandGroup
             // There's problem with generating trajectory and path is a short straight line
             m_Trajectory =
             // myGenerateTrajectory.generateTrajectoryClampedCubic(m_pathWayPoints, m_Config, 0.1);
-            myGenerateTrajectory.generateTrajectoryQuinticHermite(m_pathWayPoints, m_Config, 0.075);
+            myGenerateTrajectory.generateTrajectoryQuinticHermite(m_pathWayPoints, m_Config, 0.05);
         }
 
         m_initFlag = true;
@@ -180,7 +180,7 @@ public class MovetoB extends SequentialCommandGroup
         super (
             //Start with trajectory following
             new WaitUntilCommand(()->RobotContainer.m_Astar.solveFinished()), 
-            new InstantCommand(()->doSpline()),
+            // new InstantCommand(()->System.out.println(RobotContainer.m_omnidrive.getPose())),
             new ConditionalCommand(
                 new OmniTrackTrajectoryCommand(
                     myGenerateTrajectory::getTrajectory,

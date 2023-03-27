@@ -9,7 +9,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.OmniDrive;
 import frc.robot.subsystems.Sensor;
 import frc.robot.subsystems.Vision;
-
+import frc.robot.Astar.Layout;
 
 /**
  * DriveMotor class
@@ -20,11 +20,7 @@ public class AutoMainCmd extends SequentialCommandGroup
 {   
     int count = 0;
     double temp;
-    private final static Sensor m_sensor = RobotContainer.m_sensor;
-    private final static Vision m_vision = RobotContainer.m_vision;
-    private final static OmniDrive m_omnidrive = RobotContainer.m_omnidrive;
-    private final static Arm m_arm = RobotContainer.m_arm;
-    private ProxyScheduleCommand m_proxySchedule;
+
 
 	public AutoMainCmd() 
     {
@@ -32,6 +28,7 @@ public class AutoMainCmd extends SequentialCommandGroup
         
         super
         (
+            // new GotoColor(Layout.RedPos)
             new Task_B()
             // Lifts arm up and close gripper
             // new Task_A_pick1st()

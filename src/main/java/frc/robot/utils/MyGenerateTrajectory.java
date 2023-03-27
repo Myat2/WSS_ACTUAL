@@ -97,7 +97,7 @@ public class MyGenerateTrajectory {
                     waypoints.add(p);    
                 }
                 else {
-                    if (len > R) {
+                    if (len > (R+0.01)) {
                         // Add waypoints only if segment is long enough
                         p = new Pose2d(x1-R*angle.getCos(), y1-R*angle.getSin(), angle);
                         waypoints.add(p);
@@ -105,7 +105,7 @@ public class MyGenerateTrajectory {
                 }
             }
             else {
-                if (len > R*2) {
+                if (len > (R*2+0.01)) {
                     p = new Pose2d(x0+R*angle.getCos(), y0+R*angle.getSin(), angle);
                     waypoints.add(p);
                     if ((i+1)==(N-1)) {

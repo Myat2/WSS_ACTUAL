@@ -1,18 +1,15 @@
 package frc.robot.commands.auto;
 
-import edu.wpi.first.wpilibj.geometry.Translation2d;
+
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Globals;
-import frc.robot.Robot;
+
 import frc.robot.RobotContainer;
-// import frc.robot.Astar.Layout;
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.OmniDrive;
 import frc.robot.subsystems.Sensor;
-import frc.robot.subsystems.Vision;
+
 // This command is used to align to the black line and move towards the bin
 public class Align2Line extends SequentialCommandGroup{
   private final static Sensor m_sensor = RobotContainer.m_sensor;
@@ -30,7 +27,8 @@ public class Align2Line extends SequentialCommandGroup{
       new InstantCommand(()-> Globals.cvMode = 0),
       new WaitCommand(1), // Org 0.5
       // aligns to line
-      new AlignRobot(185,175,true),
+      // new AlignRobot(185,175,true), // Robot 6666
+      new AlignRobot(210,160,true), // Robot 6942
       // resets cv mode to idle mode
       new InstantCommand(()-> Globals.cvMode=-1),
       // wait 2 secs

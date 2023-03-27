@@ -4,6 +4,8 @@ package frc.robot.Astar;
 //import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
+import frc.robot.commands.auto.MovetoB;
+
 public class AStarAlgorithm {
 
     private Network network;
@@ -223,6 +225,7 @@ public class AStarAlgorithm {
     public void AstarProcess(){
         if (startFlag == true) {
             solve();
+            MovetoB.doSpline();
             startFlag = false;
         }
 

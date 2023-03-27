@@ -1,7 +1,7 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
+
 import frc.robot.Constants;
 //RobotContainer import
 import frc.robot.RobotContainer;

@@ -2,6 +2,7 @@ package frc.robot.commands.auto;
 
 import java.util.Map;
 import frc.robot.Globals;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -36,19 +37,18 @@ public class SortItems extends SequentialCommandGroup {
             return CommandSelector.TWO;
 
     }
-    static public CommandSelector calibration() {
 
-        if (Globals.curBin == 1)
+    static public CommandSelector selectRotation() {
+
+        if (Globals.curBin == 0)
             return CommandSelector.ONE;
         else
             return CommandSelector.TWO;
 
     }
+    static public CommandSelector calibration() {
 
-
-    static public CommandSelector selectRotation() {
-
-        if (Globals.curBin == 0)
+        if (Globals.curBin == 1)
             return CommandSelector.ONE;
         else
             return CommandSelector.TWO;
@@ -100,9 +100,9 @@ public class SortItems extends SequentialCommandGroup {
                 new MoveCamera(286),
                 new SelectCommand(
                         Map.ofEntries(
-                                Map.entry(CommandSelector.ONE, new SequentialCommandGroup(new MovetoPoint("T1", 0.6), new MoveRobot(1, 0.05, 0, 0, 0.4))),
-                                Map.entry(CommandSelector.TWO, new SequentialCommandGroup(new MovetoPoint("T2", 0.6), new MoveRobot(1, 0.05, 0, 0, 0.4))),
-                                Map.entry(CommandSelector.THREE, new SequentialCommandGroup(new MovetoPoint("T3", 0.6), new MoveRobot(1, 0.05, 0, 0, 0.4)))),
+                                Map.entry(CommandSelector.ONE, new SequentialCommandGroup(new MovetoB(()->RobotContainer.m_Grid.findGotoPos(RobotContainer.m_points.getPoint("T1").getTranslation(), 0.6)), new MoveRobot(1, 0.05, 0, 0, 0.4))),
+                                Map.entry(CommandSelector.TWO, new SequentialCommandGroup(new MovetoB(()->RobotContainer.m_Grid.findGotoPos(RobotContainer.m_points.getPoint("T2").getTranslation(), 0.6)), new MoveRobot(1, 0.05, 0, 0, 0.4))),
+                                Map.entry(CommandSelector.THREE, new SequentialCommandGroup(new MovetoB(()->RobotContainer.m_Grid.findGotoPos(RobotContainer.m_points.getPoint("T3").getTranslation(), 0.6)), new MoveRobot(1, 0.05, 0, 0, 0.4)))),
                         SortItems::selectTarget),
                 // Lifts arm
                 new DetectionPosition(),
@@ -120,9 +120,7 @@ public class SortItems extends SequentialCommandGroup {
                                 Map.entry(
                                         CommandSelector.ONE, new SequentialCommandGroup(
                                                 new MovetoB(Layout.PickUpBinPos),
-                                                new InstantCommand(()-> Globals.curBin = 0),
-                                                new Align2Line(),
-                                                new InstantCommand(()-> Globals.curBin = 1)
+                                                new Align2Line()
                                                 )
                                         ),
                                 Map.entry(CommandSelector.TWO, new InstantCommand()) // blank

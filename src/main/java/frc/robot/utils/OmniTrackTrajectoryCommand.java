@@ -52,7 +52,7 @@ public class OmniTrackTrajectoryCommand extends CommandBase {
   private double m_prevTime;
   private Pose2d m_finalPose;
   private double curTime;
-
+  private long t1, t2;
   private final Supplier<Trajectory> m_trajectory;
   private final Supplier<Pose2d> m_pose;
   private final SimpleMotorFeedforward m_feedforward;
@@ -107,13 +107,13 @@ public class OmniTrackTrajectoryCommand extends CommandBase {
   @Override
   public void initialize() {
     var initialState = m_trajectory.get().sample(0);
-
+    
     // Sample final pose to get robot rotation
     m_finalPose = m_trajectory.get().sample(m_trajectory.get().getTotalTimeSeconds()).poseMeters;
 
-    var initialXVelocity = initialState.velocityMetersPerSecond
+    double initialXVelocity = initialState.velocityMetersPerSecond
         * initialState.poseMeters.getRotation().getCos();
-    var initialYVelocity = initialState.velocityMetersPerSecond
+    double initialYVelocity = initialState.velocityMetersPerSecond
         * initialState.poseMeters.getRotation().getSin();
 
 
@@ -122,6 +122,9 @@ public class OmniTrackTrajectoryCommand extends CommandBase {
     m_timer.reset();
     m_timer.start();
     m_prevTime = curTime = 0;
+    t1 = System.nanoTime();
+    System.out.println("''''''''''");
+    //System.out.printf("%x:5.2f, y:5.2f\n", initialXVelocity, initialYVelocity);
 
   }
 
@@ -160,8 +163,11 @@ public class OmniTrackTrajectoryCommand extends CommandBase {
     targetXVel = vRef * poseError.getRotation().getCos();
     targetYVel = vRef * poseError.getRotation().getSin();
 
-    // System.out.printf("t:%5.2f, x:%5.2f, y:%5.2f, v:%5.2f\n", curTime, desiredPose.getTranslation().getX(), 
-    // desiredPose.getTranslation().getY(), desiredState.velocityMetersPerSecond);
+    // t2 = System.nanoTime();
+    // int delta = (int) (t2 - t1)/1000;
+    // t1 = t2;
+    // System.out.printf("t:%d\n", delta);
+    // System.out.printf("t=%5.2f v:%5.2f\n", curTime, desiredState.velocityMetersPerSecond);
 
     m_prevSpeeds = new ChassisSpeeds(targetXVel, targetYVel, 0);//targetAngularVel);
     m_drive.setRobotSpeedXYW(targetXVel, targetYVel, 0);//targetAngularVel);

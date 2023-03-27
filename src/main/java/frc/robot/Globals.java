@@ -2,11 +2,6 @@ package frc.robot;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.lang.model.util.ElementScanner6;
 
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -34,12 +29,20 @@ public class Globals {
   public static double AdjustFactor = 1;
   public static int imH = 600;
   public static int imW = 800;
-  // Camera angles
-  public static int NormalCameraAngle = 285;
+
+  // Camera angles Robot 6666
+  // public static int NormalCameraAngle = 285;
+  // public static int ColorDetectionAngle = 265;
+  // public static int PickingCameraAngle = 264;
+  // public static int WOBAngle = 148;
+  // public static int PerspTfCamAngle = 275;
+
+  // Camera Angles Robot 6942
+  public static int NormalCameraAngle = 295;
   public static int ColorDetectionAngle = 265;
-  public static int PickingCameraAngle = 264;
-  public static int WOBAngle = 148;
-  public static int PerspTfCamAngle = 275;
+  public static int PickingCameraAngle = 275;
+  public static int WOBAngle = 158;
+  public static int PerspTfCamAngle = 287;
 
   //Align2Line
   public static boolean runningTaskB = false;

@@ -19,7 +19,7 @@ def connectionListener(connected,info):
 cond = threading.Condition()
 notified = [False]
 
-NetworkTables.initialize(server='10.42.01.2')
+NetworkTables.initialize(server='10.66.66.2')
 NetworkTables.addConnectionListener(connectionListener, immediateNotify=True)
  
 with cond:
@@ -284,8 +284,8 @@ def sendValues(mode):
     elif mode == 5:
         sd.putNumberArray("line" , line)
 #     sd.putNumberArray("Trolley", trolley)
-    
-    NetworkTables.flush()
+    if mode != -1:
+        NetworkTables.flush()
 def createValues():
     global redDistance, greenDistance, blueDistance, trolley, objects, array, line, yellowBin     
     redDistance = np.zeros(2, dtype=np.float64)
@@ -334,12 +334,13 @@ def main():
     createValues()
     while True:
         
-        cvMode = sd.getNumber("cvMode",-1)
-#         cvMode = 4
+#         cvMode = sd.getNumber("cvMode",-1)
+        cvMode = 5
         frame1 = videostream.read()
-        if cvMode == -1:
+        if cvMode == -1 or cvMode == -2:
             # display the frame
-            cv2.imshow('Live Feed', frame1)
+            if cvMode == -2:
+                cv2.imshow('Live Feed', frame1)
             time.sleep(0.1)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
@@ -744,12 +745,12 @@ def main():
             boxes, classes, scores = modelResult(frame1)
             # Loop over all detections and draw detection box if confidence is above minimum threshold
             img = imutils.resize(frame1, width = 800)
-            color = 4
+            color = 0
             transformed_frame = cv2.warpPerspective(frame1, M_tfModel, (output_width, output_height))
-#             img_hsv = cv2.cvtColor(transformed_frame, cv2.COLOR_BGR2HSV)
-#             mask = cv2.inRange(img_hsv, np.array([hsvVal[color][0], hsvVal[color][2], hsvVal[color][4]]), 
-#                                np.array([hsvVal[color][1], hsvVal[color][3], hsvVal[color][5]]))
-#             
+            img_hsv = cv2.cvtColor(transformed_frame, cv2.COLOR_BGR2HSV)
+            mask = cv2.inRange(img_hsv, np.array([hsvVal[color][0], hsvVal[color][2], hsvVal[color][4]]), 
+                               np.array([hsvVal[color][1], hsvVal[color][3], hsvVal[color][5]]))
+            
             for i in range(len(scores)):
                 if ((scores[i] > min_conf_threshold) and (scores[i] <= 1.0)):
 
@@ -819,7 +820,7 @@ def main():
             print("Trolley", trolley)
             print("Bin", yellowBin)
             # All the results have been drawn on the frame, so it's time to display it.
-#             cv2.imshow("HSV",mask)
+            cv2.imshow("HSV",mask)
             cv2.imshow('Object detector', frame1)
             cv2.imshow('Transformed Frame', transformed_frame)
                         # Calculate framerate
@@ -841,6 +842,8 @@ def main():
             
             # Start timer (for calculating frame rate)
             t1 = cv2.getTickCount()
+            nearest_trolley_dist = float('inf')
+            nearest_trolley_center = (0,0)
 
             # Acquire frame and resize to expected shape [1xHxWx3]
             frame = frame1.copy()
@@ -871,8 +874,11 @@ def main():
                     label = '%s: %d%%' % (object_name, int(scores[i]*100)) # Example: 'person: 72%'
                     
                     if object_name == "Trolley":
-                        line[0] = cX
-                        line[1] = cY
+                        dist_to_center = ((cX - imW/2)**2 + (cY - imH/2)**2)**0.5
+                        if dist_to_center < nearest_trolley_dist:
+                            nearest_trolley_dist = dist_to_center
+                            nearest_trolley_center = (cX, cY)
+                        
                         
                     
                     labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2) # Get font size
@@ -881,13 +887,11 @@ def main():
                     cv2.putText(frame, label, (xmin, label_ymin-7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2) # Draw label text
             
             
-            
-            
                
-            NetworkTables.flush()
-            # Draw framerate in corner of frame
+            (line[0], line[1]) = nearest_trolley_center
+           # Draw framerate in corner of frame
             cv2.putText(frame,'FPS: {0:.2f}'.format(frame_rate_calc),(30,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,0),2,cv2.LINE_AA)
-
+        
             # All the results have been drawn on the frame, so it's time to display it.
             cv2.imshow('Object detector', frame)
             print("Center X: ", line[0])

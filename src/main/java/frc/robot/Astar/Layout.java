@@ -26,7 +26,7 @@ public class Layout {
     public static final double obs_m[][] = {
             // x0 y0 xSize ySize Angle()
             { 1.400, 1.100, 0.300, 0.420, 0 }, // pickup bin
-            // { 0.2, 4.27, 0.300, 0.420, -Math.PI/4}, // pickup bin2
+            { 1.95, 3.15, 0.300, 0.420, 0}, // pickup bin2 (Remove for TASK B)
     };
     public static final double obsRound_m[][] = {
             // x, y, diameter
@@ -45,7 +45,7 @@ public class Layout {
 
     public static final Pose2d TestPickUpBinPos = new Pose2d(0.63, 1.05, new Rotation2d(-Math.PI / 2));
     public static final Pose2d PickUpBinPos = new Pose2d(1.4 - 0.72, 1.1, new Rotation2d(-Math.PI / 2));
-    public static final Pose2d PickUpBin2Pos = new Pose2d(0.2 + 0.509, 4.35 - 0.509, new Rotation2d(Math.toRadians(45)));
+    public static final Pose2d PickUpBin2Pos = new Pose2d(1.95 - 0.72, 3.15, new Rotation2d(-Math.PI / 2)); // Math.toRad()
     // These are coordinates of the red colored target area (NOTE: indicate the
     // angle of orientation)
     public static final Pose2d RedPos = new Pose2d(1.33, 2.02, new Rotation2d(0));
@@ -74,7 +74,7 @@ public class Layout {
     public static final Pose2d startPos = new Pose2d(0.3, 0.3, new Rotation2d(-Math.PI / 4)); // For TaskA and TaskB
     // public static final Pose2d startPos = new Pose2d(0.21, 0.21, new Rotation2d(-Math.PI / 2)); // For CPT
     // public static final Pose2d startPos = new Pose2d(0.96, 1.1, new Rotation2d(-Math.PI / 2)); // For open house/testing
-
+    // public static final Pose2d startPos = new Pose2d(1.56, 4.06, new Rotation2d(0));
     public static Pose2d getCalibrationPos() {
         return PickUpBinPos;
     }

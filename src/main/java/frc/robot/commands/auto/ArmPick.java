@@ -51,10 +51,10 @@ public class ArmPick extends MoveArm {
             }
         } else if (m_type == 2) { // MOves arm in the Y direction but at a height from the object
             if (Globals.curItemType == 0) {// for cokeU
-                double y = (pickUpHeight + 0.18) - Globals.arm_offset_z + Globals.gripper_offset;
+                double y = (pickUpHeight + 0.15) - Globals.arm_offset_z + Globals.gripper_offset;
                 pos = new Translation2d(m_arm.getArmPos().getX(), y);
             } else {
-                double y = (pickUpHeight + 0.07) - Globals.arm_offset_z + Globals.gripper_offset;
+                double y = (pickUpHeight + 0.05) - Globals.arm_offset_z + Globals.gripper_offset;
                 pos = new Translation2d(m_arm.getArmPos().getX(), y);
             }
         } else { // To place item in Trolley

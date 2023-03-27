@@ -1,12 +1,6 @@
 package frc.robot.commands.auto;
 
 import frc.robot.Globals;
-//RobotContainer import
-import frc.robot.RobotContainer;
-
-//Subsystem imports
-import frc.robot.subsystems.OmniDrive;
-import frc.robot.subsystems.Vision;
 
 public class AlignGripper extends MoveRobot {
     // Grab the subsystem instance from RobotContainer

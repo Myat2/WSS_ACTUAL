@@ -4,7 +4,6 @@ import java.util.Map;
 
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Transform2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -50,12 +49,14 @@ public class CheckTrolleyinWaypoint extends SequentialCommandGroup{
           new MovetoB(CheckTrolleyinWaypoint::placeholderTrolleyPos),
           // Rotate to place
           new Rotate2Orientation(Globals.placeholderTrolleyPos[Globals.placeholderCount].getRotation().getDegrees()),
+          
+          // new InstantCommand(()-> System.out.print(Globals.placeholderTrolleyPos[Globals.placeholderCount].getTranslation().minus(new Translation2d(0.3 + 0.28- 0.21 - 0.15,0)))),
           // Add Obstacle
           new InstantCommand(()-> RobotContainer.m_points.AddSingleRoundObs(Globals.placeholderTrolleyPos[Globals.placeholderCount].getTranslation().minus(new Translation2d(0.3 + 0.28- 0.21 - 0.15,0)))),
           // new InstantCommand(()->System.out.println("Added Obstacle in Grid " + Globals.placeholderTrolleyPos[Globals.placeholderCount].getTranslation().minus(new Translation2d(0.38,0)))),
   
           // new InstantCommand(()->System.out.println("placeholderCount " + Globals.placeholderCount)),
-          new InstantCommand(()-> RobotContainer.m_points.addPoint(m_trolley, Globals.placeholderTrolleyPos[Globals.placeholderCount])), 
+          new InstantCommand(()-> RobotContainer.m_points.addPoint(m_trolley, new Pose2d(Globals.placeholderTrolleyPos[Globals.placeholderCount].getTranslation().minus(new Translation2d(0.3 + 0.28- 0.21 - 0.15,0)), new Rotation2d()))), 
           // Place Trolley
           new TrolleyHolder(0),
           new MoveRobot(1, -0.05, 0, 0, 0.1),

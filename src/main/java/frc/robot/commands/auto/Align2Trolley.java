@@ -5,8 +5,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Globals;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Vision;
+
 // This command is used to align to the trolley
 public class Align2Trolley extends SequentialCommandGroup{
 

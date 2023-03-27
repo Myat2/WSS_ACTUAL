@@ -24,34 +24,15 @@ public class Vision extends SubsystemBase{
     private final ShuffleboardTab tab = Shuffleboard.getTab("Vision");
     private NetworkTableInstance inst = NetworkTableInstance.getDefault();
     private NetworkTable table = inst.getTable("Shuffleboard/Vision");
-    // private final NetworkTableEntry D_cW = tab.add("cW", 0).getEntry();
     private final NetworkTableEntry D_curTarget = tab.add("curTarget", 0).getEntry();
     private final NetworkTableEntry D_curBin = tab.add("curBin", 0).getEntry();
-    // private final NetworkTableEntry D_JagabeeCount = tab.add("JagCnt", 0).getEntry();
-    // private final NetworkTableEntry D_DettolCount = tab.add("DettolCnt", 0).getEntry();
-    // private final NetworkTableEntry D_CokeCount = tab.add("CokeCnt", 0).getEntry();
-    private final NetworkTableEntry D_WOB = tab.add("WOBList", 0).getEntry();
     
     private final static Arm m_arm = RobotContainer.m_arm;
     private final NetworkTableEntry D_currentItem = tab.add("CurrentItem", 0).getEntry();
-    private final NetworkTableEntry D_currentItemX = tab.add("CurrentItemX", 0).getEntry();
-    private final NetworkTableEntry D_currentItemY = tab.add("CurrentItemY", 0).getEntry();
-    private final NetworkTableEntry D_AddedArmX = tab.add("AddedArmX", 0).getEntry();
-    private final NetworkTableEntry D_AddedRobotX = tab.add("AddedRobotX", 0).getEntry();
+
     private final NetworkTableEntry D_cvMode = tab.add("cvMode", 0).getEntry(); 
     private final NetworkTableEntry D_colorMode = tab.add("ColorMode", 0).getEntry();
     // private final NetworkTableEntry D_useTF = tab.add("useTF", 0).getEntry();
-    private final NetworkTableEntry D_CameraMountOffsetX = tab.addPersistent("CameraMountOffsetX", 0.015).withWidget(BuiltInWidgets.kNumberSlider)
-    .withProperties(Map.of("min", 0, "max", 0.1)).getEntry();
-    private final NetworkTableEntry D_ConvertPxToM = tab.addPersistent("ConvertPxToM", 0.0006225).withWidget(BuiltInWidgets.kNumberSlider)
-    .withProperties(Map.of("min", 0, "max", 0.0007)).getEntry();
-    private final NetworkTableEntry D_ArmOffsetZ = tab.addPersistent("ArmOffsetZ", 0.25).withWidget(BuiltInWidgets.kNumberSlider)
-            .withProperties(Map.of("min", 0, "max", 0.5)).getEntry();
-    private final NetworkTableEntry D_GripperOffsetZ = tab.addPersistent("GripperOffsetZ", 0.19).withWidget(BuiltInWidgets.kNumberSlider)
-            .withProperties(Map.of("min", 0, "max", 0.25)).getEntry();
-    private final NetworkTableEntry D_CokeRatio = tab.addPersistent("CokeRatio", 0.79).withWidget(BuiltInWidgets.kNumberSlider)
-            .withProperties(Map.of("min", 0, "max", 1)).getEntry();
-    // private final NetworkTableEntry D_WOBArray = tab.add("WOB array", 0).withWidget(BuiltInWidgets.kTextView).getEntry();      
     private double[] defaultValue = new double[13];
     
     public Vision(){}

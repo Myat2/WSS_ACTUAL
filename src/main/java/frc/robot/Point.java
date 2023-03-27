@@ -1,6 +1,4 @@
 package frc.robot;
-
-import edu.wpi.cscore.VideoCamera.WhiteBalance;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 
 public class Point{
