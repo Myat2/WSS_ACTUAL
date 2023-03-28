@@ -89,6 +89,65 @@ public class Points {
     return distance;
   }
 
+  // Tested and failed
+  public Pose2d getObsPointAftPlace(){
+    int w = (int) Globals.curPose.getRotation().getDegrees();
+    double radian = Globals.curPose.getRotation().getRadians();
+    double radius = 0.44;
+    Translation2d xy = new Translation2d();
+    // Between 0 to -90
+    if (w<=0 && w>-90) {
+      xy = new Translation2d(
+        Globals.curPose.getTranslation().getX() + Math.abs(radius * Math.sin(radian)), 
+        Globals.curPose.getTranslation().getY() + Math.abs(radius * Math.cos(radian))
+        );
+    }
+
+    // Between 0 to 90
+    else if (w>0 && w<90) {
+      xy = new Translation2d(
+        Globals.curPose.getTranslation().getX() - Math.abs(radius * Math.cos(radian)), 
+        Globals.curPose.getTranslation().getY() + Math.abs(radius * Math.sin(radian))
+        );
+    }
+
+    // Between 90 to 180
+    else if (w>90 && w<=180) {
+      xy = new Translation2d(
+        Globals.curPose.getTranslation().getX() - Math.abs(radius * Math.cos(radian)), 
+        Globals.curPose.getTranslation().getY() - Math.abs(radius * Math.sin(radian))
+        );
+    }
+    // Between -90 to -180
+    else if (w<-90 && w>=-180) {
+      xy = new Translation2d(
+        Globals.curPose.getTranslation().getX() + Math.abs(radius * Math.sin(radian)), 
+        Globals.curPose.getTranslation().getY() + Math.abs(radius * Math.cos(radian))
+        );
+    }
+    else if (w == 0) {
+      xy = new Translation2d(
+        Globals.curPose.getTranslation().getX() + radius, 
+        Globals.curPose.getTranslation().getY()
+        );
+    }
+    // w = 90
+    else if(w == -90){
+      xy = new Translation2d(
+        Globals.curPose.getTranslation().getX() + radius, 
+        Globals.curPose.getTranslation().getY()
+        );
+    }
+    else if(w == 90){
+      xy = new Translation2d(
+        Globals.curPose.getTranslation().getX() - radius, 
+        Globals.curPose.getTranslation().getY()
+        );
+    }
+
+    return new Pose2d(xy, new Rotation2d());
+  }
+
   public void updatePoint(String targetName) {
     // If trolley, check size of array
     double x, y;
@@ -276,6 +335,14 @@ public class Points {
     obstacleMap.put("T2", Layout.T2Pos);
     obstacleMap.put("T3", Layout.T3Pos);
     AddObsGrid();
+  }
+
+  public void setObsfromPointMap(){
+    for (Map.Entry<String, Pose2d> point : pointMap.entrySet()) {
+      if(point.getKey().codePointAt(0) == 84){
+        obstacleMap.put(point.getKey(), point.getValue());
+      }
+    }
   }
 
 }

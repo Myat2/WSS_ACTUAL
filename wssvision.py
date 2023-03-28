@@ -334,8 +334,8 @@ def main():
     createValues()
     while True:
         
-#         cvMode = sd.getNumber("cvMode",-1)
-        cvMode = 5
+        cvMode = sd.getNumber("cvMode",-1)
+#         cvMode = 0
         frame1 = videostream.read()
         if cvMode == -1 or cvMode == -2:
             # display the frame
@@ -352,10 +352,20 @@ def main():
             # Retrieve from shuffleboard which color to detect
             # Black, Red, Green Blue, 0 , 1, 2, 3 Respectively
             color = int(sd.getNumber('ColorMode',0))
-#             color = 2
+#             color = 1
             img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-            mask = cv2.inRange(img_hsv, np.array([hsvVal[color][0], hsvVal[color][2], hsvVal[color][4]]), 
-                               np.array([hsvVal[color][1], hsvVal[color][3], hsvVal[color][5]]))
+#             mask = cv2.inRange(img_hsv, np.array([hsvVal[color][0], hsvVal[color][2], hsvVal[color][4]]), 
+#                                np.array([hsvVal[color][1], hsvVal[color][3], hsvVal[color][5]]))
+            
+            if hsvVal[color][1] >= hsvVal[color][0]: 
+                mask = cv2.inRange(img_hsv, np.array([hsvVal[color][0], hsvVal[color][2], hsvVal[color][4]]), 
+                                   np.array([hsvVal[color][1], hsvVal[color][3], hsvVal[color][5]]))
+            else:
+                mask0 = cv2.inRange(img_hsv, np.array([hsvVal[color][0], hsvVal[color][2], hsvVal[color][4]]), 
+                                   np.array([180, hsvVal[color][3], hsvVal[color][5]]))
+                mask1 = cv2.inRange(img_hsv, np.array([0, hsvVal[color][2], hsvVal[color][4]]), 
+                                   np.array([hsvVal[color][1], hsvVal[color][3], hsvVal[color][5]]))
+                mask = mask0 | mask1
             
             mask_bgr = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
             if debug==1:

@@ -33,6 +33,7 @@ public class CheckTrolleyinWaypoint extends SequentialCommandGroup{
     super(
       new ConditionalCommand(
         new SequentialCommandGroup(
+          new InstantCommand(()-> Globals.placeholderCount++),
           // new InstantCommand(()->System.out.println("onTrue!!!!!!!!!!!!!!!" )),
   
 
@@ -42,7 +43,7 @@ public class CheckTrolleyinWaypoint extends SequentialCommandGroup{
           new CheckAndMoveTarget(CheckTrolleyinWaypoint::trolleyID, 0.5),
           new Align2Trolley(),
           new TrolleyHolder(1),
-          new InstantCommand(()-> RobotContainer.m_points.removeObs(m_trolley)),
+          new InstantCommand(()-> RobotContainer.m_points.obstacleMap.remove(m_trolley)),
           // new InstantCommand(()->System.out.println("Removed Obstacle " + m_trolley)),
           // new InstantCommand(()->System.out.println("Placeholder Pos: " + RobotContainer.m_Grid.findGotoPos(Globals.placeholderTrolleyPos[Globals.placeholderCount].getTranslation(), 0.6))),
           // Move to Place holder position
@@ -64,8 +65,8 @@ public class CheckTrolleyinWaypoint extends SequentialCommandGroup{
           new MovetoB(CheckTrolleyinWaypoint::previousPose),
           new InstantCommand(()-> m_trolleyFlag = false),
           new MoveArm(new Translation2d(0.3,0.4), 2),
-          new MoveCamera(278),
-          new InstantCommand(()-> Globals.placeholderCount++)
+          new MoveCamera(278)
+          
 
         ),  new SequentialCommandGroup(
           // new InstantCommand(()->System.out.print("onFalse!!!!!!!!!!!!!!!" ))

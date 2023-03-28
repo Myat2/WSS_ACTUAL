@@ -27,6 +27,8 @@ public class Task_B extends SequentialCommandGroup{
       // Mapping movement sequence
       new LoopMovetoB(),
       new LoopCmd(new LoopMovetoB(), () -> Globals.endConditionTaskBMapping()),
+      // If there is obstacle placed in the way 
+      new InstantCommand(()->RobotContainer.m_points.setObsfromPointMap()),
       new InstantCommand(()->RobotContainer.m_points.AddObsGrid()),
 
       //## Calibrate Robot Position ##//

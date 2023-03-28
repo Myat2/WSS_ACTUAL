@@ -128,6 +128,7 @@ public class Globals {
       }
     }
   }
+  
 
   // public static Pose2d[] placeholderTrolleyPos = {
   // new Pose2d(new Translation2d(0.15,0.15), new
@@ -137,7 +138,7 @@ public class Globals {
   // new Pose2d(new Translation2d(0.15,0.75), new
   // Rotation2d((Math.toRadians(135)))),
   // };
-  public static int placeholderCount = 0;
+  public static int placeholderCount = -1; // Changed from 0 to -1
   // End Conditions //
 
   public static double robotRadius_m = 0.24;
