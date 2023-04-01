@@ -18,6 +18,11 @@ public class CP3 extends SequentialCommandGroup {
         new WaitCommand(5),
         new Gripper(0),
         new Align2Trolley(),
-        new PlaceDown());
+        new InstantCommand(()-> Globals.cvMode = 5),
+        new WaitCommand(4),
+        // resets cvMode to idle
+        new InstantCommand(()-> Globals.cvMode=-1),
+        new PlaceDown()
+        );
   }
 }

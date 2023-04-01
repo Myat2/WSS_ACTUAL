@@ -21,7 +21,7 @@ public class Align2Trolley extends SequentialCommandGroup{
       // Align trolley X
       new TrolleyAlignment(0),
       // Align trolley Y
-      new MoveRobotSense(1, 0.26, 0, 0,0.1, ()-> RobotContainer.m_sensor.getFrontIRDistance()<=15),
+      new MoveRobotSense(1, 0.26, 0, 0,0.1, ()-> RobotContainer.m_sensor.getFrontIRDistance()<=12), // Changed from 15cm
       new MoveRobot(1, 0.07, 0, 0, 0.1)
     );
   }

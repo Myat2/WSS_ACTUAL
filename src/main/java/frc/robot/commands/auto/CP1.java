@@ -15,7 +15,6 @@ public class CP1 extends SequentialCommandGroup {
         new DetectionPosition(), // Line detection position
         new MoveRobotSense(1, 0.3, 0, 0, 0.25, () -> RobotContainer.m_sensor.getFrontIRDistance() <= 15),
         new ViewItem().alongWith(new Gripper(0)),
-        /* To Test Out */
         new InstantCommand(()-> Globals.CP1()),
         new PickItemfromBin()
 

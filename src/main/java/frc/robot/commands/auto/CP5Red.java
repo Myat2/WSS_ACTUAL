@@ -12,11 +12,11 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.Arm;
 
-public class CP5 extends SequentialCommandGroup {
+public class CP5Red extends SequentialCommandGroup {
 
   private final static Arm m_arm = RobotContainer.m_arm;
 
-  public CP5(String target) {
+  public CP5Red() {
     super(
 
         // Puts camera in viewing position
@@ -27,10 +27,10 @@ public class CP5 extends SequentialCommandGroup {
         new MoveRobot(0, -0.05, 0, 0, 5),
         new MoveRobot(1, 0.35, 0, 0, 5),
 
-        new LoopMovetoB(target),
-        new LoopCmd(new LoopMovetoB(target), () -> Globals.endConditionCP5(target)),
+        new LoopMovetoB(),
+        new LoopCmd(new LoopMovetoB(), () -> Globals.endConditionCP5("RedTarget")),
         /* Go to Point using findGotoPos */
-        new CheckAndMoveTarget(target, 0.5),
+        new CheckAndMoveTarget("RedTarget", 0.5),
         /* Go forward */
         new MoveRobot(1, 0.5, 0, 0, 5)
 

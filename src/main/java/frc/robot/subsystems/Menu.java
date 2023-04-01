@@ -40,7 +40,7 @@ public class Menu extends SubsystemBase {
                                 Map.entry(menuNum++, new CP2()),
                                 Map.entry(menuNum++, new CP3()),
                                 Map.entry(menuNum++, new CP4()),
-                                Map.entry(menuNum++, new CP5("RedTarget")),
+                                Map.entry(menuNum++, new CP5Red()),
                                 Map.entry(menuNum++, new CP5("GreenTarget")),
                                 Map.entry(menuNum++, new CP5("BlueTarget")),
                                 Map.entry(menuNum++, new CP6()),
@@ -67,6 +67,9 @@ public class Menu extends SubsystemBase {
         tab.add("ReleaseTrolley", new TrolleyHolder(0));
         tab.add("HoldTrolley", new TrolleyHolder(1));
         tab.add("ColorPosition", new ColorPosition());
+        tab.add("CloseGripper", new Gripper(0,80));
+        tab.add("OpenGripper", new Gripper(1,80));
+        tab.add("Align2Line", new Align2Line());
         // tab.add("CP6", new CP6());
 
         // A-up button, Y-down button

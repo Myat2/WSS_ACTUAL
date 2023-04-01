@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -41,6 +42,8 @@ public class Points {
     pointMap.put("T1", trolley);
     pointMap.put("T2", trolley);
     pointMap.put("T3", trolley);
+    // pointMap.put("T3", Layout.T3Pos);
+    // obstacleMap.put("T3", Layout.T3Pos);
     pointMap.put("RedTarget", redTarget);
     pointMap.put("BlueTarget", blueTarget);
     pointMap.put("GreenTarget", greenTarget);
@@ -52,11 +55,13 @@ public class Points {
     pointMap.clear();
     pointMap.put("Bin1", new Pose2d(new Translation2d((double) (Layout.obs_m[0][0]), (double) (Layout.obs_m[0][1])),
         new Rotation2d(Layout.obs_m[0][4])));
+    // pointMap.put("T3", Layout.T3Pos);
 
   }
 
   public void resetObsMap() {
     obstacleMap.clear();
+    // obstacleMap.put("T3", Layout.T3Pos);
   }
 
   public void addObsPoint(String pointname, Pose2d newpose) {
@@ -89,6 +94,8 @@ public class Points {
     return distance;
   }
 
+
+
   // Tested and failed
   public Pose2d getObsPointAftPlace(){
     int w = (int) Globals.curPose.getRotation().getDegrees();
@@ -96,7 +103,7 @@ public class Points {
     double radius = 0.44;
     Translation2d xy = new Translation2d();
     // Between 0 to -90
-    if (w<=0 && w>-90) {
+    if (w<0 && w>-90) {
       xy = new Translation2d(
         Globals.curPose.getTranslation().getX() + Math.abs(radius * Math.sin(radian)), 
         Globals.curPose.getTranslation().getY() + Math.abs(radius * Math.cos(radian))
@@ -112,24 +119,34 @@ public class Points {
     }
 
     // Between 90 to 180
-    else if (w>90 && w<=180) {
+    else if (w>90 && w<180) {
       xy = new Translation2d(
         Globals.curPose.getTranslation().getX() - Math.abs(radius * Math.cos(radian)), 
         Globals.curPose.getTranslation().getY() - Math.abs(radius * Math.sin(radian))
         );
     }
     // Between -90 to -180
-    else if (w<-90 && w>=-180) {
+    else if (w<-90 && w>-180) {
       xy = new Translation2d(
         Globals.curPose.getTranslation().getX() + Math.abs(radius * Math.sin(radian)), 
         Globals.curPose.getTranslation().getY() + Math.abs(radius * Math.cos(radian))
         );
     }
-    else if (w == 0) {
-      xy = new Translation2d(
-        Globals.curPose.getTranslation().getX() + radius, 
-        Globals.curPose.getTranslation().getY()
+    else if (Math.abs(w) == 0) {
+      if(Double.doubleToRawLongBits(w) == 0x8000000000000000L) // If Negative
+      {
+        xy = new Translation2d(
+        Globals.curPose.getTranslation().getX() , 
+        Globals.curPose.getTranslation().getY() + radius
         );
+      }
+      else{
+        xy = new Translation2d(
+        Globals.curPose.getTranslation().getX() , 
+        Globals.curPose.getTranslation().getY() - radius
+        );
+      }
+      
     }
     // w = 90
     else if(w == -90){

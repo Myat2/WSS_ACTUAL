@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Globals;
 // import frc.robot.subsystems.Arm;
 import frc.robot.RobotContainer;
+import frc.robot.Astar.Layout;
 import frc.robot.subsystems.Arm;
 
 public class CP4 extends SequentialCommandGroup {
@@ -17,7 +18,7 @@ public class CP4 extends SequentialCommandGroup {
     super(
         new MoveCamera(Globals.NormalCameraAngle),
         new DetectionPosition(), // Line detection position
-        new MovetoB(new Pose2d(2.0, 3.6, new Rotation2d(0))) // target posisiton
+        new MovetoB(Layout.RedPos) // target posisiton
 
     );
   }

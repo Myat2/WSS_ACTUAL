@@ -33,7 +33,7 @@ public class CheckTrolleyinWaypoint extends SequentialCommandGroup{
     super(
       new ConditionalCommand(
         new SequentialCommandGroup(
-          new InstantCommand(()-> Globals.placeholderCount++),
+          
           // new InstantCommand(()->System.out.println("onTrue!!!!!!!!!!!!!!!" )),
   
 
@@ -53,20 +53,19 @@ public class CheckTrolleyinWaypoint extends SequentialCommandGroup{
           
           // new InstantCommand(()-> System.out.print(Globals.placeholderTrolleyPos[Globals.placeholderCount].getTranslation().minus(new Translation2d(0.3 + 0.28- 0.21 - 0.15,0)))),
           // Add Obstacle
-          new InstantCommand(()-> RobotContainer.m_points.AddSingleRoundObs(Globals.placeholderTrolleyPos[Globals.placeholderCount].getTranslation().minus(new Translation2d(0.3 + 0.28- 0.21 - 0.15,0)))),
+          new InstantCommand(()-> RobotContainer.m_points.AddSingleRoundObs(Globals.placeholderTrolleyPos[Globals.placeholderCount].getTranslation().minus(new Translation2d(0.21 + 0.15,0)))),
           // new InstantCommand(()->System.out.println("Added Obstacle in Grid " + Globals.placeholderTrolleyPos[Globals.placeholderCount].getTranslation().minus(new Translation2d(0.38,0)))),
   
           // new InstantCommand(()->System.out.println("placeholderCount " + Globals.placeholderCount)),
-          new InstantCommand(()-> RobotContainer.m_points.addPoint(m_trolley, new Pose2d(Globals.placeholderTrolleyPos[Globals.placeholderCount].getTranslation().minus(new Translation2d(0.3 + 0.28- 0.21 - 0.15,0)), new Rotation2d()))), 
+          new InstantCommand(()-> RobotContainer.m_points.addPoint(m_trolley, new Pose2d(Globals.placeholderTrolleyPos[Globals.placeholderCount].getTranslation().minus(new Translation2d(0.21 + 0.15,0)), new Rotation2d()))), 
           // Place Trolley
           new TrolleyHolder(0),
           new MoveRobot(1, -0.05, 0, 0, 0.1),
           new InitialCalibration(), // PROBLEM: After finding the second trolley it will go Calibrate at the wrong position
           new MovetoB(CheckTrolleyinWaypoint::previousPose),
           new InstantCommand(()-> m_trolleyFlag = false),
-          new MoveArm(new Translation2d(0.3,0.4), 2),
-          new MoveCamera(278)
-          
+          new PerspTfCamPos(),
+          new InstantCommand(()-> Globals.placeholderCount++)
 
         ),  new SequentialCommandGroup(
           // new InstantCommand(()->System.out.print("onFalse!!!!!!!!!!!!!!!" ))
@@ -79,7 +78,7 @@ public class CheckTrolleyinWaypoint extends SequentialCommandGroup{
   @Override
   public void initialize() {
     for (Map.Entry<String, Pose2d> obstacleEntry : RobotContainer.m_points.obstacleMap.entrySet()) {
-      if (obstacleEntry.getValue().getTranslation().getX() < Globals.curPose.getTranslation().getX() + Globals.robotRadius_m){
+      if (obstacleEntry.getValue().getTranslation().getX() < Globals.curPose.getTranslation().getX() + Globals.robotRadius_m && obstacleEntry.getValue().getTranslation().getY() < 4.2){ 
         m_trolleyFlag = true;
         m_trolley = obstacleEntry.getKey();
         break;

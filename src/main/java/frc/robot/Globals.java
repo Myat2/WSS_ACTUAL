@@ -19,9 +19,9 @@ public class Globals {
   // Calibration
   /** (length in m)/(800 pixels) */
   public static double convertPxToM = 0.0006225;// 0.0006225 Resolution 0.00060625
-  public static double camera_offset = 0.1; // actual is 10.5cm 0.015
-  public static double camera_mount_offset_x = 0.008;//  actual is 1.5cm
-  public static double arm_offset_y = 0.13; // 0.125
+  public static double camera_offset = 0.105;  // 0.1  actual is 10.5cm 0.015
+  public static double camera_mount_offset_x = 0.015;//  actual is 1.5cm
+  public static double arm_offset_y = 0.125; // 0.125
   public static double arm_offset_z = 0.25;
   public static double gripper_offset = 0.19; // actual is 0.19
   /** (height of cam - (height of coke - 3cm))/(height of cam) */
@@ -30,19 +30,19 @@ public class Globals {
   public static int imH = 600;
   public static int imW = 800;
 
-  // Camera angles Robot 6666
-  // public static int NormalCameraAngle = 285;
-  // public static int ColorDetectionAngle = 265;
-  // public static int PickingCameraAngle = 264;
-  // public static int WOBAngle = 148;
-  // public static int PerspTfCamAngle = 275;
+  // Camera angles Robot 6942
+  public static int NormalCameraAngle = 292;
+  public static int ColorDetectionAngle = 265;
+  public static int PickingCameraAngle = 271;
+  public static int WOBAngle = 153;
+  public static int PerspTfCamAngle = 279;
 
   // Camera Angles Robot 6942
-  public static int NormalCameraAngle = 295;
-  public static int ColorDetectionAngle = 265;
-  public static int PickingCameraAngle = 275;
-  public static int WOBAngle = 158;
-  public static int PerspTfCamAngle = 287;
+  // public static int NormalCameraAngle = 295;
+  // public static int ColorDetectionAngle = 265;
+  // public static int PickingCameraAngle = 275;
+  // public static int WOBAngle = 158;
+  // public static int PerspTfCamAngle = 287;
 
   //Align2Line
   public static boolean runningTaskB = false;
@@ -114,9 +114,9 @@ public class Globals {
       new Pose2d(new Translation2d(0, 0.43), new Rotation2d(-Math.PI / 2)),
   };
   public static Pose2d[] placeholderTrolleyPos = {
-      new Pose2d(new Translation2d(0.3 + 0.28, 0.6), new Rotation2d(Math.PI / 2)),
-      new Pose2d(new Translation2d(0.3 + 0.28, 1.2), new Rotation2d(Math.PI / 2)),
-      new Pose2d(new Translation2d(0.3 + 0.28, 1.8), new Rotation2d(Math.PI / 2)),
+      new Pose2d(new Translation2d(0.3 + 0.27, 0.6), new Rotation2d(Math.PI / 2)), 
+      new Pose2d(new Translation2d(0.3 + 0.27, 1.8), new Rotation2d(Math.PI / 2)),
+      new Pose2d(new Translation2d(0.3 + 0.27, 2.6), new Rotation2d(Math.PI / 2)),
   };
 
   public static void CP1() {
@@ -138,7 +138,7 @@ public class Globals {
   // new Pose2d(new Translation2d(0.15,0.75), new
   // Rotation2d((Math.toRadians(135)))),
   // };
-  public static int placeholderCount = -1; // Changed from 0 to -1
+  public static int placeholderCount = 0; // Changed from 0 to -1
   // End Conditions //
 
   public static double robotRadius_m = 0.24;

@@ -88,8 +88,9 @@ public class Robot extends TimedRobot {
     RobotContainer.m_Grid.AddFixedObstacles(RobotContainer.m_layout);
     RobotContainer.m_Grid.ExpandObstacles(Globals.robotRadius_m);
     Globals.loopCount = 0;
-    Globals.placeholderCount = -1;
+    Globals.placeholderCount = 0;
     Globals.runningTaskB = false;
+    Globals.cvMode = -2;
     //RobotContainer.InitMap();
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {

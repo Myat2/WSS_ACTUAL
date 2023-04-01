@@ -18,7 +18,7 @@ public class Task_A_trolley1st extends SequentialCommandGroup{
     public Task_A_trolley1st(){
         super(
             // Start Orientation Correction
-            // new StartOrientation(),
+            new StartOrientation(),
             new InstantCommand(()->RobotContainer.m_points.SetTrolleysAsObstacles()),
             //## Calibrate Robot Position ##//
             new InitialCalibration(),

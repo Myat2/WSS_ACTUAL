@@ -61,29 +61,13 @@ public class SortTrolleys extends SequentialCommandGroup {
                 // Layout.Convert_mm_Pose2d(Layout.RedPos))),
                 // new InstantCommand(() -> RobotContainer.m_points.AddObsGrid())
 
-                // SEQUENCE 2 If Pick first //
-
-                // ### Green ###//
-                new GotoTrolley(Layout.T3Pos),
-                new Align2Trolley(),
-                new TrolleyHolder(1),
-                // removes obstacle
-                new InstantCommand(() -> RobotContainer.m_points.removeObs("T3")),
-                // Go to color
-                new InstantCommand(() -> RobotContainer.m_vision.setColor("Green")),
-                new GotoColor(Layout.GreenPos),
-                new TrolleyHolder(0),
-                new MoveRobot(1, -0.05, 0, 0, 0.1),
-                // add obstacle
-                new InstantCommand(() -> RobotContainer.m_points.addObsPoint("GreenTarget", Layout.GreenPos)),
-                new InstantCommand(() -> RobotContainer.m_points.AddObsGrid()),
-
+                // TROLLEY FIRST
                 // ### Red Target ###//
-                new GotoTrolley(Layout.T2Pos),
+                new GotoTrolley(Layout.T1Pos),
                 new Align2Trolley(),
                 new TrolleyHolder(1),
                 // removes obstacle
-                new InstantCommand(() -> RobotContainer.m_points.removeObs("T2")),
+                new InstantCommand(() -> RobotContainer.m_points.removeObs("T1")),
                 // Go to color
                 new InstantCommand(() -> RobotContainer.m_vision.setColor("Red")),
                 new GotoColor(Layout.RedPos),
@@ -93,13 +77,27 @@ public class SortTrolleys extends SequentialCommandGroup {
                 new InstantCommand(() -> RobotContainer.m_points.addObsPoint("RedTarget", Layout.RedPos)),
                 new InstantCommand(() -> RobotContainer.m_points.AddObsGrid()),
 
-
-                // ### Blue ###//
-                new GotoTrolley(Layout.T1Pos),
+                // ### Green ###//
+                new GotoTrolley(Layout.T2Pos),
                 new Align2Trolley(),
                 new TrolleyHolder(1),
                 // removes obstacle
-                new InstantCommand(() -> RobotContainer.m_points.removeObs("T1")),
+                new InstantCommand(() -> RobotContainer.m_points.removeObs("T2")),
+                // Go to color
+                new InstantCommand(() -> RobotContainer.m_vision.setColor("Green")),
+                new GotoColor(Layout.GreenPos),
+                new TrolleyHolder(0),
+                new MoveRobot(1, -0.05, 0, 0, 0.1),
+                // add obstacle
+                new InstantCommand(() -> RobotContainer.m_points.addObsPoint("GreenTarget", Layout.GreenPos)),
+                new InstantCommand(() -> RobotContainer.m_points.AddObsGrid()),
+
+                // ### Blue ###//
+                new GotoTrolley(Layout.T3Pos),
+                new Align2Trolley(),
+                new TrolleyHolder(1),
+                // removes obstacle
+                new InstantCommand(() -> RobotContainer.m_points.removeObs("T3")),
                 // Go to color
                 // new InstantCommand(() -> System.out.println("After removeobs, Before Setting color blue")),
                 new InstantCommand(() -> RobotContainer.m_vision.setColor("Blue")),
@@ -109,6 +107,16 @@ public class SortTrolleys extends SequentialCommandGroup {
                 // add obstacle
                 new InstantCommand(() -> RobotContainer.m_points.addObsPoint("BlueTarget", Layout.BluePos)),
                 new InstantCommand(() -> RobotContainer.m_points.AddObsGrid())
+                
+
+                
+
+
+                
+
+
+                
+                
 
                 
                 
@@ -129,9 +137,9 @@ public class SortTrolleys extends SequentialCommandGroup {
                 new GotoColor("RedTarget"),
                 new TrolleyHolder(0),
                 new MoveRobot(1, -0.05, 0, 0, 0.1),
-                // new InstantCommand(() -> RobotContainer.m_points.addObsPoint("RedTarget", RobotContainer.m_points.getObsPointAftPlace())),
+                // new InstantCommand(() -> RobotContainer.m_points.addObsPoint("RedTarget", RobotContainer.m_points.getObsPointAftPlace())), // Change
 
-                new InstantCommand(() -> RobotContainer.m_points.addObsPoint("RedTarget", pointMap.get("RedTarget"))),
+                new InstantCommand(() -> RobotContainer.m_points.addObsPoint("RedTarget", RobotContainer.m_points.getPoint("RedTarget"))),
                 new InstantCommand(() -> RobotContainer.m_points.AddObsGrid()),
 
                 new MovetoB(()->RobotContainer.m_Grid.findGotoPos(RobotContainer.m_points.getPoint("T2").getTranslation(), 0.55)),
@@ -144,7 +152,7 @@ public class SortTrolleys extends SequentialCommandGroup {
                 new TrolleyHolder(0),
                 new MoveRobot(1, -0.05, 0, 0, 0.1),
                 // new InstantCommand(() -> RobotContainer.m_points.addObsPoint("GreenTarget", RobotContainer.m_points.getObsPointAftPlace())),
-                new InstantCommand(() -> RobotContainer.m_points.addObsPoint("GreenTarget", pointMap.get("GreenTarget"))),
+                new InstantCommand(() -> RobotContainer.m_points.addObsPoint("GreenTarget",RobotContainer.m_points.getPoint("GreenTarget"))),
                 new InstantCommand(() -> RobotContainer.m_points.AddObsGrid()),
 
                 new MovetoB(()->RobotContainer.m_Grid.findGotoPos(RobotContainer.m_points.getPoint("T3").getTranslation(), 0.55)),
@@ -156,7 +164,7 @@ public class SortTrolleys extends SequentialCommandGroup {
                 new GotoColor("BlueTarget"),
                 new TrolleyHolder(0),
                 new MoveRobot(1, -0.05, 0, 0, 0.1),
-                new InstantCommand(() -> RobotContainer.m_points.addObsPoint("BlueTarget", pointMap.get("BlueTarget"))),
+                new InstantCommand(() -> RobotContainer.m_points.addObsPoint("BlueTarget", RobotContainer.m_points.getPoint("BlueTarget"))),
                 // new InstantCommand(() -> RobotContainer.m_points.addObsPoint("BlueTarget", RobotContainer.m_points.getObsPointAftPlace())),
                 new InstantCommand(() -> RobotContainer.m_points.AddObsGrid()));
     }

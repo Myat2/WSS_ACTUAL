@@ -27,8 +27,8 @@ public class Align2Line extends SequentialCommandGroup{
       new InstantCommand(()-> Globals.cvMode = 0),
       new WaitCommand(1), // Org 0.5
       // aligns to line
-      // new AlignRobot(185,175,true), // Robot 6666
-      new AlignRobot(210,160,true), // Robot 6942
+      new AlignRobot(211,158,true), // Robot 6942
+
       // resets cv mode to idle mode
       new InstantCommand(()-> Globals.cvMode=-1),
       // wait 2 secs
