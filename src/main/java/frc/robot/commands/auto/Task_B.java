@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Globals;
 import frc.robot.RobotContainer;
 import frc.robot.Astar.Layout;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class Task_B extends SequentialCommandGroup{
   public Task_B(){
@@ -46,7 +47,7 @@ public class Task_B extends SequentialCommandGroup{
       new Rotate2Orientation(Layout.PickUpBinPos.getRotation().getDegrees()),
       new Align2Line(),
       new ViewItem(),
-      new LoopCmd(new SortItems(RobotContainer.m_points.pointMap), ()->Globals.WOBLoopCondition()),
+      new LoopCmd(new SortItems_TASKB(RobotContainer.m_points.pointMap), ()->Globals.WOBLoopCondition()),
       new MoveArm(new Translation2d(0.33,0.24), 0.5) // Line detection position
       
       

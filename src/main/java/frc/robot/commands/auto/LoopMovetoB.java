@@ -11,8 +11,9 @@ public class LoopMovetoB extends SequentialCommandGroup{
   public LoopMovetoB(String targetArea){
     super(
       
-      new MovetoBWaypoint(),
+      new MovetoBWaypoint(),                                  
       new InstantCommand(() -> Globals.cvMode = 3), 
+      new PassVariable(),
       new WaitCommand(8),
       new InstantCommand(() -> RobotContainer.m_points.updateAllPoints()),
       new InstantCommand(() -> Globals.cvMode = -1),
@@ -24,6 +25,7 @@ public class LoopMovetoB extends SequentialCommandGroup{
       
       new MovetoBWaypoint(),
       new InstantCommand(() -> Globals.cvMode = 4), 
+      new PassVariable(),
       new WaitCommand(5), // Changes
       new InstantCommand(() -> RobotContainer.m_points.updateAllPoints()),
       new InstantCommand(() -> Globals.cvMode = -1),

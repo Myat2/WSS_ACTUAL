@@ -29,10 +29,7 @@ public class AutoMainCmd extends SequentialCommandGroup
         
         super
         (
-            // new Task_A_pick1st()
-            // new Task_A_trolley1st()
-            // new InstantCommand(()->RobotContainer.m_points.test())
-            new Task_B()    
+            new Task_B()
         );
             
     }
