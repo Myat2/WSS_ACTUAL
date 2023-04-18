@@ -29,7 +29,7 @@ public class AutoMainCmd extends SequentialCommandGroup
         
         super
         (
-            new Task_B()
+            new Task_B() //Testing commit message
         );
             
     }
