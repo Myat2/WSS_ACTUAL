@@ -30,13 +30,13 @@ public class AutoMainCmd extends SequentialCommandGroup
         super
         (
 
-        //  new InstantCommand(()-> Globals.cvMode=-1),
-        //  new MovetoB(Layout.workOrderPos),
-        //  new ReadWOB(),
-        //  new MovetoB(Layout.PickUpBinPos),
+         new InstantCommand(()-> Globals.cvMode=-1),
+         new MovetoB(Layout.workOrderPos),
+         new ReadWOB(),
+         new MovetoB(Layout.startPos)
         //  new SortItems()
-        new MovetoB(Layout.PickUpBinPos),
-        new PickItemfromBin()
+    //     new MovetoB(Layout.startPos_Test),
+    //    new TestPicking()
                     
             
             

@@ -73,7 +73,9 @@ public class Layout {
     // Robot start position.
     // public static final Pose2d startPos = new Pose2d(0.3, 0.3, new Rotation2d(-Math.PI / 4)); // For TaskA and TaskB
     public static final Pose2d startPos = new Pose2d(0.21, 0.21, new Rotation2d(-Math.PI / 2)); // For CPT
-    // public static final Pose2d startPos = new Pose2d(0.96, 1.1, new Rotation2d(-Math.PI / 2)); // For open house/testing
+
+    
+    public static final Pose2d startPos_Test = new Pose2d(0.96, 1.1, new Rotation2d(-Math.PI / 2)); // For open house/testing
     // public static final Pose2d startPos = new Pose2d(1.56, 4.06, new Rotation2d(-0));
     public static Pose2d getCalibrationPos() {
         return PickUpBinPos;

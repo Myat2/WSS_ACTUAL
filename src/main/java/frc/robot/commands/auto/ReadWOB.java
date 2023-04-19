@@ -25,14 +25,20 @@ public class ReadWOB extends SequentialCommandGroup{
       //waits for camera to settle
       new WaitCommand(0.5),
 
+      new ClearVariable(),
+
       // sets cvMOde to work order board detection
       new InstantCommand(()-> Globals.cvMode = 2),
 
       //checks if scan has finished, then continues if yes
       new PassVariable(),
       
+      new ClearVariable(),
+
       // resets cvMode to idle
       new InstantCommand(()-> Globals.cvMode=-1),
+
+      
       // gets the array from networktables and saves it
       new InstantCommand(()-> m_vision.getWOBItems()),
      

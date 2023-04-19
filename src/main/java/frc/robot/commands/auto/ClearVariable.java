@@ -17,23 +17,19 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 
 
-public class PassVariable extends CommandBase {
+public class ClearVariable extends CommandBase {
 
   private NetworkTable table;
   private NetworkTableEntry myVariableEntry;
   private double myVariable;
   private Timer timer;
-  private boolean Terminate;  
-
 
   
  /**
-     * Passes a variable from wssvision to VSCode using network table
-     * this is done to have an endflag so after it finishing scanning myVariable will be changed
-     * from 0 to 1 
+     * checks the value of MyVariable
      */
    
-  public PassVariable() {
+  public ClearVariable() {
     
     timer = new Timer();
 
@@ -44,15 +40,16 @@ public class PassVariable extends CommandBase {
   public void initialize() {
        // Connect to the NetworkTables server running on the VNC Viewer
        NetworkTableInstance inst = NetworkTableInstance.getDefault();
-       inst.startClient("10.69.42.2"); ;
+       //inst.startClient("10.69.42.2"); ;
 
        // Get the "MyTable" table from the NetworkTables server
        table = inst.getTable("MyTable");
 
+       // Get the "myVariable" entry from the table
+       myVariableEntry = table.getEntry("myVariable");
 
-       //gets myVariable from the shuffleboard during init
-       myVariable = table.getEntry("myVariable").getDouble(0.0);
-
+       // Initialize the variable to a default value
+       myVariable = 0.0;
 
        timer.start();
 
@@ -62,27 +59,15 @@ public class PassVariable extends CommandBase {
   @Override
   public void execute() {
        
-       final double myVariable2 = table.getEntry("myVariable").getDouble(0.0); //gets myVariable from shuffleboard during execute, some time later 
-       //the assumption is that myVariable2 should be different from myVariable1 so the program has at least run one
+
+
        
-
-        System.out.println("myVariable #######################################################");
-        System.out.println("PreviousValue  = " + myVariable);
+        myVariable = myVariableEntry.getDouble(0.0);
+        System.out.println("myVariable +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("What is myVariable = " + myVariable);
         System.out.println("myVariable########################################################");
-
-        System.out.println("myVariable #######################################################");
-        System.out.println("NewValue  = " + myVariable2);
-        System.out.println("myVariable########################################################");
-
-        if (myVariable != myVariable2)
-        {
-          Terminate = true;
-        }
-        else
-        {
-          Terminate = false;
-        }
-
+       
+       
    
   }
   
@@ -90,7 +75,7 @@ public class PassVariable extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // table.getEntry("myVariable").setDouble(0.0);
+    
   }
 
 
@@ -98,6 +83,6 @@ public class PassVariable extends CommandBase {
   @Override
   public boolean isFinished() {
     
-       return Terminate ;
+       return true;
   }
 }

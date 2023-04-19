@@ -71,9 +71,15 @@ public class Vision extends SubsystemBase{
 		  for (int ROW = 0; ROW < 3; ROW++){
 		    for (int COL = 0; COL < 3; COL++) {
 		    Targets[ROW][COL] = (int) WOB[index];
-		    index++;
+        index++;
+        
 		    }
-		  }
+      }
+      
+      for (int i = 0; i < WOB.length; i++) {  
+        System.out.print(WOB[i]);
+      }
+
       Globals.Targets = Targets;
     }
 
