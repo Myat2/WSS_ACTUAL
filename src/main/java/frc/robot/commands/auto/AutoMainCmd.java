@@ -1,10 +1,10 @@
 package frc.robot.commands.auto;
 
-
-
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ProxyScheduleCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Globals;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.OmniDrive;
@@ -29,7 +29,17 @@ public class AutoMainCmd extends SequentialCommandGroup
         
         super
         (
-            new Task_B() //Testing commit message
+
+        //  new InstantCommand(()-> Globals.cvMode=-1),
+        //  new MovetoB(Layout.workOrderPos),
+        //  new ReadWOB(),
+        //  new MovetoB(Layout.PickUpBinPos),
+        //  new SortItems()
+        new MovetoB(Layout.PickUpBinPos),
+        new PickItemfromBin()
+                    
+            
+            
         );
             
     }

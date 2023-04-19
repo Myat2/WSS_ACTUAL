@@ -45,27 +45,27 @@ public class Layout {
 
     public static final Pose2d TestPickUpBinPos = new Pose2d(0.63, 1.05, new Rotation2d(-Math.PI / 2));
     public static final Pose2d PickUpBinPos = new Pose2d(1.4 - 0.8, 1.1, new Rotation2d(-Math.PI / 2));
-    public static final Pose2d PickUpBin2Pos = new Pose2d(0.85 + 0.8, 3.15, new Rotation2d(Math.PI / 2)); // Math.toRad()
+    public static final Pose2d PickUpBin2Pos = new Pose2d(1.05, 4.35-0.72, new Rotation2d(0)); // Math.toRad()
     // These are coordinates of the red colored target area (NOTE: indicate the
     // angle of orientation)
-    public static final Pose2d RedPos = new Pose2d(2.075, 3.945, new Rotation2d(0)); // Layout
+    public static final Pose2d RedPos = new Pose2d(1.99, 2.5, new Rotation2d(-Math.PI/2)); // Layout
 
     // These are coordinates of the green colored target area
-    public static final Pose2d GreenPos = new Pose2d(2.075, 2.945, new Rotation2d(0));
+    public static final Pose2d GreenPos = new Pose2d(1.99, 3.5, new Rotation2d(-Math.PI/2));
 
     // These are coordinates of the blue colored target area
-    public static final Pose2d BluePos = new Pose2d(2.075, 1.945, new Rotation2d(0));
+    public static final Pose2d BluePos = new Pose2d(1.99, 1.74, new Rotation2d(-Math.PI/2));
 
     // These are coordinates of the trolleys (NOTE: indicate the angle of
     // orientation)
-    public static final Pose2d T1Pos = new Pose2d(0.861, 2.62, new Rotation2d(0));
+    public static final Pose2d T1Pos = new Pose2d(0.17, 2.5, new Rotation2d(Math.PI/2));
 
-    public static final Pose2d T2Pos = new Pose2d(0.861, 2.23, new Rotation2d(0));
+    public static final Pose2d T2Pos = new Pose2d(0.17, 3.5, new Rotation2d(Math.PI/2));
 
-    public static final Pose2d T3Pos = new Pose2d(0.861, 1.84, new Rotation2d(0));
+    public static final Pose2d T3Pos = new Pose2d(0.17, 1.74, new Rotation2d(Math.PI/2));
 
     // Position for robot to go to for reading work order
-    public static final Pose2d workOrderPos = new Pose2d(1.20, 0.250, new Rotation2d(Math.toRadians(-90))); // Changed x
+    public static final Pose2d workOrderPos = new Pose2d(1.14, 0.250, new Rotation2d(Math.toRadians(-90))); // Changed x
                                                                                                             // from 1.2
                                                                                                             // to
                                                                                                             // 1.15

@@ -29,6 +29,7 @@ public class Task_A_pick1st extends SequentialCommandGroup{
           new Rotate2Orientation(Layout.PickUpBinPos.getRotation().getDegrees()),
           new Align2Line(),
           new ViewItem(),
+          new InstantCommand(()->System.out.println("Before SortItems" )),
           new LoopCmd(new SortItems(), ()->Globals.WOBLoopCondition()),
           // new InstantCommand(()->Globals.curBin = 1), // Change to second bin
           new MoveArm(new Translation2d(0.33,0.24), 0.5), // Line detection position

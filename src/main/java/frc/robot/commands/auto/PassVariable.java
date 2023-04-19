@@ -9,10 +9,12 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
+import javax.lang.model.util.ElementScanner6;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Timer;
 
 
 public class PassVariable extends CommandBase {
@@ -20,15 +22,19 @@ public class PassVariable extends CommandBase {
   private NetworkTable table;
   private NetworkTableEntry myVariableEntry;
   private double myVariable;
+  private Timer timer;
+
   
  /**
      * Passes a variable from wssvision to VSCode using network table
      * this is done to have an endflag so after it finishing scanning myVariable will be changed
-     * from 0 to 1
+     * from 0 to 1 
      */
    
   public PassVariable() {
-    // Use addRequirements() here to declare subsystem dependencies.
+    
+    timer = new Timer();
+
   }
 
   // Called when the command is initially scheduled.
@@ -47,14 +53,22 @@ public class PassVariable extends CommandBase {
        // Initialize the variable to a default value
        myVariable = 0.0;
 
+       timer.start();
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   
-       myVariable = myVariableEntry.getDouble(0.0);
-       System.out.println("myVariable = " + myVariable);
+       
+
+
+       
+        myVariable = myVariableEntry.getDouble(0.0);
+        System.out.println("myVariable #######################################################");
+        System.out.println("myVariable = " + myVariable);
+        System.out.println("myVariable########################################################");
+       
        
    
   }
@@ -68,10 +82,7 @@ public class PassVariable extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (myVariable==1.0)
-    {
-      return true;
-    }
-    return false;
+    
+       return myVariable == 1.0;
   }
 }

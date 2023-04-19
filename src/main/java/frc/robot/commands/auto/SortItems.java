@@ -60,50 +60,13 @@ public class SortItems extends SequentialCommandGroup {
                 /*
                  * Pick First
                  */
-                // new PickItemfromBin(),
-                // new MoveCamera(286),
-                // new SelectCommand(
-                //         Map.ofEntries(
-                //                 Map.entry(CommandSelector.ONE, new GotoTrolley(Layout.T1Pos)), // Go to Red
-                //                 Map.entry(CommandSelector.TWO, new GotoTrolley(Layout.T2Pos)),
-                //                 Map.entry(CommandSelector.THREE, new GotoTrolley(Layout.T3Pos))),
-                //         SortItems::selectTarget),
-                // // Lifts arm
-                // new DetectionPosition(),
-                // // sets cvMode to trolley alignment
-                // new InstantCommand(() -> Globals.cvMode = 5),
-                // new WaitCommand(3),
-                // // resets cvMode to idle
-                // new InstantCommand(() -> Globals.cvMode = -1),
-                // // Align trolley X
-                // new TrolleyAlignment(0),
-
-                // new PlaceDown(),
-                // // new MoveRobot(1, -0.05, 0, 0, 0.1),
-                // new SelectCommand(
-                //         Map.ofEntries(
-                //                 Map.entry(CommandSelector.ONE, new MovetoB(Layout.PickUpBinPos)),
-                //                 Map.entry(CommandSelector.TWO, new MovetoB(Layout.PickUpBin2Pos))),
-                //         SortItems::selectBin),
-                // // new SelectCommand(
-                // //         Map.ofEntries(
-                // //                 Map.entry(CommandSelector.ONE,
-                // //                         new Rotate2Orientation(Layout.PickUpBinPos.getRotation().getDegrees())),
-                // //                 Map.entry(CommandSelector.TWO,
-                // //                         new Rotate2Orientation(Layout.PickUpBin2Pos.getRotation().getDegrees()))),
-                // //         SortItems::selectRotation),
-
-                // new Align2Line(),
-                // new ViewItem());
-
-                // Trolley first
                 new PickItemfromBin(),
                 new MoveCamera(286),
                 new SelectCommand(
                         Map.ofEntries(
-                                Map.entry(CommandSelector.ONE, new GotoTrolley(Layout.RedPos)), // Go to Red
-                                Map.entry(CommandSelector.TWO, new GotoTrolley(Layout.GreenPos)),
-                                Map.entry(CommandSelector.THREE, new GotoTrolley(Layout.BluePos))),
+                                Map.entry(CommandSelector.ONE, new GotoTrolley(Layout.T1Pos)), // Go to Red
+                                Map.entry(CommandSelector.TWO, new GotoTrolley(Layout.T2Pos)),
+                                Map.entry(CommandSelector.THREE, new GotoTrolley(Layout.T3Pos))),
                         SortItems::selectTarget),
                 // Lifts arm
                 new DetectionPosition(),
@@ -132,7 +95,44 @@ public class SortItems extends SequentialCommandGroup {
 
                 new Align2Line(),
                 new ViewItem());
-    }
+
+//                 // Trolley first
+//                 new PickItemfromBin(),
+//                 new MoveCamera(286),
+//                 new SelectCommand(
+//                         Map.ofEntries(
+//                                 Map.entry(CommandSelector.ONE, new GotoTrolley(Layout.RedPos)), // Go to Red
+//                                 Map.entry(CommandSelector.TWO, new GotoTrolley(Layout.GreenPos)),
+//                                 Map.entry(CommandSelector.THREE, new GotoTrolley(Layout.BluePos))),
+//                         SortItems::selectTarget),
+//                 // Lifts arm
+//                 new DetectionPosition(),
+//                 // sets cvMode to trolley alignment
+//                 new InstantCommand(() -> Globals.cvMode = 5),
+//                 new WaitCommand(3),
+//                 // resets cvMode to idle
+//                 new InstantCommand(() -> Globals.cvMode = -1),
+//                 // Align trolley X
+//                 new TrolleyAlignment(0),
+
+//                 new PlaceDown(),
+//                 // new MoveRobot(1, -0.05, 0, 0, 0.1),
+//                 new SelectCommand(
+//                         Map.ofEntries(
+//                                 Map.entry(CommandSelector.ONE, new MovetoB(Layout.PickUpBinPos)),
+//                                 Map.entry(CommandSelector.TWO, new MovetoB(Layout.PickUpBin2Pos))),
+//                         SortItems::selectBin),
+//                 // new SelectCommand(
+//                 //         Map.ofEntries(
+//                 //                 Map.entry(CommandSelector.ONE,
+//                 //                         new Rotate2Orientation(Layout.PickUpBinPos.getRotation().getDegrees())),
+//                 //                 Map.entry(CommandSelector.TWO,
+//                 //                         new Rotate2Orientation(Layout.PickUpBin2Pos.getRotation().getDegrees()))),
+//                 //         SortItems::selectRotation),
+
+//                 new Align2Line(),
+//                 new ViewItem());
+   }
 
     public SortItems(Map<String, Pose2d> pointMap) {
         super(

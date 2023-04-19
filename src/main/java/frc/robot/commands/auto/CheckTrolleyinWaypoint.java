@@ -84,7 +84,7 @@ public class CheckTrolleyinWaypoint extends SequentialCommandGroup{
         break;
       }
     }
-    // System.out.println("Trolley Found: " + m_trolley);
+    System.out.println("Trolley Found: " + m_trolley);
     super.initialize();
   }
   

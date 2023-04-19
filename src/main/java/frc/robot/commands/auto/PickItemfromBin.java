@@ -22,11 +22,7 @@ import frc.robot.subsystems.Vision;
 import frc.robot.commands.auto.MoveRobotSense;
 import frc.robot.commands.auto.LoopCmd;
 
-/**
- * DriveMotor class
- * <p>
- * This class creates the inline auto command to drive the motor
- */
+
 // NOT USED IN COMPETITION
 public class PickItemfromBin extends SequentialCommandGroup
 {   
