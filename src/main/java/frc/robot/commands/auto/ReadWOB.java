@@ -25,7 +25,7 @@ public class ReadWOB extends SequentialCommandGroup{
       //waits for camera to settle
       new WaitCommand(0.5),
 
-      new ClearVariable(),
+      // new ClearVariable(), checks what value MyVariable is
 
       // sets cvMOde to work order board detection
       new InstantCommand(()-> Globals.cvMode = 2),
@@ -33,7 +33,8 @@ public class ReadWOB extends SequentialCommandGroup{
       //checks if scan has finished, then continues if yes
       new PassVariable(),
       
-      new ClearVariable(),
+      // new ClearVariable(), checks what value MyVariable is
+
 
       // resets cvMode to idle
       new InstantCommand(()-> Globals.cvMode=-1),

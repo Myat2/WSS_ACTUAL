@@ -347,10 +347,28 @@ public class Points {
 
   }
 
+    /**
+    * This command Sets the Trolleys as obstacles
+    * <p>
+    * 
+    */
+  //This Allows the robot to avoid the Trolleys during movement
   public void SetTrolleysAsObstacles() {
     obstacleMap.put("T1", Layout.T1Pos);
     obstacleMap.put("T2", Layout.T2Pos);
     obstacleMap.put("T3", Layout.T3Pos);
+    AddObsGrid();
+  }
+
+  /**
+    * This command Sets the bins as obstacles
+    * <p>
+    * 
+    */
+  //This Allows the robot to avoid the bins during movement
+  public void SetBinsAsObstacles() {
+    obstacleMap.put("Bin1", Layout.PickUpBinPos);
+    obstacleMap.put("Bin2", Layout.PickUpBin2Pos);
     AddObsGrid();
   }
 

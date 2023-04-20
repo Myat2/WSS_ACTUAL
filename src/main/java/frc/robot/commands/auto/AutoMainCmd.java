@@ -29,11 +29,9 @@ public class AutoMainCmd extends SequentialCommandGroup
         
         super
         (
+            new InstantCommand(()-> System.out.println("inside automaincommand")),
+            new Task_A_pick1st()
 
-         new InstantCommand(()-> Globals.cvMode=-1),
-         new MovetoB(Layout.workOrderPos),
-         new ReadWOB(),
-         new MovetoB(Layout.startPos)
         //  new SortItems()
     //     new MovetoB(Layout.startPos_Test),
     //    new TestPicking()

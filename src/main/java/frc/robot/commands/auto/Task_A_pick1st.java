@@ -15,9 +15,14 @@ public class Task_A_pick1st extends SequentialCommandGroup{
     public Task_A_pick1st(){
       super(
           // Start Orientation Correction
+          new InstantCommand(()-> System.out.println("inside Task_A_pick1st")),
           new StartOrientation(),
           new InstantCommand(() -> RobotContainer.m_omnidrive.UpdatePosition(Layout.startPos)),
+          new InstantCommand(()-> System.out.println("Before setting obstacles")),
           new InstantCommand(()->RobotContainer.m_points.SetTrolleysAsObstacles()),
+          new InstantCommand(()-> System.out.println("After setting trolleys as obstacles")),
+          new InstantCommand(()->RobotContainer.m_points.SetBinsAsObstacles()),
+          new InstantCommand(()-> System.out.println("After setting obstacles")),
           //## Calibrate Robot Position ##//
           new InitialCalibration(),
           //## Read WOB ##// 

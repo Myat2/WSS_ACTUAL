@@ -18,7 +18,7 @@ public class Globals {
   // Vision //
   // Calibration
   /** (length in m)/(800 pixels) */
-  public static double convertPxToM = 0.0006225;// 0.0006225 Resolution 0.00060625
+  public static double convertPxToM = 0.0006275;// 0.0006725 Resolution 0.00060625
   public static double camera_offset = 0.105;  // 0.1  actual is 10.5cm 0.015
   public static double camera_mount_offset_x = 0.015;//  actual is 1.5cm
   public static double arm_offset_y = 0.125; // 0.125
