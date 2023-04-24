@@ -71,8 +71,10 @@ public class SortItems extends SequentialCommandGroup {
                 // Lifts arm
                 new DetectionPosition(),
                 // sets cvMode to trolley alignment
-                new InstantCommand(() -> Globals.cvMode = 5),
-                new WaitCommand(3),
+                new InstantCommand(() -> Globals.cvMode =5 ),
+                // new WaitCommand(3),
+
+                new PassVariable(),  
                 // resets cvMode to idle
                 new InstantCommand(() -> Globals.cvMode = -1),
                 // Align trolley X
@@ -148,7 +150,9 @@ public class SortItems extends SequentialCommandGroup {
                 new DetectionPosition(),
                 // sets cvMode to trolley alignment
                 new InstantCommand(() -> Globals.cvMode = 5),
-                new WaitCommand(3),
+
+                // new WaitCommand(3),
+                new PassVariable(),
                 // resets cvMode to idle
                 new InstantCommand(() -> Globals.cvMode = -1),
                 // Align trolley X

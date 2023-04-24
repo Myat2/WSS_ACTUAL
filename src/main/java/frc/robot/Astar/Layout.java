@@ -44,7 +44,7 @@ public class Layout {
     // At 45 deg, it's 0.707*72cm = 50.9cm
 
     public static final Pose2d TestPickUpBinPos = new Pose2d(0.63, 1.05, new Rotation2d(-Math.PI / 2));
-    public static final Pose2d PickUpBinPos = new Pose2d(1.4 - 0.8, 1.1, new Rotation2d(-Math.PI / 2));
+    public static final Pose2d PickUpBinPos = new Pose2d(1.4 - 0.72, 1.1, new Rotation2d(-Math.PI / 2));
     public static final Pose2d PickUpBin2Pos = new Pose2d(1.05, 4.35-0.72, new Rotation2d(0)); // Math.toRad()
     // These are coordinates of the red colored target area (NOTE: indicate the
     // angle of orientation)
@@ -58,21 +58,21 @@ public class Layout {
 
     // These are coordinates of the trolleys (NOTE: indicate the angle of
     // orientation)
-    public static final Pose2d T1Pos = new Pose2d(0.17, 2.5, new Rotation2d(Math.PI/2));
+    public static final Pose2d T1Pos = new Pose2d(0.15, 2.5, new Rotation2d(Math.PI/2));
 
-    public static final Pose2d T2Pos = new Pose2d(0.17, 3.5, new Rotation2d(Math.PI/2));
+    public static final Pose2d T2Pos = new Pose2d(0.15, 3.5, new Rotation2d(Math.PI/2));
 
-    public static final Pose2d T3Pos = new Pose2d(0.17, 1.74, new Rotation2d(Math.PI/2));
+    public static final Pose2d T3Pos = new Pose2d(0.15, 1.74, new Rotation2d(Math.PI/2));
 
     // Position for robot to go to for reading work order
-    public static final Pose2d workOrderPos = new Pose2d(1.03, 0.250, new Rotation2d(Math.toRadians(-90))); // Changed x
+    public static final Pose2d workOrderPos = new Pose2d(1.05, 0.250, new Rotation2d(Math.toRadians(-90))); // Changed x
                                                                                                             // from 1.2
                                                                                                             // to
                                                                                                             // 1.15
 
     // Robot start position.
     public static final Pose2d startPos = new Pose2d(0.3, 0.3, new Rotation2d(-Math.PI / 2)); // For TaskA and TaskB
-    // public static final Pose2d startPos = new Pose2d(0.21, 0.21, new Rotation2d(-Math.PI / 2)); // For CPT
+     //public static final Pose2d startPos = new Pose2d(0.21, 0.21, new Rotation2d(-Math.PI / 2)); // For CPT
 
     
     // public static final Pose2d startPos = new Pose2d(0.96, 1.1, new Rotation2d(-Math.PI / 2)); // For open house/testing

@@ -28,9 +28,7 @@ public class PassVariable extends CommandBase {
 
   
  /**
-     * Passes a variable from wssvision to VSCode using network table
-     * this is done to have an endflag so after it finishing scanning myVariable will be changed
-     * from 0 to 1 
+     *This command is a flag that checks if the python vision side has run at least once
      */
    
   public PassVariable() {

@@ -20,7 +20,8 @@ public class ViewItem extends SequentialCommandGroup{
         new ViewingPosition(),
         // sets cvMode to object detection mode
         new InstantCommand(()-> Globals.cvMode=1),  
-        new WaitCommand(3),
+        // new WaitCommand(3),
+        new PassVariable(),
         // resets cvMode to idle mode
         new InstantCommand(()-> Globals.cvMode=-1)
         // new WaitCommand(2)

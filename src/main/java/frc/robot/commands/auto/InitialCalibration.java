@@ -27,13 +27,14 @@ public class InitialCalibration extends SequentialCommandGroup{
       // sets cv mode to line detection
       new InstantCommand(()-> m_vision.setColor("Black")),
       new InstantCommand(()-> Globals.cvMode = 0),
-      new WaitCommand(0.5),
+      // new WaitCommand(0.5),
+      new PassVariable(),  //flag command that checks if python side is done
       // aligns to line
       new AlignRobot(195,175,true),
       // resets cv mode to idle mode
       new InstantCommand(()-> Globals.cvMode=-1),
       // wait 2 secs
-      new WaitCommand(2),
+      // new WaitCommand(2),
       new Gripper(0,80),
       // resets robot's position
       new ResetPosition()

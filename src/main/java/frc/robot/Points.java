@@ -367,7 +367,7 @@ public class Points {
     */
   //This Allows the robot to avoid the bins during movement
   public void SetBinsAsObstacles() {
-    obstacleMap.put("Bin1", Layout.PickUpBinPos);
+    obstacleMap.put("Bin1", Layout.PickUpBinPos); // issue might be because the bin is an obstacle, it cannot calibrate
     obstacleMap.put("Bin2", Layout.PickUpBin2Pos);
     AddObsGrid();
   }
